@@ -3,167 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GhostWriter Pro</title>
+    <title>SignalWrite | AI Writing Studio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Playfair+Display:ital@1&family=Space+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Instrument+Serif:ital@0;1&display=swap');
         
-        body.light { background: #f9fafb; color: #111827; }
-        body.dark { background: #030712; color: #f3f4f6; }
+        :root { --accent: #6366f1; }
+        body.light { background: #f8fafc; color: #0f172a; }
+        body.dark { background: #020617; color: #f8fafc; }
         
-        .font-sans-serf { font-family: 'Inter', sans-serif; }
-        .font-serif { font-family: 'Playfair Display', serif; }
-        .font-mono { font-family: 'Space Mono', monospace; }
-
-        .glass-panel { 
-            background: rgba(255, 255, 255, 0.7); 
-            backdrop-filter: blur(10px); 
-            border: 1px solid rgba(0,0,0,0.05); 
-        }
-        .dark .glass-panel { 
-            background: rgba(31, 41, 55, 0.5); 
-            border: 1px solid rgba(255,255,255,0.05); 
-        }
+        .serif { font-family: 'Instrument Serif', serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        
+        .bento-panel { background: rgba(255,255,255,0.8); border: 1px solid rgba(0,0,0,0.05); backdrop-filter: blur(10px); border-radius: 32px; }
+        .dark .bento-panel { background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255,255,255,0.05); }
+        
+        .newsletter-pop { transform: translateY(100px); opacity: 0; transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .newsletter-pop.active { transform: translateY(0); opacity: 1; }
     </style>
 </head>
-<body class="light font-sans-serf transition-colors duration-300 min-h-screen flex flex-col">
+<body class="light min-h-screen flex flex-col">
 
-    <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
-        <h1 class="text-2xl font-bold tracking-tighter">GHOSTWRITER<span class="text-indigo-600">.</span></h1>
-        <div class="flex gap-4">
-            <button onclick="toggleMode()" class="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition">
-                <span id="mode-icon">🌙</span>
-            </button>
-            <button onclick="toggleModal('help-modal')" class="text-xs font-bold uppercase tracking-widest text-indigo-600 underline">Help: API Key</button>
+    <div id="newsletter" class="newsletter-pop fixed bottom-8 right-8 z-[100] max-w-sm w-full p-8 bento-panel shadow-2xl">
+        <button onclick="closeNewsletter()" class="absolute top-4 right-4 text-slate-400">&times;</button>
+        <h4 class="serif text-2xl mb-2">Join the Signal</h4>
+        <p class="text-xs text-slate-500 mb-4">Get updates on AI writing patterns. No spam, just signal.</p>
+        <div class="flex gap-2">
+            <input type="email" value="louisnkan21@gmail.com" readonly class="flex-1 bg-black/5 border border-black/10 rounded-xl px-4 py-2 text-xs outline-none">
+            <button class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-xs font-bold">Sub</button>
+        </div>
+    </div>
+
+    <nav class="p-8 flex justify-between items-center max-w-7xl mx-auto w-full">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">S</div>
+            <h1 class="text-xl font-800 tracking-tighter">SIGNALWRITE</h1>
+        </div>
+        <div class="flex items-center gap-6">
+            <button onclick="toggleTheme()" id="themeBtn" class="text-xs font-bold tracking-widest uppercase opacity-50 hover:opacity-100">Dark Mode</button>
+            <button onclick="toggleModal('settings')" class="bg-indigo-600/10 text-indigo-600 px-5 py-2 rounded-full text-xs font-bold">Connect AI</button>
         </div>
     </nav>
 
-    <main class="flex-grow max-w-6xl mx-auto w-full grid grid-cols-1 lg:grid-cols-4 gap-8 p-6">
+    <main class="flex-grow max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-4 gap-8 p-6">
         
         <aside class="space-y-6">
-            <div class="glass-panel p-6 rounded-3xl">
-                <h3 class="text-[10px] font-bold uppercase text-slate-400 mb-4">Typography</h3>
-                <div class="flex flex-wrap gap-2">
-                    <button onclick="changeFont('font-sans-serf')" class="px-3 py-1 border rounded-lg text-xs">Sans</button>
-                    <button onclick="changeFont('font-serif')" class="px-3 py-1 border rounded-lg text-xs">Serif</button>
-                    <button onclick="changeFont('font-mono')" class="px-3 py-1 border rounded-lg text-xs">Mono</button>
+            <div class="bento-panel p-6">
+                <label class="text-[10px] font-800 text-slate-400 uppercase tracking-widest mb-4 block">Writing Mode</label>
+                <select id="mode" class="w-full bg-transparent border-b border-indigo-500/20 py-2 outline-none text-sm font-semibold mb-6">
+                    <option value="novel">📖 Novel / Story</option>
+                    <option value="article">📰 Journalism / Article</option>
+                    <option value="letter">✉️ Formal Letter</option>
+                    <option value="social">🐦 Viral Thread</option>
+                </select>
+
+                <label class="text-[10px] font-800 text-slate-400 uppercase tracking-widest mb-4 block">Intelligence Tone</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="setTone('poetic')" class="tone-btn border border-black/5 dark:border-white/5 py-2 rounded-xl text-[10px] font-bold uppercase">Poetic</button>
+                    <button onclick="setTone('academic')" class="tone-btn border border-black/5 dark:border-white/5 py-2 rounded-xl text-[10px] font-bold uppercase">Academic</button>
                 </div>
             </div>
 
-            <div class="glass-panel p-6 rounded-3xl">
-                <h3 class="text-[10px] font-bold uppercase text-slate-400 mb-4">Tone Selection</h3>
-                <select id="tone-select" class="w-full bg-transparent border-b border-slate-300 py-2 outline-none text-sm cursor-pointer">
-                    <option value="professional">Professional</option>
-                    <option value="friendly">Warm & Friendly</option>
-                    <option value="bold">Bold & Persuasive</option>
-                    <option value="short">Ultra Concise</option>
-                </select>
+            <div class="bento-panel p-6">
+                <h3 class="text-[10px] font-800 text-slate-400 uppercase tracking-widest mb-2">Live Analysis</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between"><span class="text-xs">Words</span><span id="wordCount" class="font-bold">0</span></div>
+                    <div class="flex justify-between"><span class="text-xs">Read Time</span><span id="readTime" class="font-bold">0m</span></div>
+                </div>
             </div>
         </aside>
 
         <div class="lg:col-span-3 flex flex-col gap-6">
-            <div class="glass-panel p-8 rounded-[40px] flex-grow shadow-sm">
-                <textarea id="editor" placeholder="Type your raw thoughts..." 
-                    class="w-full h-96 bg-transparent outline-none text-xl resize-none"></textarea>
+            <div class="bento-panel p-10 flex-grow shadow-sm">
+                <input type="text" id="docTitle" placeholder="Document Title..." class="serif text-4xl w-full bg-transparent outline-none mb-6 italic">
+                <textarea id="editor" oninput="updateStats()" placeholder="The story starts here..." 
+                    class="w-full h-[50vh] bg-transparent outline-none text-lg leading-relaxed resize-none"></textarea>
             </div>
             
             <div class="flex gap-4">
-                <button onclick="refineDraft()" class="flex-grow bg-indigo-600 text-white font-bold py-5 rounded-2xl shadow-xl shadow-indigo-500/20 active:scale-95 transition">
-                    REFINE DRAFT
+                <button onclick="generateAI()" class="flex-grow bg-indigo-600 text-white font-800 py-6 rounded-[24px] shadow-2xl shadow-indigo-500/40 hover:scale-[1.01] active:scale-95 transition">
+                    REFINE WITH INTELLIGENCE
                 </button>
-                <button onclick="toggleModal('settings-modal')" class="px-6 bg-slate-200 dark:bg-slate-800 rounded-2xl">⚙️</button>
             </div>
         </div>
     </main>
 
-    <div id="help-modal" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-6">
-        <div class="bg-white dark:bg-slate-900 p-8 rounded-[32px] max-w-md w-full shadow-2xl">
-            <h2 class="text-2xl font-bold mb-4">How to Get Started</h2>
-            <ol class="text-sm space-y-4 text-slate-600 dark:text-slate-400">
-                <li>1. Visit <a href="https://aistudio.google.com/" target="_blank" class="text-indigo-600 underline">Google AI Studio</a>.</li>
-                <li>2. Sign in and click <b>"Get API Key"</b>.</li>
-                <li>3. Click <b>"Create API Key in new project"</b>.</li>
-                <li>4. Copy the key and paste it into the <b>Settings (⚙️)</b> of this site.</li>
-            </ol>
-            <button onclick="toggleModal('help-modal')" class="w-full mt-8 bg-black text-white py-4 rounded-xl font-bold">Got it</button>
-        </div>
-    </div>
-
-    <div id="settings-modal" class="hidden fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-6">
-        <div class="bg-white dark:bg-slate-900 p-8 rounded-[32px] max-w-sm w-full">
-            <h2 class="text-xl font-bold mb-4">Connect Gemini</h2>
-            <input type="password" id="apiKeyInput" placeholder="Paste AIza... key" 
-                class="w-full border p-4 rounded-xl mb-4 dark:bg-black/20">
-            <button onclick="saveKey()" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold">Save Securely</button>
-        </div>
-    </div>
-
-    <div id="result-modal" class="hidden fixed inset-0 z-[100] bg-white dark:bg-slate-950 flex flex-col p-8">
-        <div class="max-w-3xl mx-auto w-full">
-            <header class="flex justify-between mb-8">
-                <h2 class="text-3xl font-bold italic">The Ghost Draft</h2>
-                <button onclick="toggleModal('result-modal')" class="text-2xl">&times;</button>
-            </header>
-            <p id="output-text" class="text-lg leading-relaxed mb-10 text-slate-700 dark:text-slate-300"></p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button onclick="exportTo('slack')" class="bg-[#4A154B] text-white py-4 rounded-xl font-bold">Copy for Slack</button>
-                <button onclick="exportTo('email')" class="bg-slate-900 text-white py-4 rounded-xl font-bold">Format for Email</button>
+    <footer class="p-12 mt-20 border-t border-black/5 dark:border-white/5">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div>
+                <h4 class="serif text-3xl mb-4 italic">SignalWrite Labs.</h4>
+                <p class="text-xs text-slate-500 leading-relaxed">The future of literature is collaborative. We provide the structure; the AI provides the polish; you provide the soul. A completely private, mobile-first creative suite.</p>
             </div>
+            <div class="flex flex-col gap-2 text-xs font-bold uppercase tracking-widest text-slate-400">
+                <a href="#" class="hover:text-indigo-600">Privacy Manifesto</a>
+                <a href="#" class="hover:text-indigo-600">Open Intelligence</a>
+                <a href="#" class="hover:text-indigo-600">Contact Studio</a>
+            </div>
+            <div class="md:text-right">
+                <p class="text-xs text-slate-500">Document strictly local. No data synced to cloud.</p>
+                <div class="mt-4 flex md:justify-end gap-4">
+                    <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                    <span class="text-[10px] font-bold uppercase text-slate-500">System Functional</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="settings" class="hidden fixed inset-0 z-[200] bg-black/80 backdrop-blur-md flex items-center justify-center p-6">
+        <div class="bg-white dark:bg-slate-900 p-10 rounded-[40px] max-w-sm w-full">
+            <h2 class="serif text-3xl mb-6">Engine Key</h2>
+            <input type="password" id="apiKey" placeholder="Gemini API Key..." class="w-full border p-4 rounded-2xl mb-4 dark:bg-black/20">
+            <button onclick="saveKey()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold">Lock Engine</button>
+            <button onclick="toggleModal('settings')" class="w-full mt-2 text-xs text-slate-500">Cancel</button>
         </div>
     </div>
 
     <script>
-        function toggleMode() {
-            const body = document.body;
-            body.classList.toggle('light');
-            body.classList.toggle('dark');
-            document.getElementById('mode-icon').innerText = body.classList.contains('dark') ? '☀️' : '🌙';
+        let selectedTone = 'professional';
+
+        function toggleTheme() {
+            const b = document.body;
+            b.classList.toggle('light'); b.classList.toggle('dark');
+            document.getElementById('themeBtn').innerText = b.classList.contains('dark') ? 'Light Mode' : 'Dark Mode';
         }
 
         function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
+        
+        function setTone(t) { 
+            selectedTone = t; 
+            document.querySelectorAll('.tone-btn').forEach(btn => btn.style.borderColor = 'rgba(0,0,0,0.05)');
+            event.target.style.borderColor = '#6366f1';
+        }
 
-        function changeFont(fontClass) {
-            document.body.classList.remove('font-sans-serf', 'font-serif', 'font-mono');
-            document.body.classList.add(fontClass);
+        function updateStats() {
+            const txt = document.getElementById('editor').value;
+            const words = txt.trim() ? txt.trim().split(/\s+/).length : 0;
+            document.getElementById('wordCount').innerText = words;
+            document.getElementById('readTime').innerText = Math.ceil(words / 200) + "m";
         }
 
         function saveKey() {
-            localStorage.setItem('gw_pro_key', document.getElementById('apiKeyInput').value);
-            toggleModal('settings-modal');
-            alert("Key saved to local browser.");
+            localStorage.setItem('sw_key', document.getElementById('apiKey').value);
+            toggleModal('settings');
         }
 
-        async function refineDraft() {
-            const key = localStorage.getItem('gw_pro_key');
-            if(!key) return toggleModal('help-modal');
+        async function generateAI() {
+            const key = localStorage.getItem('sw_key');
+            if(!key) return toggleModal('settings');
 
-            const draft = document.getElementById('editor').value;
-            const tone = document.getElementById('tone-select').value;
-            
+            const content = document.getElementById('editor').value;
+            const mode = document.getElementById('mode').value;
+            const btn = event.target;
+            btn.innerText = "ENGAGING AI ENGINE...";
+
             try {
                 const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: `Rewrite this text in a ${tone} tone. Keep it natural: ${draft}` }] }]
+                        contents: [{ parts: [{ text: `Act as a senior editor. Rewrite this ${mode} to be more ${selectedTone}: ${content}` }] }]
                     })
                 });
                 const data = await res.json();
-                document.getElementById('output-text').innerText = data.candidates[0].content.parts[0].text;
-                toggleModal('result-modal');
-            } catch (err) { alert("Invalid API Key."); }
+                document.getElementById('editor').value = data.candidates[0].content.parts[0].text;
+                updateStats();
+            } catch (e) { alert("API Error."); }
+            finally { btn.innerText = "REFINE WITH INTELLIGENCE"; }
         }
 
-        function exportTo(type) {
-            const text = document.getElementById('output-text').innerText;
-            let formattedText = text;
-            if(type === 'slack') formattedText = "> " + text; // Slack quote style
-            if(type === 'email') formattedText = "Hi,\n\n" + text + "\n\nBest regards,";
+        // NEWSLETTER LOGIC
+        setTimeout(() => {
+            document.getElementById('newsletter').classList.add('active');
+        }, 5000);
 
-            navigator.clipboard.writeText(formattedText);
-            alert(`Formatted for ${type} and copied to clipboard!`);
-        }
+        function closeNewsletter() { document.getElementById('newsletter').classList.remove('active'); }
     </script>
 </body>
 </html>
