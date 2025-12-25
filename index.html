@@ -6,20 +6,19 @@
     <title>SignalWrite | Elite Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;1,700&family=Inter:wght@300;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;900&display=swap');
         :root { --indigo: #6366f1; }
-        * { transition: all 0.2s ease-out; }
+        * { transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1); }
         body.dark-mode { background: #020617; color: #f8fafc; }
         body.light-mode { background: #fdfdfd; color: #0f172a; }
         .glass { border: 1px solid rgba(128,128,128,0.1); backdrop-filter: blur(20px); }
         .dark-mode .glass { background: rgba(15, 23, 42, 0.8); }
         .type-sans { font-family: 'Plus Jakarta Sans', sans-serif !important; }
         .type-serif { font-family: 'Instrument Serif', serif !important; font-size: 1.4rem; }
-        .full-overlay { transform: translateY(100%); position: fixed; inset: 0; z-index: 6000; display: none; background: #020617; }
+        .full-overlay { transform: translateY(100%); position: fixed; inset: 0; z-index: 6000; background: #020617; display: none; }
         .full-overlay.active { transform: translateY(0); display: block; }
-        .drawer { transform: translateY(100%); position: fixed; inset: 0; z-index: 5000; transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); }
-        .drawer.active { transform: translateY(0); }
         .branding { font-weight: 800; letter-spacing: -0.05em; font-size: 1.5rem; text-transform: uppercase; cursor: pointer; }
+        .share-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body class="dark-mode min-h-screen flex flex-col p-4 md:p-8">
@@ -57,7 +56,6 @@
             <button onclick="openPop('philosophy-page')" class="px-6 py-3 glass rounded-full text-[10px] font-800 uppercase">Philosophy</button>
         </div>
         <div class="opacity-30 text-[9px] font-800 uppercase tracking-widest flex flex-wrap justify-center gap-6">
-            <span>v2.2 Elite</span>
             <span>© 2025 SignalWrite Labs</span>
             <a href="mailto:louisnkan21@gmail.com" class="underline">Contact Developer</a>
         </div>
@@ -65,32 +63,66 @@
 
     <div id="mission-page" class="full-overlay p-8 md:p-20 overflow-y-auto">
         <div class="max-w-3xl mx-auto">
-            <button onclick="closePop('mission-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Back</button>
-            <h2 class="type-serif text-6xl mb-6 italic">Our Mission</h2>
-            <div class="p-8 glass rounded-[40px] border-l-4 border-indigo-500">
-                <a href="https://t.me/yourlink" class="bg-white text-black px-8 py-4 rounded-2xl text-[10px] font-800 uppercase">Join the Community</a>
+            <button onclick="closePop('mission-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Studio</button>
+            <h2 class="type-serif text-6xl mb-6 italic">Signal Community</h2>
+            <p class="text-slate-400 mb-12">Share the Signal with your network. Choose a platform below.</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="https://wa.me/?text=Check%20out%20SignalWrite%20for%20elite%20writing:%20https://louisnkan.github.io" target="_blank" class="share-card p-6 rounded-3xl text-center">
+                    <div class="text-2xl mb-2">🟢</div>
+                    <div class="text-[10px] font-800 uppercase">WhatsApp</div>
+                </a>
+                <a href="https://twitter.com/intent/tweet?text=Writing%20with%20precision%20using%20SignalWrite.&url=https://louisnkan.github.io" target="_blank" class="share-card p-6 rounded-3xl text-center">
+                    <div class="text-2xl mb-2">✖</div>
+                    <div class="text-[10px] font-800 uppercase">X / Twitter</div>
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://louisnkan.github.io" target="_blank" class="share-card p-6 rounded-3xl text-center">
+                    <div class="text-2xl mb-2">🔵</div>
+                    <div class="text-[10px] font-800 uppercase">Facebook</div>
+                </a>
+                <a href="https://www.instagram.com" target="_blank" class="share-card p-6 rounded-3xl text-center">
+                    <div class="text-2xl mb-2">📸</div>
+                    <div class="text-[10px] font-800 uppercase">Instagram</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="philosophy-page" class="full-overlay p-8 md:p-20 overflow-y-auto">
+        <div class="max-w-3xl mx-auto">
+            <button onclick="closePop('philosophy-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Studio</button>
+            <h2 class="type-serif text-6xl mb-12 italic">The Philosophy</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm text-slate-400">
+                <div class="p-6 glass rounded-3xl">
+                    <h5 class="text-indigo-500 font-800 uppercase mb-2">Professional Intelligence</h5>
+                    <p>Executive clarity. Strips filler for maximum authority.</p>
+                </div>
+                <div class="p-6 glass rounded-3xl">
+                    <h5 class="text-emerald-500 font-800 uppercase mb-2">Anxiety Neutralizer</h5>
+                    <p>Psychological safety. Converts defensive tones into diplomacy.</p>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // THIS IS THE LINE YOU NEED TO CHANGE
-        const BRIDGE_URL = "https://YOUR-VERCEL-PROJECT-NAME.vercel.app";
+        const BRIDGE_URL = "https://signal-write.vercel.app";
 
         let currentMode = 'professional';
-        let historyData = JSON.parse(localStorage.getItem('sw_history_final') || '[]');
-
         function openPop(id) { document.getElementById(id).classList.add('active'); document.getElementById(id).classList.remove('hidden'); }
         function closePop(id) { document.getElementById(id).classList.remove('active'); document.getElementById(id).classList.add('hidden'); }
         function toggleTheme() { document.body.classList.toggle('dark-mode'); document.body.classList.toggle('light-mode'); }
-        function updateHUD() { const v = document.getElementById('editor').value.trim(); document.getElementById('wc').innerText = v ? v.split(/\s+/).length : 0; }
         function setMode(m, b) { currentMode = m; document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('border-indigo-600','bg-indigo-600/10')); b.classList.add('border-indigo-600','bg-indigo-600/10'); }
+        function updateHUD() { const v = document.getElementById('editor').value.trim(); document.getElementById('wc').innerText = v ? v.split(/\s+/).length : 0; }
 
         async function igniteAI() {
             const editor = document.getElementById('editor');
             const btn = document.getElementById('refineBtn');
             if(!editor.value.trim()) return;
-            btn.innerText = "SIFTING..."; btn.disabled = true;
+
+            // INSTANT RESPONSE LOGIC - NO ARTIFICIAL DELAYS
+            btn.innerText = "ELEVATING...";
+            btn.disabled = true;
 
             try {
                 const response = await fetch(`${BRIDGE_URL}/refine`, {
@@ -101,8 +133,13 @@
                 const data = await response.json();
                 editor.value = data.candidates[0].content.parts[0].text;
                 document.getElementById('status').innerText = "Signal Clear";
-            } catch (err) { alert("Bridge Not Found. Please check the BRIDGE_URL in your code."); }
-            finally { btn.innerText = "Elevate Signal"; btn.disabled = false; updateHUD(); }
+            } catch (err) { 
+                alert("Engine Sleep. Please ensure Vercel deployment is successful."); 
+            } finally { 
+                btn.innerText = "Elevate Signal"; 
+                btn.disabled = false; 
+                updateHUD(); 
+            }
         }
     </script>
 </body>
