@@ -17,7 +17,7 @@
         .full-overlay { position: fixed; inset: 0; z-index: 9999; background: inherit; display: none; overflow-y: auto; padding: 2rem; }
         .full-overlay.active { display: block; }
         .branding { font-weight: 800; letter-spacing: -0.05em; font-size: 1.5rem; text-transform: uppercase; cursor: pointer; }
-        .drawer { position: fixed; bottom: 0; left: 0; right: 0; height: 60vh; z-index: 8000; transform: translateY(100%); transition: transform 0.4s ease; border-top: 1px solid rgba(128,128,128,0.2); }
+        .drawer { position: fixed; bottom: 0; left: 0; right: 0; height: 60vh; z-index: 8000; transform: translateY(100%); transition: transform 0.4s ease; border-top: 1px solid rgba(128,128,128,0.2); background: inherit; }
         .drawer.active { transform: translateY(0); }
     </style>
 </head>
@@ -39,7 +39,7 @@
             <button onclick="closePop('share-page')" class="mb-12 text-[10px] font-800 uppercase bg-slate-800 text-white px-8 py-4 rounded-full">← Back</button>
             <h2 class="font-serif text-5xl mb-12 italic">Share the Signal</h2>
             <div class="grid grid-cols-2 gap-4">
-                <a href="https://wa.me/?text=Check%20SignalWrite:%20https://louisnkan.github.io" class="glass p-8 rounded-3xl uppercase font-800 text-[10px]">WhatsApp</a>
+                <a href="https://wa.me/?text=Purify%20your%20writing:%20https://louisnkan.github.io" class="glass p-8 rounded-3xl uppercase font-800 text-[10px]">WhatsApp</a>
                 <a href="https://twitter.com/intent/tweet?url=https://louisnkan.github.io" class="glass p-8 rounded-3xl uppercase font-800 text-[10px]">X / Twitter</a>
                 <a href="https://facebook.com/sharer/sharer.php?u=https://louisnkan.github.io" class="glass p-8 rounded-3xl uppercase font-800 text-[10px]">Facebook</a>
                 <a href="https://instagram.com" class="glass p-8 rounded-3xl uppercase font-800 text-[10px]">Instagram</a>
@@ -54,8 +54,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm opacity-70">
                 <div class="p-6 glass rounded-3xl"><h5 class="text-indigo-500 font-800 uppercase mb-2">Professional Intelligence</h5><p>Executive clarity. We remove filler words and weak verbs to ensure your message commands authority.</p></div>
                 <div class="p-6 glass rounded-3xl"><h5 class="text-emerald-500 font-800 uppercase mb-2">Anxiety Neutralizer</h5><p>Psychological safety. We detect over-explaining and defensive tones, converting them into assertive diplomacy.</p></div>
-                <div class="p-6 glass rounded-3xl"><h5 class="text-amber-500 font-800 uppercase mb-2">Journalism</h5><p>Information density. We restructure drafts to put the Lead first, following world-class reporting styles.</p></div>
-                <div class="p-6 glass rounded-3xl"><h5 class="text-purple-500 font-800 uppercase mb-2">Creative Narrative</h5><p>Atmospheric depth. We expand raw ideas into immersive prose with sensory details.</p></div>
+                <div class="p-6 glass rounded-3xl"><h5 class="text-amber-500 font-800 uppercase mb-2">Journalism</h5><p>Information density. We restructure drafts to follow world-class reporting styles.</p></div>
+                <div class="p-6 glass rounded-3xl"><h5 class="text-purple-500 font-800 uppercase mb-2">Creative Narrative</h5><p>Atmospheric depth. We expand raw ideas into immersive prose.</p></div>
             </div>
         </div>
     </div>
@@ -94,7 +94,7 @@
         </div>
         <div class="flex flex-col items-center md:items-end">
             <div class="opacity-30 text-[9px] font-800 uppercase tracking-widest mb-2">© 2025 SignalWrite Labs</div>
-            <a href="mailto:louisnkan21@gmail.com" class="text-[10px] font-800 uppercase text-indigo-500">Contact Developer: louisnkan21@gmail.com</a>
+            <a href="mailto:louisnkan21@gmail.com" class="text-[10px] font-800 uppercase text-indigo-500">Contact: louisnkan21@gmail.com</a>
         </div>
     </footer>
 
@@ -126,15 +126,16 @@
                 const response = await fetch(`${BRIDGE_URL}/refine`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: `Refine for ${currentMode}`, text: editor.value })
+                    body: JSON.stringify({ prompt: `Refine for ${currentMode} mode`, text: editor.value })
                 });
+                if (!response.ok) throw new Error();
                 const data = await response.json();
                 const result = data.candidates[0].content.parts[0].text;
                 historyData.unshift({ text: result, date: new Date().toLocaleTimeString() });
                 localStorage.setItem('sw_history', JSON.stringify(historyData));
                 editor.value = result;
                 document.getElementById('status').innerText = "Signal Clear";
-            } catch (err) { alert("Brain Offline. Ensure Vercel Bridge is Live."); }
+            } catch (err) { alert("Brain Offline. Ensure Vercel Bridge is Live and CORS is active."); }
             finally { btn.innerText = "Purify Text"; btn.disabled = false; updateHUD(); }
         }
 
