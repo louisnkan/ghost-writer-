@@ -1,72 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX'); // REPLACE WITH YOUR ID
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>SignalWrite | Elite Writing Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;1,700&family=Inter:wght@300;900&display=swap');
-        
         :root { --indigo: #6366f1; }
         * { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        
         body.dark-mode { background: #020617; color: #f8fafc; }
         body.light-mode { background: #fdfdfd; color: #0f172a; }
-
         .glass { border: 1px solid rgba(128,128,128,0.1); backdrop-filter: blur(20px); }
-        .dark-mode .glass { background: rgba(15, 23, 42, 0.8); border-color: rgba(255,255,255,0.05); }
+        .dark-mode .glass { background: rgba(15, 23, 42, 0.8); }
 
-        /* FONT FLEXIBILITY */
+        /* FONTS */
         .type-sans { font-family: 'Plus Jakarta Sans', sans-serif !important; }
         .type-serif { font-family: 'Instrument Serif', serif !important; font-size: 1.4rem; }
         .type-mono { font-family: 'JetBrains Mono', monospace !important; font-size: 0.95rem; }
-        .type-classic { font-family: 'Playfair Display', serif !important; font-size: 1.25rem; }
-        .type-bold { font-family: 'Inter', sans-serif !important; font-weight: 900; letter-spacing: -0.02em; }
+        .type-classic { font-family: 'Playfair Display', serif !important; }
+        .type-bold { font-family: 'Inter', sans-serif !important; font-weight: 900; }
 
         .full-overlay { transform: translateY(100%); position: fixed; inset: 0; z-index: 6000; display: none; }
         .full-overlay.active { transform: translateY(0); display: block; }
-        
         .history-drawer { transform: translateY(100%); position: fixed; inset: 0; z-index: 5000; }
         .history-drawer.active { transform: translateY(0); }
-
         .branding { font-weight: 800; letter-spacing: -0.05em; font-size: 1.5rem; text-transform: uppercase; cursor: pointer; }
-        ::-webkit-scrollbar { width: 0px; }
     </style>
 </head>
 <body class="dark-mode min-h-screen flex flex-col p-4 md:p-8">
 
     <div id="mission-page" class="full-overlay glass p-8 md:p-20 overflow-y-auto">
         <div class="max-w-3xl mx-auto">
-            <button onclick="closePop('mission-page')" class="mb-12 text-[10px] font-800 uppercase tracking-widest bg-indigo-600 text-white px-8 py-4 rounded-full">← Return to Studio</button>
-            <h2 class="type-serif text-6xl mb-6 italic">The SignalWrite Vision</h2>
-            <p class="text-xl text-slate-400 mb-12 leading-relaxed">SignalWrite is more than an editor; it is a cognitive shield. In an era of digital noise, we empower professionals to communicate with surgical precision, stripping away anxiety and ambiguity to reveal the true signal.</p>
-            
-            <div class="grid gap-6">
-                <div class="p-8 glass rounded-[40px] border-l-4 border-indigo-500">
-                    <h4 class="font-800 uppercase text-xs mb-2">Our Community</h4>
-                    <p class="text-sm opacity-60 mb-4">Join a network of elite writers and tech-enthusiasts. Share prompts, get engine updates, and influence the future of SignalWrite.</p>
-                    <button class="bg-white text-black px-6 py-3 rounded-2xl text-[10px] font-800 uppercase">Join Community</button>
+            <button onclick="closePop('mission-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Back</button>
+            <h2 class="type-serif text-6xl mb-6 italic">The Vision</h2>
+            <p class="text-xl text-slate-400 mb-12">SignalWrite is an elite cognitive shield designed to extract the highest intelligence from your raw drafts. We believe in precision, privacy, and power.</p>
+            <div class="p-8 glass rounded-[40px] border-l-4 border-indigo-500">
+                <h4 class="font-800 uppercase text-xs mb-2">Our Community</h4>
+                <p class="text-sm opacity-60 mb-6">Connect with elite writers and developers. Influence the evolution of this engine.</p>
+                <button class="bg-white text-black px-6 py-3 rounded-2xl text-[10px] font-800 uppercase">Join Community</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="philosophy-page" class="full-overlay glass p-8 md:p-20 overflow-y-auto">
+        <div class="max-w-3xl mx-auto">
+            <button onclick="closePop('philosophy-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Studio</button>
+            <h2 class="type-serif text-6xl mb-12 italic leading-tight">Philosophy</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 text-slate-500 text-sm leading-relaxed">
+                <div class="space-y-3">
+                    <h4 class="text-indigo-500 font-800 uppercase text-xs">Professional Intelligence</h4>
+                    <p>Strips ambiguity. It ensures your corporate communication carries executive authority and logical precision.</p>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-emerald-500 font-800 uppercase text-xs">Anxiety Neutralizer</h4>
+                    <p>Acts as a psychological filter. It detects and removes defensive language, replacing it with calm diplomacy.</p>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-amber-500 font-800 uppercase text-xs">Journalism</h4>
+                    <p>Optimizes for density. It restructures text into the "Inverted Pyramid," putting the lead signal at the very top.</p>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-purple-500 font-800 uppercase text-xs">Creative Narrative</h4>
+                    <p>Focuses on rhythm and metaphor. It expands drafts into immersive, professional-grade literary prose.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="newsletter-wrap" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center hidden z-[9000]">
+    <div id="newsletter-wrap" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden z-[9000]">
         <div class="glass p-10 rounded-[40px] max-w-sm w-[90%] text-center relative">
-            <button onclick="closePop('newsletter-wrap')" class="absolute top-6 right-6 text-xl">✕</button>
+            <button onclick="closePop('newsletter-wrap')" class="absolute top-6 right-6 font-bold">✕</button>
             <h3 class="text-2xl font-800 mb-2">Join the Signal</h3>
-            <p class="text-[11px] opacity-50 mb-6">Receive weekly blueprints for high-stakes writing.</p>
-            <input type="email" placeholder="Email Address" class="w-full bg-black/10 dark:bg-white/5 border-none rounded-2xl px-5 py-4 text-sm outline-none mb-4 ring-1 ring-white/10">
-            <button class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-800 text-xs uppercase tracking-widest">Connect</button>
+            <p class="text-[11px] opacity-50 mb-6">Weekly writing blueprints delivered.</p>
+            <input type="email" placeholder="Email" class="w-full bg-white/5 p-4 rounded-2xl mb-4 outline-none border border-white/5">
+            <button class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-800 text-xs uppercase">Connect</button>
         </div>
     </div>
 
     <div id="history-panel" class="history-drawer glass flex flex-col p-8 rounded-t-[40px]">
         <div class="w-12 h-1.5 bg-white/10 rounded-full mx-auto mb-8" onclick="toggleHistory()"></div>
-        <div class="flex justify-between items-center mb-8 font-800 text-[10px] uppercase tracking-widest">
+        <div class="flex justify-between items-center mb-8 font-800 text-[10px] uppercase">
             <span class="text-indigo-500">History Log</span>
-            <button onclick="clearHistory()" class="opacity-30">Clear All</button>
+            <button onclick="clearHistory()" class="opacity-30">Clear</button>
         </div>
         <div id="history-list" class="flex-grow overflow-y-auto space-y-4"></div>
         <button onclick="toggleHistory()" class="mt-6 w-full py-5 bg-white/5 rounded-3xl font-800 text-[10px] uppercase">Close</button>
@@ -76,49 +100,50 @@
         <div onclick="openPop('mission-page')" class="branding">SIGNALWRITE<span class="text-indigo-600">.</span></div>
         <div class="flex items-center gap-3">
             <button onclick="toggleTheme()" class="w-10 h-10 rounded-full glass flex items-center justify-center">🌓</button>
-            <button onclick="openModal('settings')" class="bg-indigo-600 text-white px-5 py-2.5 rounded-2xl text-[10px] font-800 tracking-widest uppercase shadow-lg">API Access</button>
+            <button onclick="openModal('settings')" class="bg-indigo-600 text-white px-5 py-2.5 rounded-2xl text-[10px] font-800 uppercase">API Access</button>
         </div>
     </nav>
 
     <main class="max-w-6xl mx-auto w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
         <aside class="lg:col-span-4 space-y-6">
             <div class="glass p-6 rounded-[32px]">
-                <h4 class="text-[9px] font-800 uppercase tracking-widest opacity-40 mb-4 text-center">Flexible Typography</h4>
+                <h4 class="text-[9px] font-800 uppercase opacity-40 mb-4 text-center">Typography</h4>
                 <div class="grid grid-cols-2 gap-2">
-                    <button onclick="setType('type-sans')" class="py-3 glass rounded-xl text-[9px] font-bold">SANS</button>
-                    <button onclick="setType('type-serif')" class="py-3 glass rounded-xl text-[9px] font-bold">SERIF</button>
-                    <button onclick="setType('type-classic')" class="py-3 glass rounded-xl text-[9px] font-bold">CLASSIC</button>
-                    <button onclick="setType('type-bold')" class="py-3 glass rounded-xl text-[9px] font-bold">INTER</button>
+                    <button onclick="setType('type-sans')" class="py-3 glass rounded-xl text-[9px] font-bold uppercase">Sans</button>
+                    <button onclick="setType('type-serif')" class="py-3 glass rounded-xl text-[9px] font-bold uppercase">Serif</button>
+                    <button onclick="setType('type-classic')" class="py-3 glass rounded-xl text-[9px] font-bold uppercase">Classic</button>
+                    <button onclick="setType('type-bold')" class="py-3 glass rounded-xl text-[9px] font-bold uppercase">Inter</button>
                 </div>
             </div>
 
             <div class="glass p-6 rounded-[32px] space-y-3">
                 <button onclick="setMode('professional', this)" class="mode-btn w-full text-left p-4 rounded-2xl border-2 border-indigo-600 bg-indigo-600/10 font-800 text-[11px] uppercase">Professional Intelligence</button>
                 <button onclick="setMode('anxiety', this)" class="mode-btn w-full text-left p-4 rounded-2xl border border-white/5 font-800 text-[11px] uppercase text-emerald-500">Anxiety Neutralizer</button>
+                <button onclick="setMode('article', this)" class="mode-btn w-full text-left p-4 rounded-2xl border border-white/5 font-800 text-[11px] uppercase text-amber-500">Journalism</button>
                 <button onclick="setMode('novel', this)" class="mode-btn w-full text-left p-4 rounded-2xl border border-white/5 font-800 text-[11px] uppercase text-purple-500">Creative Narrative</button>
             </div>
         </aside>
 
         <div class="lg:col-span-8 flex flex-col gap-6">
             <div class="glass p-6 md:p-10 rounded-[40px] flex-grow flex flex-col min-h-[400px]">
-                <textarea id="editor" oninput="updateHUD()" placeholder="Enter draft..." class="type-sans w-full flex-grow bg-transparent outline-none text-xl leading-relaxed resize-none"></textarea>
-                <div class="mt-6 pt-6 border-t border-white/5 flex justify-between items-center text-[9px] font-800 uppercase opacity-30">
-                    <div class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Engine Active</div>
-                    <div><span id="wc">0</span> Words • <span id="rt">0</span> Min</div>
+                <textarea id="editor" oninput="updateHUD()" placeholder="Enter raw draft signal..." class="type-sans w-full flex-grow bg-transparent outline-none text-xl leading-relaxed resize-none"></textarea>
+                <div class="mt-6 pt-6 border-t border-white/5 flex justify-between text-[9px] font-800 uppercase opacity-30">
+                    <div id="status">Engine Ready</div>
+                    <div><span id="wc">0</span> Words</div>
                 </div>
             </div>
-            <button id="refineBtn" onclick="igniteAI()" class="w-full bg-indigo-600 text-white font-800 py-6 rounded-3xl text-xs uppercase tracking-[0.3em] shadow-2xl active:scale-95">Refine with Intelligence</button>
+            <button id="refineBtn" onclick="igniteAI()" class="w-full bg-indigo-600 text-white font-800 py-6 rounded-3xl text-xs uppercase tracking-[0.3em]">Refine Signal</button>
         </div>
     </main>
 
     <footer class="max-w-6xl mx-auto w-full mt-12 py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
         <div class="flex gap-4">
-            <button onclick="toggleHistory()" class="px-6 py-3 glass rounded-full text-[10px] font-800 uppercase flex items-center gap-2"><span>↺</span> History</button>
-            <button onclick="openPop('mission-page')" class="px-6 py-3 glass rounded-full text-[10px] font-800 uppercase">The Project</button>
+            <button onclick="toggleHistory()" class="px-6 py-3 glass rounded-full text-[10px] font-800 uppercase flex items-center gap-2 hover:bg-indigo-600"><span>↺</span> History</button>
+            <button onclick="openPop('philosophy-page')" class="px-6 py-3 glass rounded-full text-[10px] font-800 uppercase">Philosophy</button>
         </div>
-        <div class="opacity-30 text-[9px] font-800 uppercase tracking-[0.2em] flex flex-wrap justify-center gap-6">
+        <div class="opacity-30 text-[9px] font-800 uppercase tracking-widest flex items-center gap-6">
             <div class="flex items-center gap-2"><span class="w-1 h-1 bg-emerald-500 rounded-full"></span> SSL Secure</div>
-            <span>v2.0 Elite</span>
+            <span>v2.1 Stable</span>
             <span>© 2025 SignalWrite</span>
             <a href="mailto:louisnkan21@gmail.com" class="underline">Contact</a>
         </div>
@@ -126,17 +151,17 @@
 
     <div id="settings" class="fixed inset-0 bg-black/95 flex items-center justify-center hidden z-[8000]">
         <div class="glass p-10 rounded-[40px] max-w-sm w-[90%] text-center">
-            <h3 class="text-xl font-800 mb-6 uppercase tracking-widest">Authentication</h3>
+            <h3 class="text-xl font-800 mb-6 uppercase">Authentication</h3>
             <input type="password" id="apiInput" placeholder="Gemini API Key" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl mb-4 text-center">
-            <input type="text" id="bridgeInput" placeholder="Render Bridge URL (Optional)" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl mb-4 text-center text-xs">
-            <button onclick="saveSettings()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-800 uppercase text-[10px]">Authorize Studio</button>
-            <button onclick="closePop('settings')" class="mt-4 text-[9px] opacity-30 font-bold">CANCEL</button>
+            <input type="text" id="bridgeInput" placeholder="Render Bridge URL" class="w-full bg-white/5 border border-white/10 p-4 rounded-2xl mb-4 text-center text-xs">
+            <button onclick="saveSettings()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-800 uppercase text-[10px]">Authorize</button>
+            <button onclick="closePop('settings')" class="mt-4 text-[9px] opacity-30">CANCEL</button>
         </div>
     </div>
 
     <script>
         let currentMode = 'professional';
-        let historyData = JSON.parse(localStorage.getItem('sw_history_final') || '[]');
+        let historyData = JSON.parse(localStorage.getItem('sw_history_v2') || '[]');
 
         function openPop(id) { document.getElementById(id).classList.add('active'); document.getElementById(id).classList.remove('hidden'); }
         function closePop(id) { document.getElementById(id).classList.remove('active'); document.getElementById(id).classList.add('hidden'); }
@@ -144,56 +169,44 @@
         function toggleTheme() { document.body.classList.toggle('dark-mode'); document.body.classList.toggle('light-mode'); }
         function setType(f) { document.getElementById('editor').className = `${f} w-full flex-grow bg-transparent outline-none text-xl leading-relaxed resize-none`; }
         function toggleHistory() { document.getElementById('history-panel').classList.toggle('active'); renderHistory(); }
-        function setMode(m, b) { currentMode = m; document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('border-indigo-600','bg-indigo-600/10')); b.classList.add('border-indigo-600','bg-indigo-600/10'); }
         function updateHUD() { const v = document.getElementById('editor').value.trim(); document.getElementById('wc').innerText = v ? v.split(/\s+/).length : 0; }
-
-        function renderHistory() {
-            document.getElementById('history-list').innerHTML = historyData.map((item, i) => `
-                <div onclick="restoreDraft(${i})" class="p-5 glass rounded-2xl cursor-pointer hover:bg-indigo-600/10 mb-2">
-                    <div class="text-[8px] font-bold opacity-30 mb-2 uppercase">${item.date}</div>
-                    <div class="text-[11px] opacity-80">${item.text}</div>
-                </div>
-            `).join('');
-        }
-
-        function restoreDraft(i) { document.getElementById('editor').value = historyData[i].full; toggleHistory(); updateHUD(); }
-        function clearHistory() { historyData = []; localStorage.removeItem('sw_history_final'); renderHistory(); }
+        function setMode(m, b) { currentMode = m; document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('border-indigo-600','bg-indigo-600/10')); b.classList.add('border-indigo-600','bg-indigo-600/10'); }
 
         async function igniteAI() {
-            const key = localStorage.getItem('sw_api_key');
-            const bridge = localStorage.getItem('sw_bridge_url');
+            const key = localStorage.getItem('sw_key');
+            const bridge = localStorage.getItem('sw_bridge');
             const editor = document.getElementById('editor');
             const btn = document.getElementById('refineBtn');
-            if(!key) return openModal('settings');
+            const status = document.getElementById('status');
+            
+            if(!key || !bridge) return openModal('settings');
+            if(!editor.value.trim()) return;
 
             btn.innerText = "SIFTING...";
+            status.innerText = "Processing...";
             btn.disabled = true;
 
-            const url = bridge ? `${bridge}/refine` : `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
-
             try {
-                const response = await fetch(url, {
+                const response = await fetch(`${bridge}/refine`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(bridge ? { apiKey: key, prompt: `Refine this for ${currentMode}`, text: editor.value } : {
-                        contents: [{ parts: [{ text: `Refine for ${currentMode}: ${editor.value}` }] }]
-                    })
+                    body: JSON.stringify({ apiKey: key, prompt: `Refine for ${currentMode}`, text: editor.value })
                 });
                 const data = await response.json();
-                const res = bridge ? data.candidates[0].content.parts[0].text : data.candidates[0].content.parts[0].text;
+                const res = data.candidates[0].content.parts[0].text;
                 
                 historyData.unshift({ date: new Date().toLocaleTimeString(), text: res.substring(0, 50)+"...", full: res });
-                localStorage.setItem('sw_history_final', JSON.stringify(historyData));
+                localStorage.setItem('sw_history_v2', JSON.stringify(historyData));
                 editor.value = res;
-            } catch (err) { alert("Engine Blocked. Please use the Render Bridge for Nigerian IPs."); }
-            finally { btn.innerText = "Refine with Intelligence"; btn.disabled = false; updateHUD(); }
+                status.innerText = "Signal Clear";
+            } catch (err) { alert("Check Bridge URL or API Key."); }
+            finally { btn.innerText = "Refine Signal"; btn.disabled = false; updateHUD(); }
         }
 
-        function saveSettings() { 
-            localStorage.setItem('sw_api_key', document.getElementById('apiInput').value); 
-            localStorage.setItem('sw_bridge_url', document.getElementById('bridgeInput').value); 
-            closePop('settings'); 
-        }
+        function renderHistory() { document.getElementById('history-list').innerHTML = historyData.map((item, i) => `<div onclick="restoreDraft(${i})" class="p-5 glass rounded-2xl cursor-pointer hover:bg-indigo-600/10 mb-2"><div class="text-[8px] font-bold opacity-30 mb-2 uppercase">${item.date}</div><div class="text-[11px] opacity-80">${item.text}</div></div>`).join(''); }
+        function restoreDraft(i) { document.getElementById('editor').value = historyData[i].full; toggleHistory(); updateHUD(); }
+        function clearHistory() { historyData = []; localStorage.removeItem('sw_history_v2'); renderHistory(); }
+        function saveSettings() { localStorage.setItem('sw_key', document.getElementById('apiInput').value); localStorage.setItem('sw_bridge', document.getElementById('bridgeInput').value); closePop('settings'); }
 
         setTimeout(() => { document.getElementById('newsletter-wrap').classList.remove('hidden'); }, 5000);
     </script>
