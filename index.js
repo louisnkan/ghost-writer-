@@ -7,20 +7,23 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// YOUR SECRET KEY - Put your actual Gemini Key between the quotes
+const SECRET_KEY = "PASTE_YOUR_GEMINI_API_KEY_HERE";
+
 app.post('/refine', async (req, res) => {
-    const { apiKey, prompt, text } = req.body;
+    const { prompt, text } = req.body;
     try {
         const response = await axios.post(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${SECRET_KEY}`,
             {
                 contents: [{ parts: [{ text: `${prompt}: ${text}` }] }]
             }
         );
         res.json(response.data);
     } catch (error) {
-        res.status(error.response?.status || 500).json(error.response?.data || { message: "Bridge Error" });
+        res.status(500).json({ message: "Intelligence Offline" });
     }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Bridge active on port ${PORT}`));
+app.listen(PORT, () => console.log(`Engine Live`));
