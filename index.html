@@ -6,10 +6,16 @@
     <title>SignalWrite | Elite Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Instrument+Serif:ital@0;1&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;700&display=swap');
+        
         :root { --indigo: #6366f1; }
         * { transition: all 0.2s ease-out; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .type-serif { font-family: 'Instrument Serif', serif; }
+        
+        /* Font Family Classes */
+        .font-main { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+        .font-serif { font-family: 'Instrument Serif', serif !important; }
+        .font-mono { font-family: 'JetBrains+Mono', monospace !important; }
+
         body.dark-mode { background: #020617; color: #f8fafc; }
         body.light-mode { background: #fdfdfd; color: #0f172a; }
         .glass { border: 1px solid rgba(128,128,128,0.1); backdrop-filter: blur(20px); }
@@ -27,7 +33,7 @@
     <div id="share-page" class="full-overlay">
         <div class="max-w-xl mx-auto text-center pt-20">
             <button onclick="closePop('share-page')" class="mb-12 text-[10px] font-800 uppercase bg-slate-800 text-white px-8 py-4 rounded-full">← Close</button>
-            <h2 class="type-serif text-5xl mb-6 italic">Join the Signal</h2>
+            <h2 class="font-serif text-5xl mb-6 italic">Join the Signal</h2>
             <p class="opacity-60 mb-8">Subscribe for elite intelligence updates.</p>
             <input type="email" placeholder="Email Address" class="w-full p-6 glass rounded-3xl mb-4 outline-none border border-indigo-500/30">
             <button class="w-full bg-indigo-600 p-6 rounded-3xl font-800 uppercase text-xs">Join Community</button>
@@ -37,7 +43,7 @@
     <div id="mission-page" class="full-overlay">
         <div class="max-w-3xl mx-auto">
             <button onclick="closePop('mission-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Return</button>
-            <h2 class="type-serif text-6xl mb-6 italic">The Mission</h2>
+            <h2 class="font-serif text-6xl mb-6 italic">The Mission</h2>
             <p class="text-xl opacity-70 mb-8 leading-relaxed">SignalWrite strips away noise, leaving only high-fidelity signals.</p>
             <button onclick="openPop('share-page')" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl text-[10px] font-800 uppercase">Newsletter / Community</button>
         </div>
@@ -46,7 +52,7 @@
     <div id="philosophy-page" class="full-overlay">
         <div class="max-w-3xl mx-auto">
             <button onclick="closePop('philosophy-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Studio</button>
-            <h2 class="type-serif text-6xl mb-12 italic">The Philosophy</h2>
+            <h2 class="font-serif text-6xl mb-12 italic">The Philosophy</h2>
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="p-6 glass rounded-3xl border-l-4 border-indigo-500">
                     <h5 class="font-800 uppercase text-xs mb-2 text-indigo-500">Professional Intelligence</h5>
@@ -75,13 +81,19 @@
 
         <div class="lg:col-span-8 flex flex-col gap-6">
             <div class="glass p-8 rounded-[40px] flex-grow flex flex-col min-h-[400px] relative">
-                <div class="absolute top-6 right-8 flex gap-2">
-                    <button onclick="changeFontSize('text-lg')" class="w-8 h-8 glass rounded-lg text-xs font-800">A</button>
-                    <button onclick="changeFontSize('text-2xl')" class="w-8 h-8 glass rounded-lg text-lg font-800">A</button>
-                    <button onclick="changeFontSize('text-4xl')" class="w-8 h-8 glass rounded-lg text-2xl font-800">A</button>
+                <div class="absolute top-6 right-8 flex gap-3">
+                    <div class="flex glass rounded-lg overflow-hidden border border-white/10">
+                        <button onclick="changeFontFamily('font-main')" class="px-2 py-1 text-[9px] font-800 border-r border-white/10 hover:bg-white/5">SANS</button>
+                        <button onclick="changeFontFamily('font-serif')" class="px-2 py-1 text-[9px] font-800 border-r border-white/10 hover:bg-white/5">SERIF</button>
+                        <button onclick="changeFontFamily('font-mono')" class="px-2 py-1 text-[9px] font-800 hover:bg-white/5">MONO</button>
+                    </div>
+                    <div class="flex gap-1">
+                        <button onclick="changeFontSize('text-lg')" class="w-7 h-7 glass rounded-lg text-xs font-800">A</button>
+                        <button onclick="changeFontSize('text-2xl')" class="w-7 h-7 glass rounded-lg text-lg font-800">A</button>
+                    </div>
                 </div>
                 
-                <textarea id="editor" oninput="updateHUD()" placeholder="Enter signal..." class="w-full flex-grow bg-transparent outline-none text-2xl leading-relaxed resize-none mt-10"></textarea>
+                <textarea id="editor" oninput="updateHUD()" placeholder="Enter signal..." class="font-main w-full flex-grow bg-transparent outline-none text-2xl leading-relaxed resize-none mt-10"></textarea>
                 
                 <div class="mt-6 pt-6 border-t border-white/5 flex justify-between text-[10px] font-800 opacity-30 uppercase">
                     <div id="status">Ready</div>
@@ -119,44 +131,11 @@
             editor.classList.add(sizeClass);
         }
 
-        function toggleTheme() { document.body.classList.toggle('dark-mode'); document.body.classList.toggle('light-mode'); }
-        function openPop(id) { document.getElementById(id).classList.add('active'); }
-        function closePop(id) { document.getElementById(id).classList.remove('active'); }
-        function toggleHistory() { document.getElementById('history-panel').classList.toggle('active'); renderHistory(); }
-        function updateHUD() { const v = document.getElementById('editor').value.trim(); document.getElementById('wc').innerText = (v ? v.split(/\s+/).length : 0) + " Words"; }
-        function setMode(m, b) { currentMode = m; document.querySelectorAll('.mode-btn').forEach(x => x.classList.remove('border-indigo-600','bg-indigo-600/10')); b.classList.add('border-indigo-600','bg-indigo-600/10'); }
-
-        async function igniteAI() {
+        function changeFontFamily(familyClass) {
             const editor = document.getElementById('editor');
-            const btn = document.getElementById('refineBtn');
-            if(!editor.value.trim()) return;
-            btn.innerText = "PURIFYING..."; btn.disabled = true;
-
-            try {
-                const response = await fetch(BRIDGE_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: `Refine this:`, text: editor.value })
-                });
-                const data = await response.json();
-                const result = data.response;
-                
-                historyData.unshift({ text: result, date: new Date().toLocaleTimeString() });
-                localStorage.setItem('sw_history', JSON.stringify(historyData));
-                editor.value = result;
-                document.getElementById('status').innerText = "Signal Clear";
-            } catch (err) { alert("Brain Offline. Ensure vercel.json is added."); }
-            finally { btn.innerText = "Purify Text"; btn.disabled = false; updateHUD(); }
+            editor.classList.remove('font-main', 'font-serif', 'font-mono');
+            editor.classList.add(familyClass);
         }
 
-        function renderHistory() {
-            document.getElementById('history-list').innerHTML = historyData.map((item, i) => `
-                <div class="p-4 glass rounded-2xl" onclick="document.getElementById('editor').value = historyData[${i}].text; toggleHistory(); updateHUD();">
-                    <p class="text-[8px] opacity-30 uppercase font-800 mb-1">${item.date}</p>
-                    <p class="text-xs opacity-70 line-clamp-2">${item.text}</p>
-                </div>
-            `).join('');
-        }
-    </script>
-</body>
-</html>
+        function toggleTheme() { document.body.classList.toggle('dark-mode'); document.body.classList.toggle('light-mode'); }
+        function openPop(id) { document.getElementById(id
