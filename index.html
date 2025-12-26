@@ -9,115 +9,126 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;700&display=swap');
         
         :root { --indigo: #6366f1; }
-        * { transition: all 0.2s ease-out; font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); font-family: 'Plus Jakarta Sans', sans-serif; }
         
-        /* Font Family Classes */
         .font-main { font-family: 'Plus Jakarta Sans', sans-serif !important; }
         .font-serif { font-family: 'Instrument Serif', serif !important; }
-        .font-mono { font-family: 'JetBrains+Mono', monospace !important; }
+        .font-mono { font-family: 'JetBrains Mono', monospace !important; }
 
         body.dark-mode { background: #020617; color: #f8fafc; }
         body.light-mode { background: #fdfdfd; color: #0f172a; }
+
         .glass { border: 1px solid rgba(128,128,128,0.1); backdrop-filter: blur(20px); }
-        .dark-mode .glass { background: rgba(15, 23, 42, 0.8); }
-        .light-mode .glass { background: rgba(255, 255, 255, 0.8); }
+        .dark-mode .glass { background: rgba(15, 23, 42, 0.6); }
+        .light-mode .glass { background: rgba(255, 255, 255, 0.7); border-color: rgba(0,0,0,0.05); }
+
         .full-overlay { position: fixed; inset: 0; z-index: 9999; background: inherit; display: none; overflow-y: auto; padding: 2rem; }
         .full-overlay.active { display: block; }
+        
         .branding { font-weight: 800; letter-spacing: -0.05em; font-size: 1.5rem; text-transform: uppercase; cursor: pointer; }
-        .drawer { position: fixed; bottom: 0; left: 0; right: 0; height: 60vh; z-index: 8000; transform: translateY(100%); transition: transform 0.4s ease; border-top: 1px solid rgba(128,128,128,0.2); background: inherit; }
+        
+        .drawer { position: fixed; bottom: 0; left: 0; right: 0; height: 65vh; z-index: 8000; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1); background: inherit; border-top: 1px solid rgba(128,128,128,0.2); }
         .drawer.active { transform: translateY(0); }
+
+        .mode-btn.active { border-color: var(--indigo); background: rgba(99, 102, 241, 0.1); color: var(--indigo); }
     </style>
 </head>
-<body class="dark-mode min-h-screen flex flex-col p-4 md:p-8">
+<body class="dark-mode min-h-screen flex flex-col p-4 md:p-10">
 
-    <div id="share-page" class="full-overlay">
-        <div class="max-w-xl mx-auto text-center pt-20">
-            <button onclick="closePop('share-page')" class="mb-12 text-[10px] font-800 uppercase bg-slate-800 text-white px-8 py-4 rounded-full">← Close</button>
-            <h2 class="font-serif text-5xl mb-6 italic">Join the Signal</h2>
-            <p class="opacity-60 mb-8">Subscribe for elite intelligence updates.</p>
-            <input type="email" placeholder="Email Address" class="w-full p-6 glass rounded-3xl mb-4 outline-none border border-indigo-500/30">
-            <button class="w-full bg-indigo-600 p-6 rounded-3xl font-800 uppercase text-xs">Join Community</button>
+    <div id="philosophy-page" class="full-overlay">
+        <div class="max-w-4xl mx-auto py-12">
+            <button onclick="closePop('philosophy-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Back to Studio</button>
+            <h2 class="font-serif text-7xl mb-12 italic">The Philosophy</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="p-8 glass rounded-[40px] border-l-4 border-indigo-500">
+                    <h5 class="font-800 uppercase text-xs mb-3 text-indigo-500">Professional Intelligence</h5>
+                    <p class="text-sm opacity-70 leading-relaxed">Executive clarity. We target passive voice, weak verbs, and corporate "fluff" to ensure your message commands respect and immediate action.</p>
+                </div>
+                <div class="p-8 glass rounded-[40px] border-l-4 border-emerald-500">
+                    <h5 class="font-800 uppercase text-xs mb-3 text-emerald-500">Anxiety Neutralizer</h5>
+                    <p class="text-sm opacity-70 leading-relaxed">Psychological safety. Our engine identifies defensive tones and over-explaining caused by anxiety, converting them into assertive, calm diplomacy.</p>
+                </div>
+                <div class="p-8 glass rounded-[40px] border-l-4 border-amber-500">
+                    <h5 class="font-800 uppercase text-xs mb-3 text-amber-500">Journalism</h5>
+                    <p class="text-sm opacity-70 leading-relaxed">High information density. We restructure your raw drafts to put the "Lead" first, following world-class reporting standards for maximum impact.</p>
+                </div>
+                <div class="p-8 glass rounded-[40px] border-l-4 border-purple-500">
+                    <h5 class="font-800 uppercase text-xs mb-3 text-purple-500">Creative Narrative</h5>
+                    <p class="text-sm opacity-70 leading-relaxed">Atmospheric prose. Expanding raw sensory details into immersive storytelling while maintaining the core "Signal" of your original idea.</p>
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="mission-page" class="full-overlay">
-        <div class="max-w-3xl mx-auto">
-            <button onclick="closePop('mission-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Return</button>
-            <h2 class="font-serif text-6xl mb-6 italic">The Mission</h2>
-            <p class="text-xl opacity-70 mb-8 leading-relaxed">SignalWrite strips away noise, leaving only high-fidelity signals.</p>
-            <button onclick="openPop('share-page')" class="bg-indigo-600 text-white px-8 py-4 rounded-2xl text-[10px] font-800 uppercase">Newsletter / Community</button>
-        </div>
-    </div>
-
-    <div id="philosophy-page" class="full-overlay">
-        <div class="max-w-3xl mx-auto">
-            <button onclick="closePop('philosophy-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Studio</button>
-            <h2 class="font-serif text-6xl mb-12 italic">The Philosophy</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="p-6 glass rounded-3xl border-l-4 border-indigo-500">
-                    <h5 class="font-800 uppercase text-xs mb-2 text-indigo-500">Professional Intelligence</h5>
-                    <p class="text-xs opacity-60">Executive clarity and authoritative tone.</p>
-                </div>
-                <div class="p-6 glass rounded-3xl border-l-4 border-emerald-500">
-                    <h5 class="font-800 uppercase text-xs mb-2 text-emerald-500">Anxiety Neutralizer</h5>
-                    <p class="text-xs opacity-60">Detects defensive tones and over-explaining.</p>
-                </div>
+        <div class="max-w-2xl mx-auto pt-20 text-center">
+            <button onclick="closePop('mission-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Close</button>
+            <h2 class="font-serif text-6xl mb-6 italic">SignalWrite Purpose</h2>
+            <p class="text-xl opacity-60 mb-12 leading-relaxed">A sanctuary for high-fidelity communication. We exist to help you speak with authority in a world full of noise.</p>
+            <div class="glass p-10 rounded-[40px]">
+                <h3 class="font-800 text-xs uppercase mb-6 tracking-widest">Join the Signal Community</h3>
+                <input type="email" placeholder="Email Address" class="w-full p-5 rounded-2xl bg-transparent border border-white/10 mb-4 outline-none focus:border-indigo-500">
+                <button class="w-full bg-indigo-600 py-5 rounded-2xl font-800 uppercase text-[10px] tracking-widest">Subscribe for Updates</button>
             </div>
         </div>
     </div>
 
-    <nav class="max-w-6xl mx-auto w-full flex justify-between items-center mb-10 pt-4">
-        <div onclick="openPop('mission-page')" class="branding">SIGNALWRITE<span class="text-indigo-600">.</span></div>
-        <button onclick="toggleTheme()" class="w-10 h-10 rounded-full glass flex items-center justify-center">🌓</button>
+    <nav class="max-w-6xl mx-auto w-full flex justify-between items-center mb-12">
+        <div onclick="openPop('mission-page')" class="branding font-main">SIGNALWRITE<span class="text-indigo-600">.</span></div>
+        <button onclick="toggleTheme()" class="w-12 h-12 rounded-full glass flex items-center justify-center text-xl">🌓</button>
     </nav>
 
-    <main class="max-w-6xl mx-auto w-full flex-grow grid lg:grid-cols-12 gap-8">
-        <aside class="lg:col-span-4 space-y-3">
-            <button onclick="setMode('professional', this)" class="mode-btn w-full text-left p-5 rounded-3xl border-2 border-indigo-600 bg-indigo-600/10 font-800 text-[11px] uppercase">Professional Intelligence</button>
-            <button onclick="setMode('anxiety', this)" class="mode-btn w-full text-left p-5 rounded-3xl border border-white/5 font-800 text-[11px] uppercase">Anxiety Neutralizer</button>
-            <button onclick="setMode('article', this)" class="mode-btn w-full text-left p-5 rounded-3xl border border-white/5 font-800 text-[11px] uppercase text-amber-500">Journalism</button>
-            <button onclick="setMode('novel', this)" class="mode-btn w-full text-left p-5 rounded-3xl border border-white/5 font-800 text-[11px] uppercase text-purple-500">Creative Narrative</button>
+    <main class="max-w-6xl mx-auto w-full flex-grow grid lg:grid-cols-12 gap-10">
+        <aside class="lg:col-span-4 space-y-4">
+            <div class="glass p-6 rounded-[35px] space-y-3">
+                <button onclick="setMode('professional', this)" class="mode-btn active w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-[11px] uppercase tracking-wider">Professional Intelligence</button>
+                <button onclick="setMode('anxiety', this)" class="mode-btn w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-[11px] uppercase tracking-wider">Anxiety Neutralizer</button>
+                <button onclick="setMode('article', this)" class="mode-btn w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-[11px] uppercase tracking-wider">Journalism</button>
+                <button onclick="setMode('novel', this)" class="mode-btn w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-[11px] uppercase tracking-wider">Creative Narrative</button>
+            </div>
         </aside>
 
         <div class="lg:col-span-8 flex flex-col gap-6">
-            <div class="glass p-8 rounded-[40px] flex-grow flex flex-col min-h-[400px] relative">
-                <div class="absolute top-6 right-8 flex gap-3">
-                    <div class="flex glass rounded-lg overflow-hidden border border-white/10">
-                        <button onclick="changeFontFamily('font-main')" class="px-2 py-1 text-[9px] font-800 border-r border-white/10 hover:bg-white/5">SANS</button>
-                        <button onclick="changeFontFamily('font-serif')" class="px-2 py-1 text-[9px] font-800 border-r border-white/10 hover:bg-white/5">SERIF</button>
-                        <button onclick="changeFontFamily('font-mono')" class="px-2 py-1 text-[9px] font-800 hover:bg-white/5">MONO</button>
+            <div class="glass p-10 rounded-[50px] flex-grow flex flex-col min-h-[450px] relative">
+                <div class="absolute top-8 right-10 flex gap-4 items-center">
+                    <div class="flex glass rounded-xl overflow-hidden p-1">
+                        <button onclick="changeFont('font-main')" class="px-3 py-1 text-[9px] font-800 hover:bg-white/10">SANS</button>
+                        <button onclick="changeFont('font-serif')" class="px-3 py-1 text-[9px] font-800 border-x border-white/10 hover:bg-white/10">SERIF</button>
+                        <button onclick="changeFont('font-mono')" class="px-3 py-1 text-[9px] font-800 hover:bg-white/10">MONO</button>
                     </div>
-                    <div class="flex gap-1">
-                        <button onclick="changeFontSize('text-lg')" class="w-7 h-7 glass rounded-lg text-xs font-800">A</button>
-                        <button onclick="changeFontSize('text-2xl')" class="w-7 h-7 glass rounded-lg text-lg font-800">A</button>
+                    <div class="flex gap-2">
+                        <button onclick="changeSize('text-xl')" class="w-8 h-8 glass rounded-lg text-xs font-800">A</button>
+                        <button onclick="changeSize('text-3xl')" class="w-8 h-8 glass rounded-lg text-xl font-800">A</button>
                     </div>
                 </div>
+
+                <textarea id="editor" oninput="updateHUD()" placeholder="Enter raw draft signal..." class="font-main w-full flex-grow bg-transparent outline-none text-2xl leading-relaxed resize-none mt-12"></textarea>
                 
-                <textarea id="editor" oninput="updateHUD()" placeholder="Enter signal..." class="font-main w-full flex-grow bg-transparent outline-none text-2xl leading-relaxed resize-none mt-10"></textarea>
-                
-                <div class="mt-6 pt-6 border-t border-white/5 flex justify-between text-[10px] font-800 opacity-30 uppercase">
-                    <div id="status">Ready</div>
+                <div class="mt-8 pt-8 border-t border-white/5 flex justify-between text-[10px] font-800 opacity-30 uppercase tracking-[0.2em]">
+                    <div id="status">System Ready</div>
                     <div id="wc">0 Words</div>
                 </div>
             </div>
-            <button id="refineBtn" onclick="igniteAI()" class="w-full bg-indigo-600 text-white font-800 py-6 rounded-3xl text-xs uppercase tracking-[0.3em]">Purify Text</button>
+            <button id="refineBtn" onclick="igniteAI()" class="w-full bg-indigo-600 text-white font-800 py-7 rounded-[30px] text-xs uppercase tracking-[0.4em] shadow-2xl shadow-indigo-600/20 hover:scale-[1.01]">Purify Signal</button>
         </div>
     </main>
 
-    <footer class="max-w-6xl mx-auto w-full mt-12 py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-        <div class="flex gap-4">
-            <button onclick="toggleHistory()" class="px-6 py-3 glass rounded-full text-[10px] font-800 uppercase">History</button>
-            <button onclick="openPop('philosophy-page')" class="px-6 py-3 glass rounded-full text-[10px] font-800 uppercase">Philosophy</button>
+    <footer class="max-w-6xl mx-auto w-full mt-16 py-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div class="flex gap-6">
+            <button onclick="toggleHistory()" class="px-8 py-4 glass rounded-full text-[10px] font-800 uppercase tracking-widest">History</button>
+            <button onclick="openPop('philosophy-page')" class="px-8 py-4 glass rounded-full text-[10px] font-800 uppercase tracking-widest">Philosophy</button>
         </div>
-        <div class="text-right">
-            <a href="mailto:louisnkan21@gmail.com" class="text-[10px] font-800 text-indigo-500 uppercase">Contact Developer</a>
+        <div class="text-center md:text-right">
+            <div class="opacity-20 text-[9px] font-800 uppercase mb-2">© 2025 SignalWrite Studio</div>
+            <a href="mailto:louisnkan21@gmail.com" class="text-[10px] font-800 text-indigo-500 uppercase tracking-tighter">Contact: louisnkan21@gmail.com</a>
         </div>
     </footer>
 
-    <div id="history-panel" class="drawer glass p-8">
-        <div class="w-12 h-1 bg-white/20 mx-auto mb-6"></div>
-        <div id="history-list" class="overflow-y-auto h-[40vh] space-y-4"></div>
-        <button onclick="toggleHistory()" class="mt-6 w-full py-4 bg-indigo-600 text-white rounded-2xl font-800 text-[10px] uppercase">Close</button>
+    <div id="history-panel" class="drawer glass p-10">
+        <div class="w-16 h-1 bg-white/10 mx-auto mb-8 rounded-full"></div>
+        <h3 class="font-serif text-3xl mb-8 italic">Signal History</h3>
+        <div id="history-list" class="overflow-y-auto h-[45vh] space-y-4 pr-4"></div>
+        <button onclick="toggleHistory()" class="mt-8 w-full py-5 bg-indigo-600 text-white rounded-2xl font-800 text-[10px] uppercase tracking-widest">Close History</button>
     </div>
 
     <script>
@@ -125,17 +136,67 @@
         let currentMode = 'professional';
         let historyData = JSON.parse(localStorage.getItem('sw_history') || '[]');
 
-        function changeFontSize(sizeClass) {
-            const editor = document.getElementById('editor');
-            editor.classList.remove('text-lg', 'text-2xl', 'text-4xl');
-            editor.classList.add(sizeClass);
-        }
-
-        function changeFontFamily(familyClass) {
-            const editor = document.getElementById('editor');
-            editor.classList.remove('font-main', 'font-serif', 'font-mono');
-            editor.classList.add(familyClass);
-        }
-
         function toggleTheme() { document.body.classList.toggle('dark-mode'); document.body.classList.toggle('light-mode'); }
-        function openPop(id) { document.getElementById(id
+        function openPop(id) { document.getElementById(id).classList.add('active'); }
+        function closePop(id) { document.getElementById(id).classList.remove('active'); }
+        function toggleHistory() { document.getElementById('history-panel').classList.toggle('active'); renderHistory(); }
+        
+        function changeFont(f) { const ed = document.getElementById('editor'); ed.classList.remove('font-main', 'font-serif', 'font-mono'); ed.classList.add(f); }
+        function changeSize(s) { const ed = document.getElementById('editor'); ed.classList.remove('text-xl', 'text-3xl'); ed.classList.add(s); }
+        
+        function setMode(m, btn) {
+            currentMode = m;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function updateHUD() {
+            const val = document.getElementById('editor').value.trim();
+            document.getElementById('wc').innerText = (val ? val.split(/\s+/).length : 0) + " Words";
+        }
+
+        async function igniteAI() {
+            const editor = document.getElementById('editor');
+            const btn = document.getElementById('refineBtn');
+            if(!editor.value.trim()) return;
+
+            btn.innerText = "PURIFYING SIGNAL...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(BRIDGE_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: `Mode: ${currentMode}`, text: editor.value })
+                });
+                
+                const data = await response.json();
+                const result = data.response || data.candidates[0].content.parts[0].text;
+                
+                historyData.unshift({ text: result, date: new Date().toLocaleTimeString() });
+                localStorage.setItem('sw_history', JSON.stringify(historyData));
+                
+                editor.value = result;
+                document.getElementById('status').innerText = "Signal Purified";
+            } catch (err) {
+                alert("Brain Offline. Connection Refused.");
+            } finally {
+                btn.innerText = "Purify Signal";
+                btn.disabled = false;
+                updateHUD();
+            }
+        }
+
+        function renderHistory() {
+            document.getElementById('history-list').innerHTML = historyData.map((item, i) => `
+                <div class="p-6 glass rounded-[30px] cursor-pointer hover:border-indigo-500/50" onclick="document.getElementById('editor').value = historyData[${i}].text; toggleHistory(); updateHUD();">
+                    <p class="text-[8px] opacity-30 uppercase font-800 mb-2">${item.date}</p>
+                    <p class="text-xs opacity-70 line-clamp-3 leading-relaxed font-mono">${item.text}</p>
+                </div>
+            `).join('');
+        }
+        
+        renderHistory();
+    </script>
+</body>
+</html>
