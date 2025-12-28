@@ -3,199 +3,565 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>SignalWrite | Elite Intelligence</title>
+    <title>SignalWrite • Elite Cognitive Writing Tool</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;700&display=swap');
         
-        :root { --indigo: #6366f1; }
-        * { transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); font-family: 'Plus Jakarta Sans', sans-serif; }
+        :root { 
+            --indigo: #6366f1;
+            --indigo-dark: #4f46e5;
+        }
         
-        .font-main { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+        * { 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .font-main { font-family: 'Inter', sans-serif !important; }
         .font-serif { font-family: 'Instrument Serif', serif !important; }
         .font-mono { font-family: 'JetBrains Mono', monospace !important; }
 
-        body.dark-mode { background: #020617; color: #f8fafc; }
-        body.light-mode { background: #fdfdfd; color: #0f172a; }
+        body.dark-mode { background: #0a0a0a; color: #ffffff; }
+        body.light-mode { background: #fafafa; color: #1a1a1a; }
 
-        .glass { border: 1px solid rgba(128,128,128,0.1); backdrop-filter: blur(20px); }
-        .dark-mode .glass { background: rgba(15, 23, 42, 0.6); }
-        .light-mode .glass { background: rgba(255, 255, 255, 0.7); border-color: rgba(0,0,0,0.05); }
+        .glass { 
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        .dark-mode .glass { 
+            background: rgba(20, 20, 20, 0.7);
+            border-color: rgba(255,255,255,0.05);
+        }
+        
+        .light-mode .glass { 
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(0,0,0,0.05);
+        }
 
-        .full-overlay { position: fixed; inset: 0; z-index: 9999; background: inherit; display: none; overflow-y: auto; padding: 2rem; }
-        .full-overlay.active { display: block; }
+        .overlay { 
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: inherit;
+            display: none;
+            overflow-y: auto;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
         
-        .branding { font-weight: 800; letter-spacing: -0.05em; font-size: 1.5rem; text-transform: uppercase; cursor: pointer; }
+        .overlay.active { display: block; }
         
-        .drawer { position: fixed; bottom: 0; left: 0; right: 0; height: 65vh; z-index: 8000; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1); background: inherit; border-top: 1px solid rgba(128,128,128,0.2); }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .branding { 
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        
+        .drawer { 
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70vh;
+            z-index: 8000;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+            background: inherit;
+            border-top: 1px solid rgba(128,128,128,0.2);
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+        }
+        
         .drawer.active { transform: translateY(0); }
 
-        .mode-btn.active { border-color: var(--indigo); background: rgba(99, 102, 241, 0.1); color: var(--indigo); }
+        .mode-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mode-btn.active { 
+            border-color: var(--indigo);
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--indigo);
+            font-weight: 700;
+        }
+        
+        .mode-btn:hover {
+            border-color: var(--indigo);
+            transform: translateX(4px);
+        }
+        
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            background: var(--indigo);
+            color: white;
+            font-weight: 700;
+            font-size: 0.875rem;
+            z-index: 10000;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4);
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        textarea::placeholder {
+            opacity: 0.3;
+        }
+        
+        .action-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .action-btn:active {
+            transform: scale(0.98);
+        }
     </style>
 </head>
 <body class="dark-mode min-h-screen flex flex-col p-4 md:p-10">
 
-    <div id="philosophy-page" class="full-overlay">
+    <!-- Philosophy Overlay -->
+    <div id="philosophy-page" class="overlay">
         <div class="max-w-4xl mx-auto py-12">
-            <button onclick="closePop('philosophy-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Back to Studio</button>
-            <h2 class="font-serif text-7xl mb-12 italic">The Philosophy</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="p-8 glass rounded-[40px] border-l-4 border-indigo-500">
+            <button onclick="closeOverlay('philosophy-page')" class="mb-12 text-xs font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full hover:bg-indigo-700">← Back</button>
+            <h2 class="font-serif text-5xl md:text-7xl mb-12 italic">The Philosophy</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="p-8 glass rounded-3xl border-l-4 border-indigo-500">
                     <h5 class="font-800 uppercase text-xs mb-3 text-indigo-500">Professional Intelligence</h5>
-                    <p class="text-sm opacity-70 leading-relaxed">Executive clarity. We target passive voice, weak verbs, and corporate "fluff" to ensure your message commands respect and immediate action.</p>
+                    <p class="text-sm opacity-70 leading-relaxed">Executive clarity. Targets passive voice, weak verbs, and corporate fluff to ensure your message commands respect.</p>
                 </div>
-                <div class="p-8 glass rounded-[40px] border-l-4 border-emerald-500">
+                <div class="p-8 glass rounded-3xl border-l-4 border-emerald-500">
                     <h5 class="font-800 uppercase text-xs mb-3 text-emerald-500">Anxiety Neutralizer</h5>
-                    <p class="text-sm opacity-70 leading-relaxed">Psychological safety. Our engine identifies defensive tones and over-explaining caused by anxiety, converting them into assertive, calm diplomacy.</p>
+                    <p class="text-sm opacity-70 leading-relaxed">Identifies defensive tones and over-explaining caused by anxiety, converting them into assertive, calm diplomacy.</p>
                 </div>
-                <div class="p-8 glass rounded-[40px] border-l-4 border-amber-500">
+                <div class="p-8 glass rounded-3xl border-l-4 border-amber-500">
                     <h5 class="font-800 uppercase text-xs mb-3 text-amber-500">Journalism</h5>
-                    <p class="text-sm opacity-70 leading-relaxed">High information density. We restructure your raw drafts to put the "Lead" first, following world-class reporting standards for maximum impact.</p>
+                    <p class="text-sm opacity-70 leading-relaxed">High information density. Restructures drafts to put the "Lead" first, following world-class reporting standards.</p>
                 </div>
-                <div class="p-8 glass rounded-[40px] border-l-4 border-purple-500">
+                <div class="p-8 glass rounded-3xl border-l-4 border-purple-500">
                     <h5 class="font-800 uppercase text-xs mb-3 text-purple-500">Creative Narrative</h5>
-                    <p class="text-sm opacity-70 leading-relaxed">Atmospheric prose. Expanding raw sensory details into immersive storytelling while maintaining the core "Signal" of your original idea.</p>
+                    <p class="text-sm opacity-70 leading-relaxed">Atmospheric prose. Expands raw sensory details into immersive storytelling while maintaining your core idea.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="mission-page" class="full-overlay">
+    <!-- Mission Overlay -->
+    <div id="mission-page" class="overlay">
         <div class="max-w-2xl mx-auto pt-20 text-center">
-            <button onclick="closePop('mission-page')" class="mb-12 text-[10px] font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full">← Close</button>
-            <h2 class="font-serif text-6xl mb-6 italic">SignalWrite Purpose</h2>
-            <p class="text-xl opacity-60 mb-12 leading-relaxed">A sanctuary for high-fidelity communication. We exist to help you speak with authority in a world full of noise.</p>
-            <div class="glass p-10 rounded-[40px]">
+            <button onclick="closeOverlay('mission-page')" class="mb-12 text-xs font-800 uppercase bg-indigo-600 text-white px-8 py-4 rounded-full hover:bg-indigo-700">← Close</button>
+            <h2 class="font-serif text-4xl md:text-6xl mb-6 italic">The Mission</h2>
+            <p class="text-lg md:text-xl opacity-60 mb-12 leading-relaxed">A sanctuary for high-fidelity communication. We exist to help you speak with authority in a world full of noise.</p>
+            <div class="glass p-8 md:p-10 rounded-3xl">
                 <h3 class="font-800 text-xs uppercase mb-6 tracking-widest">Join the Signal Community</h3>
-                <input type="email" placeholder="Email Address" class="w-full p-5 rounded-2xl bg-transparent border border-white/10 mb-4 outline-none focus:border-indigo-500">
-                <button class="w-full bg-indigo-600 py-5 rounded-2xl font-800 uppercase text-[10px] tracking-widest">Subscribe for Updates</button>
+                <input type="email" id="newsletter-email" placeholder="your@email.com" class="w-full p-5 rounded-2xl bg-transparent border border-white/10 mb-4 outline-none focus:border-indigo-500">
+                <button onclick="subscribeNewsletter()" class="w-full bg-indigo-600 py-5 rounded-2xl font-800 uppercase text-xs tracking-widest hover:bg-indigo-700">Subscribe</button>
             </div>
         </div>
     </div>
 
+    <!-- Header -->
     <nav class="max-w-6xl mx-auto w-full flex justify-between items-center mb-12">
-        <div onclick="openPop('mission-page')" class="branding font-main">SIGNALWRITE<span class="text-indigo-600">.</span></div>
-        <button onclick="toggleTheme()" class="w-12 h-12 rounded-full glass flex items-center justify-center text-xl">🌓</button>
+        <div onclick="openOverlay('mission-page')" class="branding font-main">SIGNALWRITE<span class="text-indigo-600">•</span></div>
+        <button onclick="toggleTheme()" class="w-12 h-12 rounded-full glass flex items-center justify-center text-xl hover:scale-110">🌓</button>
     </nav>
 
-    <main class="max-w-6xl mx-auto w-full flex-grow grid lg:grid-cols-12 gap-10">
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto w-full flex-grow grid lg:grid-cols-12 gap-6 md:gap-10">
+        
+        <!-- Sidebar - Modes -->
         <aside class="lg:col-span-4 space-y-4">
-            <div class="glass p-6 rounded-[35px] space-y-3">
-                <button onclick="setMode('professional', this)" class="mode-btn active w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-[11px] uppercase tracking-wider">Professional Intelligence</button>
-                <button onclick="setMode('anxiety', this)" class="mode-btn w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-[11px] uppercase tracking-wider">Anxiety Neutralizer</button>
-                <button onclick="setMode('article', this)" class="mode-btn w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-[11px] uppercase tracking-wider">Journalism</button>
-                <button onclick="setMode('novel', this)" class="mode-btn w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-[11px] uppercase tracking-wider">Creative Narrative</button>
+            <div class="glass p-6 rounded-3xl space-y-3">
+                <button onclick="setMode('professional', this)" class="mode-btn active w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-xs uppercase tracking-wider">
+                    Professional Intelligence
+                </button>
+                <button onclick="setMode('anxiety', this)" class="mode-btn w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-xs uppercase tracking-wider">
+                    Anxiety Neutralizer
+                </button>
+                <button onclick="setMode('journalism', this)" class="mode-btn w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-xs uppercase tracking-wider">
+                    Journalism
+                </button>
+                <button onclick="setMode('creative', this)" class="mode-btn w-full text-left p-5 rounded-2xl border border-white/5 font-800 text-xs uppercase tracking-wider">
+                    Creative Narrative
+                </button>
+            </div>
+            
+            <!-- Mode Description -->
+            <div id="mode-description" class="glass p-6 rounded-3xl">
+                <p class="text-xs opacity-60 leading-relaxed">Executive clarity and authority. Strips ambiguity, enhances decisiveness.</p>
             </div>
         </aside>
 
+        <!-- Editor Area -->
         <div class="lg:col-span-8 flex flex-col gap-6">
-            <div class="glass p-10 rounded-[50px] flex-grow flex flex-col min-h-[450px] relative">
-                <div class="absolute top-8 right-10 flex gap-4 items-center">
+            <div class="glass p-6 md:p-10 rounded-3xl flex-grow flex flex-col min-h-[450px] relative">
+                
+                <!-- Typography Controls -->
+                <div class="absolute top-6 md:top-8 right-6 md:right-10 flex gap-4 items-center flex-wrap justify-end">
                     <div class="flex glass rounded-xl overflow-hidden p-1">
-                        <button onclick="changeFont('font-main')" class="px-3 py-1 text-[9px] font-800 hover:bg-white/10">SANS</button>
-                        <button onclick="changeFont('font-serif')" class="px-3 py-1 text-[9px] font-800 border-x border-white/10 hover:bg-white/10">SERIF</button>
-                        <button onclick="changeFont('font-mono')" class="px-3 py-1 text-[9px] font-800 hover:bg-white/10">MONO</button>
+                        <button onclick="changeFont('font-main')" class="px-3 py-1 text-xs font-700 hover:bg-white/10">Sans</button>
+                        <button onclick="changeFont('font-serif')" class="px-3 py-1 text-xs font-700 border-x border-white/10 hover:bg-white/10">Serif</button>
+                        <button onclick="changeFont('font-mono')" class="px-3 py-1 text-xs font-700 hover:bg-white/10">Mono</button>
                     </div>
                     <div class="flex gap-2">
-                        <button onclick="changeSize('text-xl')" class="w-8 h-8 glass rounded-lg text-xs font-800">A</button>
-                        <button onclick="changeSize('text-3xl')" class="w-8 h-8 glass rounded-lg text-xl font-800">A</button>
+                        <button onclick="changeSize('text-base')" class="w-8 h-8 glass rounded-lg text-xs font-800 action-btn">A</button>
+                        <button onclick="changeSize('text-lg')" class="w-8 h-8 glass rounded-lg text-base font-800 action-btn">A</button>
+                        <button onclick="changeSize('text-xl')" class="w-8 h-8 glass rounded-lg text-lg font-800 action-btn">A</button>
                     </div>
                 </div>
 
-                <textarea id="editor" oninput="updateHUD()" placeholder="Enter raw draft signal..." class="font-main w-full flex-grow bg-transparent outline-none text-2xl leading-relaxed resize-none mt-12"></textarea>
+                <!-- Editor -->
+                <textarea 
+                    id="editor" 
+                    oninput="updateStats()" 
+                    placeholder="Write your signal here..."
+                    class="font-main w-full flex-grow bg-transparent outline-none text-lg leading-relaxed resize-none mt-16"
+                ></textarea>
                 
-                <div class="mt-8 pt-8 border-t border-white/5 flex justify-between text-[10px] font-800 opacity-30 uppercase tracking-[0.2em]">
-                    <div id="status">System Ready</div>
-                    <div id="wc">0 Words</div>
+                <!-- Stats -->
+                <div class="mt-6 pt-6 border-t border-white/5 flex justify-between text-xs font-700 opacity-30 uppercase tracking-wider">
+                    <div id="status">Ready</div>
+                    <div id="stats">0 words • 0 characters</div>
                 </div>
             </div>
-            <button id="refineBtn" onclick="igniteAI()" class="w-full bg-indigo-600 text-white font-800 py-7 rounded-[30px] text-xs uppercase tracking-[0.4em] shadow-2xl shadow-indigo-600/20 hover:scale-[1.01]">Purify Signal</button>
+            
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-2 gap-4">
+                <button 
+                    id="refineBtn" 
+                    onclick="refineSignal()" 
+                    class="col-span-2 bg-indigo-600 text-white font-800 py-6 rounded-3xl text-xs uppercase tracking-widest shadow-xl shadow-indigo-600/20 hover:bg-indigo-700 action-btn"
+                >
+                    REFINE
+                </button>
+                <button onclick="copyToClipboard()" class="glass py-4 rounded-2xl text-xs font-700 uppercase tracking-wider hover:border-indigo-500 action-btn">
+                    📋 Copy
+                </button>
+                <button onclick="exportPDF()" class="glass py-4 rounded-2xl text-xs font-700 uppercase tracking-wider hover:border-indigo-500 action-btn">
+                    📄 Export PDF
+                </button>
+            </div>
         </div>
     </main>
 
+    <!-- Footer -->
     <footer class="max-w-6xl mx-auto w-full mt-16 py-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-        <div class="flex gap-6">
-            <button onclick="toggleHistory()" class="px-8 py-4 glass rounded-full text-[10px] font-800 uppercase tracking-widest">History</button>
-            <button onclick="openPop('philosophy-page')" class="px-8 py-4 glass rounded-full text-[10px] font-800 uppercase tracking-widest">Philosophy</button>
+        <div class="flex gap-6 flex-wrap justify-center">
+            <button onclick="toggleHistory()" class="px-8 py-4 glass rounded-full text-xs font-800 uppercase tracking-widest hover:border-indigo-500 action-btn">History</button>
+            <button onclick="openOverlay('philosophy-page')" class="px-8 py-4 glass rounded-full text-xs font-800 uppercase tracking-widest hover:border-indigo-500 action-btn">Philosophy</button>
         </div>
         <div class="text-center md:text-right">
-            <div class="opacity-20 text-[9px] font-800 uppercase mb-2">© 2025 SignalWrite Studio</div>
-            <a href="mailto:louisnkan21@gmail.com" class="text-[10px] font-800 text-indigo-500 uppercase tracking-tighter">Contact: louisnkan21@gmail.com</a>
+            <div class="opacity-20 text-xs font-800 uppercase mb-2">© 2025 SignalWrite</div>
+            <a href="mailto:louisnkan21@gmail.com" class="text-xs font-700 text-indigo-500 uppercase hover:text-indigo-400">Contact</a>
         </div>
     </footer>
 
+    <!-- History Drawer -->
     <div id="history-panel" class="drawer glass p-10">
-        <div class="w-16 h-1 bg-white/10 mx-auto mb-8 rounded-full"></div>
+        <div class="w-16 h-1 bg-white/10 mx-auto mb-8 rounded-full cursor-pointer" onclick="toggleHistory()"></div>
         <h3 class="font-serif text-3xl mb-8 italic">Signal History</h3>
-        <div id="history-list" class="overflow-y-auto h-[45vh] space-y-4 pr-4"></div>
-        <button onclick="toggleHistory()" class="mt-8 w-full py-5 bg-indigo-600 text-white rounded-2xl font-800 text-[10px] uppercase tracking-widest">Close History</button>
+        <div id="history-list" class="overflow-y-auto h-[50vh] space-y-4 pr-4"></div>
+        <button onclick="clearHistory()" class="mt-6 w-full py-5 glass rounded-2xl font-800 text-xs uppercase tracking-widest hover:border-red-500 hover:text-red-500">Clear History</button>
     </div>
 
     <script>
-        const BRIDGE_URL = "https://signal-write.vercel.app/api/gemini";
+        // Configuration
+        const API_URL = "https://signal-write.vercel.app/api/gemini";
+        const MOCK_MODE = false; // Set to true for testing without backend
+        
+        // State
         let currentMode = 'professional';
-        let historyData = JSON.parse(localStorage.getItem('sw_history') || '[]');
+        let history = JSON.parse(localStorage.getItem('signalwrite_history') || '[]');
+        
+        // Mode descriptions
+        const modeDescriptions = {
+            professional: 'Executive clarity and authority. Strips ambiguity, enhances decisiveness.',
+            anxiety: 'Removes defensive tones, over-explaining, and apologetic language patterns.',
+            journalism: 'Information-dense, lead-heavy structure. Facts first, context second.',
+            creative: 'Atmospheric and vivid prose. Expands sensory detail while maintaining momentum.'
+        };
 
-        function toggleTheme() { document.body.classList.toggle('dark-mode'); document.body.classList.toggle('light-mode'); }
-        function openPop(id) { document.getElementById(id).classList.add('active'); }
-        function closePop(id) { document.getElementById(id).classList.remove('active'); }
-        function toggleHistory() { document.getElementById('history-panel').classList.toggle('active'); renderHistory(); }
-        
-        function changeFont(f) { const ed = document.getElementById('editor'); ed.classList.remove('font-main', 'font-serif', 'font-mono'); ed.classList.add(f); }
-        function changeSize(s) { const ed = document.getElementById('editor'); ed.classList.remove('text-xl', 'text-3xl'); ed.classList.add(s); }
-        
-        function setMode(m, btn) {
-            currentMode = m;
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
         }
 
-        function updateHUD() {
-            const val = document.getElementById('editor').value.trim();
-            document.getElementById('wc').innerText = (val ? val.split(/\s+/).length : 0) + " Words";
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.remove('dark-mode');
+            document.body.classList.add('light-mode');
         }
 
-        async function igniteAI() {
-            const editor = document.getElementById('editor');
-            const btn = document.getElementById('refineBtn');
-            if(!editor.value.trim()) return;
+        // Overlays
+        function openOverlay(id) {
+            document.getElementById(id).classList.add('active');
+        }
 
-            btn.innerText = "PURIFYING SIGNAL...";
-            btn.disabled = true;
+        function closeOverlay(id) {
+            document.getElementById(id).classList.remove('active');
+        }
 
-            try {
-                const response = await fetch(BRIDGE_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt: `Mode: ${currentMode}`, text: editor.value })
-                });
-                
-                const data = await response.json();
-                const result = data.response || data.candidates[0].content.parts[0].text;
-                
-                historyData.unshift({ text: result, date: new Date().toLocaleTimeString() });
-                localStorage.setItem('sw_history', JSON.stringify(historyData));
-                
-                editor.value = result;
-                document.getElementById('status').innerText = "Signal Purified";
-            } catch (err) {
-                alert("Brain Offline. Connection Refused.");
-            } finally {
-                btn.innerText = "Purify Signal";
-                btn.disabled = false;
-                updateHUD();
-            }
+        // History
+        function toggleHistory() {
+            document.getElementById('history-panel').classList.toggle('active');
+            renderHistory();
         }
 
         function renderHistory() {
-            document.getElementById('history-list').innerHTML = historyData.map((item, i) => `
-                <div class="p-6 glass rounded-[30px] cursor-pointer hover:border-indigo-500/50" onclick="document.getElementById('editor').value = historyData[${i}].text; toggleHistory(); updateHUD();">
-                    <p class="text-[8px] opacity-30 uppercase font-800 mb-2">${item.date}</p>
-                    <p class="text-xs opacity-70 line-clamp-3 leading-relaxed font-mono">${item.text}</p>
+            const list = document.getElementById('history-list');
+            if (history.length === 0) {
+                list.innerHTML = '<p class="text-sm opacity-40 text-center py-20">No signals refined yet</p>';
+                return;
+            }
+            
+            list.innerHTML = history.map((item, i) => `
+                <div class="p-6 glass rounded-2xl cursor-pointer hover:border-indigo-500/50" onclick="restoreFromHistory(${i})">
+                    <div class="flex justify-between items-center mb-2">
+                        <p class="text-xs opacity-40 uppercase font-700">${item.date}</p>
+                        <span class="text-xs px-3 py-1 rounded-full glass">${item.mode}</span>
+                    </div>
+                    <p class="text-sm opacity-70 line-clamp-3 leading-relaxed">${item.text}</p>
                 </div>
             `).join('');
         }
-        
+
+        function restoreFromHistory(index) {
+            document.getElementById('editor').value = history[index].text;
+            toggleHistory();
+            updateStats();
+        }
+
+        function clearHistory() {
+            if (confirm('Clear all history?')) {
+                history = [];
+                localStorage.setItem('signalwrite_history', JSON.stringify(history));
+                renderHistory();
+            }
+        }
+
+        // Mode selection
+        function setMode(mode, btn) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('mode-description').innerHTML = 
+                `<p class="text-xs opacity-60 leading-relaxed">${modeDescriptions[mode]}</p>`;
+        }
+
+        // Typography controls
+        function changeFont(fontClass) {
+            const editor = document.getElementById('editor');
+            editor.classList.remove('font-main', 'font-serif', 'font-mono');
+            editor.classList.add(fontClass);
+        }
+
+        function changeSize(sizeClass) {
+            const editor = document.getElementById('editor');
+            editor.classList.remove('text-base', 'text-lg', 'text-xl');
+            editor.classList.add(sizeClass);
+        }
+
+        // Stats
+        function updateStats() {
+            const text = document.getElementById('editor').value.trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            const chars = text.length;
+            document.getElementById('stats').textContent = `${words} words • ${chars} characters`;
+        }
+
+        // Main refinement function
+        async function refineSignal() {
+            const editor = document.getElementById('editor');
+            const btn = document.getElementById('refineBtn');
+            const status = document.getElementById('status');
+            const text = editor.value.trim();
+            
+            if (!text) {
+                showToast('Please write something first');
+                return;
+            }
+            
+            if (text.length < 10) {
+                showToast('Text too short for refinement');
+                return;
+            }
+            
+            // Update UI
+            btn.disabled = true;
+            btn.textContent = 'REFINING...';
+            btn.classList.add('pulse');
+            status.textContent = 'Processing...';
+            
+            try {
+                if (MOCK_MODE) {
+                    // Mock mode for testing
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    const mockResponse = text + '\n\n[Refined in ' + currentMode + ' mode]';
+                    editor.value = mockResponse;
+                    saveToHistory(mockResponse);
+                    showToast('✓ Signal refined (TEST MODE)');
+                } else {
+                    // Real API call
+                    const response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            prompt: `Mode: ${currentMode}\n\nText: ${text}`
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    const refined = data.response || data.text || 'No response';
+                    
+                    editor.value = refined;
+                    saveToHistory(refined);
+                    showToast('✓ Signal refined');
+                }
+                
+                status.textContent = 'Success';
+                updateStats();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showToast('Connection failed - please try again');
+                status.textContent = 'Error';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'REFINE';
+                btn.classList.remove('pulse');
+                setTimeout(() => { status.textContent = 'Ready'; }, 3000);
+            }
+        }
+
+        // History management
+        function saveToHistory(text) {
+            history.unshift({
+                text: text,
+                mode: currentMode,
+                date: new Date().toLocaleString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                })
+            });
+            
+            // Keep last 50
+            if (history.length > 50) {
+                history = history.slice(0, 50);
+            }
+            
+            localStorage.setItem('signalwrite_history', JSON.stringify(history));
+        }
+
+        // Copy to clipboard
+        async function copyToClipboard() {
+            const text = document.getElementById('editor').value;
+            if (!text.trim()) {
+                showToast('Nothing to copy');
+                return;
+            }
+            
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast('✓ Copied to clipboard');
+            } catch (err) {
+                showToast('Copy failed');
+            }
+        }
+
+        // PDF Export
+        function exportPDF() {
+            const text = document.getElementById('editor').value;
+            if (!text.trim()) {
+                showToast('Nothing to export');
+                return;
+            }
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Add branding
+            doc.setFontSize(20);
+            doc.setFont('helvetica', 'bold');
+            doc.text('SIGNALWRITE', 20, 20);
+            
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.text(`Refined in ${currentMode} mode`, 20, 28);
+            doc.text(new Date().toLocaleDateString(), 20, 33);
+            
+            // Add content
+            doc.setFontSize(12);
+            const lines = doc.splitTextToSize(text, 170);
+            doc.text(lines, 20, 45);
+            
+            // Save
+            doc.save(`signalwrite-${Date.now()}.pdf`);
+            showToast('✓ PDF exported');
+        }
+
+        // Toast notifications
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Newsletter
+        function subscribeNewsletter() {
+            const email = document.getElementById('newsletter-email').value;
+            if (email && email.includes('@')) {
+                showToast('✓ Subscribed! (Demo)');
+                closeOverlay('mission-page');
+            } else {
+                showToast('Please enter a valid email');
+            }
+        }
+
+        // Initialize
         renderHistory();
     </script>
 </body>
