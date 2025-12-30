@@ -1,4 +1,38 @@
 import express from 'express';
+console.log('Function started');
+
+import express from 'express';
+
+const app = express();
+
+// ========== ADD RATE LIMITING HERE ==========
+const requestCounts = new Map();
+
+app.use((req, res, next) => {
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const now = Date.now();
+    const userRequests = requestCounts.get(ip) || [];
+    
+    // Remove requests older than 1 hour
+    const recentRequests = userRequests.filter(time => now - time < 3600000);
+    
+    // Allow max 50 requests per hour per IP
+    if (recentRequests.length >= 50) {
+        return res.status(429).json({ 
+            error: 'Too many requests. Please try again later.',
+            retryAfter: '1 hour'
+        });
+    }
+    
+    recentRequests.push(now);
+    requestCounts.set(ip, recentRequests);
+    next();
+});
+// ============================================
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'https://louisnkan.github.io');
+    //
 import fetch from 'node-fetch';
 
 const app = express();
