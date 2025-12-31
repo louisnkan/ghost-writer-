@@ -3,7 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignalWrite • Transform Noise Into Signal</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>SignalWrite - Free Online Text to PDF Converter with AI | Transform Noise Into Signal</title>
+    <meta name="description" content="Free online text to PDF converter with AI refinement. Type, refine with professional AI modes, and convert to PDF instantly. No uploads, no sign-up. Works on mobile and desktop.">
+    <meta name="keywords" content="text to pdf converter, online pdf converter, ai writing tool, free pdf generator, mobile pdf converter, anxiety neutralizer writing, professional writing tool">
+    <meta name="author" content="SignalWrite">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="SignalWrite - Transform Noise Into Signal">
+    <meta property="og:description" content="Free AI-powered writing tool. Remove anxiety, ambiguity, and noise from your writing. Convert to PDF instantly.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://louisnkan.github.io/signal-write">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SignalWrite - AI Writing & PDF Converter">
+    <meta name="twitter:description" content="Transform your writing with AI. Remove anxiety and ambiguity. Export to PDF instantly.">
+    
+    <!-- Google Analytics (Replace G-XXXXXXXXXX with your tracking ID) -->
+    <!-- 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    -->
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap');
@@ -14,8 +42,17 @@
         }
         
         body {
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        body.dark {
             background: #0a0a0a;
             color: #ffffff;
+        }
+        
+        body.light {
+            background: #fafafa;
+            color: #1a1a1a;
         }
         
         .gradient-text {
@@ -29,6 +66,12 @@
             background: rgba(20, 20, 20, 0.7);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+        }
+        
+        body.light .glass {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0,0,0,0.05);
         }
         
         .hero-glow {
@@ -53,9 +96,40 @@
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        .theme-toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(99, 102, 241, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+        
+        .theme-toggle-btn:hover {
+            background: rgba(99, 102, 241, 0.3);
+            transform: scale(1.1);
+        }
+        
+        body.light .text-gray-400 {
+            color: #666 !important;
+        }
+        
+        body.light .text-gray-500 {
+            color: #888 !important;
+        }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body class="dark overflow-x-hidden">
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeToggle">🌙</button>
 
     <!-- Hero Section -->
     <section class="min-h-screen flex flex-col items-center justify-center relative px-6 py-20">
@@ -88,10 +162,10 @@
                     <span class="text-indigo-400">✓</span> No signup required
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-indigo-400">✓</span> 4 refinement modes
+                    <span class="text-indigo-400">✓</span> 3 refinement modes
                 </div>
                 <div class="flex items-center gap-2">
-                    <span class="text-indigo-400">✓</span> Instant results
+                    <span class="text-indigo-400">✓</span> Instant PDF export
                 </div>
             </div>
         </div>
@@ -133,19 +207,19 @@
     <section class="py-32 px-6">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-20">
-                <h2 class="text-4xl md:text-6xl font-800 mb-6">Four Intelligence Modes</h2>
+                <h2 class="text-4xl md:text-6xl font-800 mb-6">Three Intelligence Modes</h2>
                 <p class="text-xl text-gray-400">Each designed to eliminate specific types of noise</p>
             </div>
             
-            <div class="grid md:grid-cols-2 gap-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Professional Intelligence -->
                 <div class="glass p-10 rounded-3xl border-l-4 border-indigo-500 hover:border-indigo-400 transition-all">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-2xl">💼</div>
-                        <h3 class="text-2xl font-800">Professional Intelligence</h3>
+                        <h3 class="text-2xl font-800">Professional</h3>
                     </div>
                     <p class="text-gray-400 leading-relaxed mb-4">
-                        Transforms tentative language into executive authority. Removes "I think," "maybe," "perhaps." Targets passive voice and weak verbs. Your writing commands respect and immediate action.
+                        Transforms tentative language into executive authority. Removes "I think," "maybe," "perhaps." Your writing commands respect and immediate action.
                     </p>
                     <div class="text-sm text-indigo-400 font-600">
                         → Strips ambiguity, enhances decisiveness
@@ -166,31 +240,17 @@
                     </div>
                 </div>
                 
-                <!-- Journalism -->
+                <!-- Legal -->
                 <div class="glass p-10 rounded-3xl border-l-4 border-amber-500 hover:border-amber-400 transition-all">
                     <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center text-2xl">📰</div>
-                        <h3 class="text-2xl font-800">Journalism</h3>
+                        <div class="w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center text-2xl">⚖️</div>
+                        <h3 class="text-2xl font-800">Legal</h3>
                     </div>
                     <p class="text-gray-400 leading-relaxed mb-4">
-                        Applies information density principles. Restructures to lead-heavy format—most important information first. Facts before context. Maximum impact, minimum words.
+                        Transforms casual language into formal legal structure. Removes emotion, adds professional terminology, dates, and references. Liability-aware, factual, professional.
                     </p>
                     <div class="text-sm text-amber-400 font-600">
-                        → Information-dense, lead-first structure
-                    </div>
-                </div>
-                
-                <!-- Creative Narrative -->
-                <div class="glass p-10 rounded-3xl border-l-4 border-purple-500 hover:border-purple-400 transition-all">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-2xl">✨</div>
-                        <h3 class="text-2xl font-800">Creative Narrative</h3>
-                    </div>
-                    <p class="text-gray-400 leading-relaxed mb-4">
-                        Expands atmospheric detail while maintaining narrative momentum. Adds sensory richness and vivid imagery. Transforms functional prose into immersive storytelling.
-                    </p>
-                    <div class="text-sm text-purple-400 font-600">
-                        → Vivid without verbose, atmospheric expansion
+                        → Formal structure, professional legal tone
                     </div>
                 </div>
             </div>
@@ -226,11 +286,22 @@
                     <div class="text-3xl">⚡</div>
                     <div>
                         <h3 class="font-700 text-xl mb-2">Purpose-Built Modes</h3>
-                        <p class="text-gray-400">No generic "make it better." Each mode solves a specific communication problem. Executive authority. Anxiety neutralization. Information density. Atmospheric expansion.</p>
+                        <p class="text-gray-400">No generic "make it better." Each mode solves a specific communication problem. Executive authority. Anxiety neutralization. Legal formality.</p>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- SEO Content Section (Hidden but indexed by Google) -->
+    <section class="py-16 px-6 text-center" style="max-width: 800px; margin: 0 auto;">
+        <h2 class="text-3xl font-800 mb-6">Free Online Raw Text to PDF Converter</h2>
+        <p class="text-gray-400 leading-relaxed mb-4">
+            Unlike Google Docs or Microsoft Word, you don't need to save a file just to convert it. Simply type your text, refine it with our AI, and click 'Convert to PDF' for a clean, professional document formatted for mobile and desktop.
+        </p>
+        <p class="text-gray-400 leading-relaxed">
+            Convert raw text to PDF online free. No sign up, no email required. Works on iPhone, Android, and desktop. Perfect for quick notes, meeting minutes, letters, and professional documents.
+        </p>
     </section>
 
     <!-- CTA Section -->
@@ -248,13 +319,13 @@
             <div class="mt-12 pt-12 border-t border-white/5">
                 <p class="text-sm text-gray-500 mb-4 uppercase tracking-wider">Share SignalWrite</p>
                 <div class="flex gap-4 justify-center flex-wrap">
-                    <a href="https://twitter.com/intent/tweet?text=SignalWrite - Transform noise into signal&url=https://louisnkan.github.io" target="_blank" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 transition-all">
+                    <a href="https://twitter.com/intent/tweet?text=SignalWrite - Transform noise into signal&url=https://louisnkan.github.io/signal-write" target="_blank" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 transition-all">
                         🐦 Twitter
                     </a>
-                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://louisnkan.github.io" target="_blank" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 transition-all">
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://louisnkan.github.io/signal-write" target="_blank" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 transition-all">
                         💼 LinkedIn
                     </a>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://louisnkan.github.io" target="_blank" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 transition-all">
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=https://louisnkan.github.io/signal-write" target="_blank" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 transition-all">
                         📘 Facebook
                     </a>
                     <button onclick="copyLink()" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 transition-all">
@@ -265,18 +336,17 @@
         </div>
     </section>
 
-    <!-- Community Section -->
+    <!-- Community Section (Waitlist) -->
     <section class="py-32 px-6 bg-gradient-to-b from-transparent to-black/50">
         <div class="max-w-2xl mx-auto">
             <div class="glass p-12 rounded-3xl text-center">
-                <h3 class="text-3xl font-800 mb-4">Join the Signal Community</h3>
+                <h3 class="text-3xl font-800 mb-4">Join the Waitlist</h3>
                 <p class="text-gray-400 mb-8">
-                    Weekly insights on clarity, cognitive writing, and eliminating noise.
+                    Get early access to premium features and updates.
                 </p>
-                <input type="email" id="community-email" placeholder="your@email.com" class="w-full p-5 rounded-2xl bg-black/30 border border-white/10 mb-4 outline-none focus:border-indigo-500 transition-all">
-                <button onclick="joinCommunity()" class="w-full bg-indigo-600 py-5 rounded-2xl font-800 uppercase text-sm tracking-widest hover:bg-indigo-700 transition-all">
-                    Join Community
-                </button>
+                <a href="mailto:louisnkan21@gmail.com?subject=SignalWrite Waitlist&body=I want early access to SignalWrite!%0D%0A%0D%0AName:%0D%0AUse case:" class="inline-block w-full bg-indigo-600 py-5 rounded-2xl font-800 uppercase text-sm tracking-widest hover:bg-indigo-700 transition-all">
+                    Join Waitlist
+                </a>
             </div>
         </div>
     </section>
@@ -318,38 +388,62 @@
                     <h4 class="font-700 text-sm uppercase tracking-wider mb-4">Connect</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
                         <li><a href="mailto:louisnkan21@gmail.com" class="hover:text-indigo-400 transition-all">Contact</a></li>
-                        <li><a href="https://twitter.com" target="_blank" class="hover:text-indigo-400 transition-all">Twitter</a></li>
-                        <li><a href="https://github.com" target="_blank" class="hover:text-indigo-400 transition-all">GitHub</a></li>
+                        <li><a href="https://github.com/louisnkan" target="_blank" class="hover:text-indigo-400 transition-all">GitHub</a></li>
                     </ul>
                 </div>
             </div>
             
-            <!-- Bottom Bar -->
+            <!-- Bottom Bar with Theme Toggle -->
             <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
                 <div>© 2025 SignalWrite • Crafted with precision</div>
-                <div class="flex gap-4">
+                <div class="flex gap-4 items-center flex-wrap justify-center">
                     <span class="hover:text-indigo-400 transition-all cursor-pointer">Built for clarity, not complexity</span>
                     <span>•</span>
                     <span class="hover:text-indigo-400 transition-all cursor-pointer">Signal over noise, always</span>
+                    <span>•</span>
+                    <button onclick="toggleTheme()" class="px-4 py-2 glass rounded-lg hover:border-indigo-500 transition-all">
+                        <span id="footerThemeIcon">🌙</span> Theme
+                    </button>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.classList.contains('dark');
+            
+            if (isDark) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                document.getElementById('themeToggle').textContent = '☀️';
+                document.getElementById('footerThemeIcon').textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                document.getElementById('themeToggle').textContent = '🌙';
+                document.getElementById('footerThemeIcon').textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        // Load saved theme
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+                document.getElementById('themeToggle').textContent = '☀️';
+                document.getElementById('footerThemeIcon').textContent = '☀️';
+            }
+        });
+        
         function copyLink() {
             navigator.clipboard.writeText(window.location.href);
             alert('✓ Link copied!');
-        }
-        
-        function joinCommunity() {
-            const email = document.getElementById('community-email').value;
-            if (email && email.includes('@')) {
-                alert('✓ Welcome to the Signal Community! (Demo mode)');
-                document.getElementById('community-email').value = '';
-            } else {
-                alert('Please enter a valid email');
-            }
         }
     </script>
 </body>
