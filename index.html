@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
+    <!-- Google Analytics Verification -->
+    <meta name="google-site-verification" content="verification_token_here">
+    
     <!-- SEO Meta Tags -->
     <title>SignalWrite - Free Online Text to PDF Converter with AI | Transform Noise Into Signal</title>
     <meta name="description" content="Free online text to PDF converter with AI refinement. Type, refine with professional AI modes, and convert to PDF instantly. No uploads, no sign-up. Works on mobile and desktop.">
@@ -13,14 +16,19 @@
     <meta property="og:title" content="SignalWrite - Transform Noise Into Signal">
     <meta property="og:description" content="Free AI-powered writing tool. Remove anxiety, ambiguity, and noise from your writing.">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://louisnkan.github.io/signal-write">
     
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W5644j7XBD"></script>
+    <!-- Google Analytics - Proper Implementation -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W5644J7XBD"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-W5644j7XBD');
+        gtag('config', 'G-W5644J7XBD', {
+            'send_page_view': true,
+            'page_location': window.location.href,
+            'page_title': document.title
+        });
     </script>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -38,7 +46,7 @@
         }
         
         body {
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         body.dark {
@@ -62,12 +70,12 @@
             background: rgba(20, 20, 20, 0.7);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         body.light .glass {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(0,0,0,0.05);
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0,0,0,0.08);
         }
         
         .hero-glow {
@@ -93,24 +101,60 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .theme-toggle-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(99, 102, 241, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            padding: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 24px;
-            transition: all 0.3s;
+        /* Modern iOS-Style Toggle Switch */
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 32px;
         }
         
-        .theme-toggle-btn:hover {
-            background: rgba(99, 102, 241, 0.3);
-            transform: scale(1.1);
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #2a2a2a;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 34px;
+        }
+        
+        body.light .slider {
+            background-color: #e0e0e0;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        body.light .slider:before {
+            background-color: #1a1a1a;
+        }
+        
+        input:checked + .slider {
+            background-color: #6366f1;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(28px);
+            background-color: white;
         }
         
         body.light .text-gray-400 {
@@ -124,11 +168,34 @@
         section, div {
             max-width: 100%;
         }
+        
+        /* Smooth hover effects */
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-4px);
+        }
+        
+        /* Modern button styles */
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 6px 30px rgba(99, 102, 241, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body class="dark">
-
-    <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeToggle">🌙</button>
 
     <section class="min-h-screen flex flex-col items-center justify-center relative px-6 py-20">
         <div class="hero-glow" style="top: -200px; left: 50%; transform: translateX(-50%);"></div>
@@ -147,10 +214,10 @@
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="editor.html" class="px-10 py-5 bg-indigo-600 rounded-full font-800 text-sm uppercase tracking-widest hover:bg-indigo-700 transition-all hover:scale-105 shadow-2xl shadow-indigo-600/30">
+                <a href="editor.html" class="btn-primary px-10 py-5 rounded-full font-800 text-sm uppercase tracking-widest text-white">
                     Launch Editor →
                 </a>
-                <a href="#how-it-works" class="px-10 py-5 glass rounded-full font-700 text-sm uppercase tracking-widest hover:border-indigo-500 transition-all">
+                <a href="#how-it-works" class="px-10 py-5 glass rounded-full font-700 text-sm uppercase tracking-widest hover:border-indigo-500">
                     Learn More
                 </a>
             </div>
@@ -179,19 +246,19 @@
             </div>
             
             <div class="grid md:grid-cols-3 gap-6 mb-12 md:mb-20">
-                <div class="glass p-6 md:p-8 rounded-3xl">
+                <div class="glass p-6 md:p-8 rounded-3xl hover-lift">
                     <div class="text-4xl mb-4">😰</div>
                     <h3 class="font-700 text-lg mb-3">Anxiety Patterns</h3>
                     <p class="text-sm text-gray-400 leading-relaxed">Over-explaining, apologetic tones, defensive language.</p>
                 </div>
                 
-                <div class="glass p-6 md:p-8 rounded-3xl">
+                <div class="glass p-6 md:p-8 rounded-3xl hover-lift">
                     <div class="text-4xl mb-4">🌫️</div>
                     <h3 class="font-700 text-lg mb-3">Corporate Fog</h3>
                     <p class="text-sm text-gray-400 leading-relaxed">Passive voice, weak verbs, ambiguous phrasing.</p>
                 </div>
                 
-                <div class="glass p-6 md:p-8 rounded-3xl">
+                <div class="glass p-6 md:p-8 rounded-3xl hover-lift">
                     <div class="text-4xl mb-4">📚</div>
                     <h3 class="font-700 text-lg mb-3">Information Chaos</h3>
                     <p class="text-sm text-gray-400 leading-relaxed">Disorganized structure that buries key insights.</p>
@@ -208,7 +275,7 @@
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="glass p-8 md:p-10 rounded-3xl border-l-4 border-indigo-500 hover:border-indigo-400 transition-all">
+                <div class="glass p-8 md:p-10 rounded-3xl border-l-4 border-indigo-500 hover:border-indigo-400 hover-lift">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-2xl">💼</div>
                         <h3 class="text-xl md:text-2xl font-800">Professional</h3>
@@ -221,7 +288,7 @@
                     </div>
                 </div>
                 
-                <div class="glass p-8 md:p-10 rounded-3xl border-l-4 border-emerald-500 hover:border-emerald-400 transition-all">
+                <div class="glass p-8 md:p-10 rounded-3xl border-l-4 border-emerald-500 hover:border-emerald-400 hover-lift">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center text-2xl">🧘</div>
                         <h3 class="text-xl md:text-2xl font-800">Anxiety Neutralizer</h3>
@@ -234,7 +301,7 @@
                     </div>
                 </div>
                 
-                <div class="glass p-8 md:p-10 rounded-3xl border-l-4 border-amber-500 hover:border-amber-400 transition-all">
+                <div class="glass p-8 md:p-10 rounded-3xl border-l-4 border-amber-500 hover:border-amber-400 hover-lift">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 bg-amber-600 rounded-full flex items-center justify-center text-2xl">⚖️</div>
                         <h3 class="text-xl md:text-2xl font-800">Legal</h3>
@@ -266,20 +333,20 @@
             <p class="text-lg md:text-xl text-gray-400 mb-12">
                 No signup. No credit card. Just better writing.
             </p>
-            <a href="editor.html" class="inline-block px-12 py-6 bg-indigo-600 rounded-full font-800 text-sm uppercase tracking-widest hover:bg-indigo-700 transition-all hover:scale-105 shadow-2xl shadow-indigo-600/30 mb-8">
+            <a href="editor.html" class="btn-primary inline-block px-12 py-6 rounded-full font-800 text-sm uppercase tracking-widest text-white mb-8">
                 Launch SignalWrite Editor →
             </a>
             
             <div class="mt-12 pt-12 border-t border-white/5">
                 <p class="text-sm text-gray-500 mb-4 uppercase tracking-wider">Share SignalWrite</p>
                 <div class="flex gap-4 justify-center flex-wrap">
-                    <a href="https://twitter.com/intent/tweet?text=SignalWrite - Transform noise into signal&url=https://louisnkan.github.io/signal-write" target="_blank" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 transition-all">
+                    <a href="https://twitter.com/intent/tweet?text=SignalWrite - Transform noise into signal&url=https://louisnkan.github.io/signal-write" target="_blank" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 hover-lift">
                         🐦 Twitter
                     </a>
-                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://louisnkan.github.io/signal-write" target="_blank" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 transition-all">
+                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://louisnkan.github.io/signal-write" target="_blank" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 hover-lift">
                         💼 LinkedIn
                     </a>
-                    <button onclick="copyLink()" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 transition-all">
+                    <button onclick="copyLink()" class="px-6 py-3 glass rounded-full text-sm hover:border-indigo-500 hover-lift">
                         🔗 Copy Link
                     </button>
                 </div>
@@ -289,12 +356,12 @@
 
     <section class="py-20 md:py-32 px-6 bg-gradient-to-b from-transparent to-black/50">
         <div class="max-w-2xl mx-auto">
-            <div class="glass p-8 md:p-12 rounded-3xl text-center">
+            <div class="glass p-8 md:p-12 rounded-3xl text-center hover-lift">
                 <h3 class="text-2xl md:text-3xl font-800 mb-4">Join the Waitlist</h3>
                 <p class="text-sm md:text-base text-gray-400 mb-8">
                     Get early access to premium features and updates.
                 </p>
-                <a href="mailto:louisnkan21@gmail.com?subject=SignalWrite Waitlist&body=I want early access!%0D%0A%0D%0AName:%0D%0AUse case:" class="inline-block w-full bg-indigo-600 py-5 rounded-2xl font-800 uppercase text-sm tracking-widest hover:bg-indigo-700 transition-all">
+                <a href="mailto:louisnkan21@gmail.com?subject=SignalWrite Waitlist&body=I want early access!%0D%0A%0D%0AName:%0D%0AUse case:" class="btn-primary inline-block w-full py-5 rounded-2xl font-800 uppercase text-sm tracking-widest text-white">
                     Join Waitlist
                 </a>
             </div>
@@ -336,53 +403,97 @@
                 </div>
             </div>
             
-            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-xs md:text-sm text-gray-500">
-                <div>© 2025 SignalWrite</div>
-                <div class="flex gap-4 items-center flex-wrap justify-center">
-                    <span>Built for clarity</span>
-                    <span>•</span>
-                    <button onclick="toggleTheme()" class="px-4 py-2 glass rounded-lg hover:border-indigo-500 transition-all">
-                        <span id="footerThemeIcon">🌙</span> Theme
-                    </button>
+            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-xs md:text-sm text-gray-500">
+                <div>© 2025 SignalWrite • Built for clarity</div>
+                
+                <div class="flex items-center gap-4">
+                    <span class="text-xs md:text-sm">Theme</span>
+                    <label class="theme-switch">
+                        <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+                        <span class="slider"></span>
+                    </label>
                 </div>
             </div>
         </div>
     </footer>
 
     <script>
+        // Theme Toggle with localStorage
         function toggleTheme() {
             const body = document.body;
-            const isDark = body.classList.contains('dark');
+            const toggle = document.getElementById('themeToggle');
             
-            if (isDark) {
+            if (toggle.checked) {
                 body.classList.remove('dark');
                 body.classList.add('light');
-                document.getElementById('themeToggle').textContent = '☀️';
-                document.getElementById('footerThemeIcon').textContent = '☀️';
                 localStorage.setItem('theme', 'light');
+                
+                // Track theme change in Analytics
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'theme_change', {
+                        'event_category': 'UI',
+                        'event_label': 'light_mode'
+                    });
+                }
             } else {
                 body.classList.remove('light');
                 body.classList.add('dark');
-                document.getElementById('themeToggle').textContent = '🌙';
-                document.getElementById('footerThemeIcon').textContent = '🌙';
                 localStorage.setItem('theme', 'dark');
+                
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'theme_change', {
+                        'event_category': 'UI',
+                        'event_label': 'dark_mode'
+                    });
+                }
             }
         }
         
+        // Load saved theme on page load
         window.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('theme');
+            const toggle = document.getElementById('themeToggle');
+            
             if (savedTheme === 'light') {
                 document.body.classList.remove('dark');
                 document.body.classList.add('light');
-                document.getElementById('themeToggle').textContent = '☀️';
-                document.getElementById('footerThemeIcon').textContent = '☀️';
+                toggle.checked = true;
+            }
+            
+            // Track page view
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'page_view', {
+                    'page_title': document.title,
+                    'page_location': window.location.href
+                });
             }
         });
         
+        // Copy link function
         function copyLink() {
             navigator.clipboard.writeText(window.location.href);
             alert('✓ Link copied!');
+            
+            // Track in Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'share', {
+                    'method': 'copy_link',
+                    'content_type': 'landing_page'
+                });
+            }
         }
+        
+        // Track CTA clicks
+        document.querySelectorAll('a[href="editor.html"]').forEach(link => {
+            link.addEventListener('click', () => {
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'click', {
+                        'event_category': 'CTA',
+                        'event_label': 'launch_editor'
+                    });
+                }
+            });
+        });
     </script>
 </body>
-                    </html>
+                        </html>
