@@ -24,7 +24,6 @@
             --accent: #6366f1;
             --accent-hover: #4f46e5;
             --success: #10b981;
-            --warning: #f59e0b;
         }
 
         body {
@@ -45,7 +44,6 @@
             color: var(--text-light);
         }
 
-        /* Header */
         .header {
             position: sticky;
             top: 0;
@@ -117,19 +115,17 @@
 
         .pdf-btn:active {
             transform: scale(0.98);
-            background: var(--accent-hover);
         }
 
-        /* Main Container */
         .main-container {
             flex: 1;
             max-width: 800px;
             margin: 0 auto;
             width: 100%;
             padding: 0 20px 140px;
+            position: relative;
         }
 
-        /* Subject Field */
         .subject-field {
             background: none;
             border: none;
@@ -146,7 +142,6 @@
             opacity: 0.4;
         }
 
-        /* Editor */
         .editor {
             min-height: 400px;
             outline: none;
@@ -175,29 +170,32 @@
             margin: 8px 0;
         }
 
-        /* Selection Toolbar (Floating) */
+        /* FIXED: Selection Toolbar */
         .selection-toolbar {
-            position: absolute;
+            position: fixed;
             display: none;
             flex-direction: row;
             gap: 4px;
             padding: 6px;
             border-radius: 12px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            z-index: 150;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            z-index: 999;
+            pointer-events: all;
         }
 
         .dark .selection-toolbar {
-            background: rgba(26, 26, 26, 0.95);
+            background: rgba(26, 26, 26, 0.98);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .light .selection-toolbar {
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
 
-        .selection-toolbar.active {
+        .selection-toolbar.visible {
             display: flex;
         }
 
@@ -215,6 +213,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            user-select: none;
+        }
+
+        .dark .format-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .light .format-btn:hover {
+            background: rgba(0,0,0,0.05);
         }
 
         .format-btn:active {
@@ -228,7 +235,6 @@
             color: white;
         }
 
-        /* Bottom Bar */
         .bottom-bar {
             position: fixed;
             bottom: 0;
@@ -271,7 +277,6 @@
 
         .refine-btn:active {
             transform: scale(0.98);
-            background: var(--accent-hover);
         }
 
         .bottom-info {
@@ -320,7 +325,6 @@
             display: inline-block;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -407,7 +411,6 @@
             font-size: 13px;
         }
 
-        /* Status Message */
         .status-msg {
             position: fixed;
             top: 50%;
@@ -426,7 +429,6 @@
             display: block;
         }
 
-        /* Footer Section */
         .footer-section {
             background: inherit;
             padding: 60px 20px 40px;
@@ -468,7 +470,6 @@
             display: none;
         }
 
-        /* Responsive */
         @media (max-width: 767px) {
             .subject-field {
                 font-size: 24px;
@@ -489,9 +490,6 @@
             .main-container {
                 padding: 0 40px 140px;
             }
-            .format-btn:hover {
-                background: rgba(255,255,255,0.1);
-            }
             .back-btn:hover,
             .modal-btn:hover {
                 background: rgba(255,255,255,0.05);
@@ -509,7 +507,6 @@
     </style>
 </head>
 <body class="dark">
-    <!-- Header -->
     <header class="header">
         <div class="header-left">
             <button class="back-btn" onclick="goBack()">←</button>
@@ -518,7 +515,6 @@
         <button class="pdf-btn" onclick="exportPDF()">📄 PDF</button>
     </header>
 
-    <!-- Main Content -->
     <div class="main-container">
         <input 
             type="text" 
@@ -531,23 +527,22 @@
             class="editor" 
             id="editor" 
             contenteditable="true"
-            onkeyup="updateWordCount(); hideSelectionToolbar();"
-            onmouseup="checkSelection()"
-            ontouchend="checkSelection()"
+            onkeyup="updateWordCount()"
+            onmouseup="handleSelection()"
+            ontouchend="handleSelection()"
         ></div>
     </div>
 
-    <!-- Selection Toolbar (Floating) -->
+    <!-- Selection Toolbar -->
     <div class="selection-toolbar" id="selectionToolbar">
-        <button class="format-btn" onclick="formatText('bold')" title="Bold">B</button>
-        <button class="format-btn" onclick="formatText('italic')" title="Italic">I</button>
-        <button class="format-btn" onclick="formatText('underline')" title="Underline">U</button>
-        <button class="format-btn" onclick="formatText('insertUnorderedList')" title="Bullet List">•</button>
-        <button class="format-btn" onclick="removeFormatting()" title="Remove Formatting">×</button>
-        <button class="format-btn" onclick="showRefineModal()" title="Refine">✨</button>
+        <button class="format-btn" onmousedown="formatText('bold'); event.preventDefault();" title="Bold">B</button>
+        <button class="format-btn" onmousedown="formatText('italic'); event.preventDefault();" title="Italic">I</button>
+        <button class="format-btn" onmousedown="formatText('underline'); event.preventDefault();" title="Underline">U</button>
+        <button class="format-btn" onmousedown="formatText('insertUnorderedList'); event.preventDefault();" title="Bullet List">•</button>
+        <button class="format-btn" onmousedown="removeFormatting(); event.preventDefault();" title="Remove Formatting">×</button>
+        <button class="format-btn" onmousedown="showRefineModal(); event.preventDefault();" title="Refine">✨</button>
     </div>
 
-    <!-- Bottom Bar -->
     <div class="bottom-bar">
         <div class="refine-container">
             <button class="refine-btn" id="refineBtn" onclick="showRefineModal()">✨ Refine Writing</button>
@@ -563,10 +558,8 @@
         </div>
     </div>
 
-    <!-- Status Message -->
     <div class="status-msg" id="statusMsg">Refining...</div>
 
-    <!-- Refine Modal -->
     <div class="modal" id="refineModal">
         <div class="modal-content">
             <div class="modal-title">Choose Refinement Mode</div>
@@ -576,7 +569,7 @@
             </button>
             <button class="modal-btn" onclick="refineText('anxiety-neutralizer')">
                 <strong>Anxiety Neutralizer</strong>
-                <small>Assertive and direct. Removes apologetic and permission-seeking language.</small>
+                <small>Assertive and direct. Removes apologetic language.</small>
             </button>
             <button class="modal-btn" onclick="refineText('legal')">
                 <strong>Legal</strong>
@@ -586,7 +579,6 @@
         </div>
     </div>
 
-    <!-- History Modal -->
     <div class="modal" id="historyModal">
         <div class="modal-content">
             <div class="modal-title">Document History</div>
@@ -599,7 +591,6 @@
 
     <input type="file" id="fileInput" accept=".txt" onchange="loadDraft(event)">
 
-    <!-- Footer Section -->
     <footer class="footer-section">
         <div style="margin-bottom: 30px; font-size: 14px;">
             © 2025 SignalWrite • Crafted with precision
@@ -620,8 +611,8 @@
 
         <div class="footer-category">
             <div class="footer-category-title">RESOURCES</div>
-            <a href="#" onclick="alert('Coming soon: Writing examples')">Examples</a>
-            <a href="#" onclick="alert('Coming soon: Writing guide')">Writing Guide</a>
+            <a href="#" onclick="alert('Coming soon')">Examples</a>
+            <a href="#" onclick="alert('Coming soon')">Writing Guide</a>
         </div>
 
         <div class="footer-category">
@@ -638,10 +629,8 @@
         let selectedText = '';
         let selectionRange = null;
 
-        // Initialize
         updateWordCount();
 
-        // Theme Toggle
         function toggleTheme() {
             const body = document.body;
             const isDark = body.classList.contains('dark');
@@ -657,7 +646,6 @@
             }
         }
 
-        // Back Button
         function goBack() {
             const hasContent = document.getElementById('editor').innerText.trim() || 
                                document.getElementById('subject').value.trim();
@@ -671,7 +659,6 @@
             }
         }
 
-        // Word Count
         function updateWordCount() {
             const subject = document.getElementById('subject').value;
             const editor = document.getElementById('editor').innerText;
@@ -681,61 +668,58 @@
             document.getElementById('wordCount').textContent = `${words} words • ${chars} chars`;
         }
 
-        // Text Selection
-        function checkSelection() {
-            const selection = window.getSelection();
-            selectedText = selection.toString().trim();
-            
-            if (selectedText.length > 0) {
-                selectionRange = selection.getRangeAt(0);
-                showSelectionToolbar();
-                document.getElementById('refineBtn').textContent = '✨ Refine Selection';
-            } else {
-                hideSelectionToolbar();
-                document.getElementById('refineBtn').textContent = '✨ Refine Writing';
-            }
+        function handleSelection() {
+            setTimeout(() => {
+                const selection = window.getSelection();
+                selectedText = selection.toString().trim();
+                
+                if (selectedText.length > 0 && selection.rangeCount > 0) {
+                    selectionRange = selection.getRangeAt(0);
+                    showSelectionToolbar();
+                    document.getElementById('refineBtn').textContent = '✨ Refine Selection';
+                } else {
+                    hideSelectionToolbar();
+                    document.getElementById('refineBtn').textContent = '✨ Refine Writing';
+                }
+            }, 10);
         }
 
         function showSelectionToolbar() {
             const selection = window.getSelection();
-            if (selection.rangeCount === 0) return;
+            if (selection.rangeCount === 0 || !selectedText) return;
             
             const range = selection.getRangeAt(0);
             const rect = range.getBoundingClientRect();
             const toolbar = document.getElementById('selectionToolbar');
             
-            // Position above selection
-            const top = rect.top + window.scrollY - 60;
-            const left = rect.left + window.scrollX + (rect.width / 2) - (toolbar.offsetWidth / 2);
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
             
-            toolbar.style.top = top + 'px';
-            toolbar.style.left = Math.max(10, left) + 'px';
-            toolbar.classList.add('active');
+            const top = rect.top + scrollTop - 60;
+            const left = rect.left + scrollLeft + (rect.width / 2) - 140;
+            
+            toolbar.style.top = Math.max(80, top) + 'px';
+            toolbar.style.left = Math.max(10, Math.min(left, window.innerWidth - 290)) + 'px';
+            toolbar.classList.add('visible');
         }
 
         function hideSelectionToolbar() {
-            const toolbar = document.getElementById('selectionToolbar');
-            // Delay hiding to allow button clicks
-            setTimeout(() => {
-                if (!selectedText) {
-                    toolbar.classList.remove('active');
-                }
-            }, 100);
+            document.getElementById('selectionToolbar').classList.remove('visible');
         }
 
-        // Text Formatting
         function formatText(command) {
             document.execCommand(command, false, null);
             document.getElementById('editor').focus();
+            handleSelection();
         }
 
         function removeFormatting() {
             document.execCommand('removeFormat', false, null);
             document.execCommand('unlink', false, null);
             document.getElementById('editor').focus();
+            handleSelection();
         }
 
-        // History Management
         function saveState() {
             const state = {
                 subject: document.getElementById('subject').value,
@@ -767,17 +751,13 @@
         function showUndoButton() {
             const btn = document.getElementById('undoBtn');
             btn.classList.add('visible');
-            
-            setTimeout(() => {
-                btn.classList.remove('visible');
-            }, 10000);
+            setTimeout(() => btn.classList.remove('visible'), 10000);
         }
 
         function hideUndoButton() {
             document.getElementById('undoBtn').classList.remove('visible');
         }
 
-        // Modal Functions
         function showRefineModal() {
             const editor = document.getElementById('editor').innerText.trim();
             
@@ -804,10 +784,8 @@
             });
         });
 
-        // AI Refinement
         async function refineText(mode) {
             closeModal();
-            
             saveState();
             
             let textToRefine = selectedText || document.getElementById('editor').innerText.trim();
@@ -823,23 +801,17 @@
                 const response = await fetch(`${BACKEND_URL}/refine`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        text: textToRefine,
-                        mode: mode
-                    })
+                    body: JSON.stringify({ text: textToRefine, mode: mode })
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
                 const data = await response.json();
                 const refined = data.refined;
 
                 if (selectedText && selectionRange) {
                     selectionRange.deleteContents();
-                    const textNode = document.createTextNode(refined);
-                    selectionRange.insertNode(textNode);
+                    selectionRange.insertNode(document.createTextNode(refined));
                     window.getSelection().removeAllRanges();
                 } else {
                     document.getElementById('editor').innerText = refined;
@@ -856,7 +828,7 @@
 
             } catch (error) {
                 document.getElementById('statusMsg').classList.remove('active');
-                alert('Refinement failed. Please check your connection and try again.');
+                alert('Refinement failed. Please check connection.');
                 console.error('Error:', error);
             }
         }
@@ -865,22 +837,14 @@
             const el = document.createElement('div');
             el.textContent = msg;
             el.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: var(--success);
-                color: white;
-                padding: 12px 20px;
-                border-radius: 8px;
-                z-index: 300;
-                font-size: 16px;
+                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                background: var(--success); color: white; padding: 12px 20px;
+                border-radius: 8px; z-index: 300; font-size: 16px;
             `;
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 2000);
         }
 
-        // PDF Export (REAL PDF)
         function exportPDF() {
             const subject = document.getElementById('subject').value;
             const content = document.getElementById('editor').innerText;
@@ -898,14 +862,6 @@
             if (subject) {
                 doc.setFontSize(20);
                 doc.setFont(undefined, 'bold');
-                doc.text(subject, 20, yPos);
-                yPos += 15;
-            }
-            
-            if (content) {
-                doc.setFontSize(12);
-                doc.setFont(undefined, 'normal');
-                const splitText = doc.splitTextToSize(content, 170);
                 doc.text(splitText, 20, yPos);
             }
             
@@ -919,7 +875,6 @@
             showSuccessMessage('PDF Exported ✓');
         }
 
-        // Download Draft
         function downloadDraft() {
             const subject = document.getElementById('subject').value;
             const content = document.getElementById('editor').innerText;
@@ -942,7 +897,6 @@
             showSuccessMessage('Downloaded ✓');
         }
 
-        // Load Draft
         function loadDraft(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -963,7 +917,6 @@
             closeModal();
         }
 
-        // Keyboard Shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
                 switch(e.key.toLowerCase()) {
@@ -980,10 +933,7 @@
                         formatText('underline');
                         break;
                     case 'z':
-                        if (e.shiftKey) {
-                            e.preventDefault();
-                            // Redo not implemented
-                        } else {
+                        if (!e.shiftKey) {
                             e.preventDefault();
                             undo();
                         }
@@ -992,7 +942,6 @@
             }
         });
 
-        // Handle browser back button
         window.addEventListener('beforeunload', (e) => {
             const hasContent = document.getElementById('editor').innerText.trim() || 
                                document.getElementById('subject').value.trim();
@@ -1001,6 +950,21 @@
                 e.returnValue = '';
             }
         });
+
+        document.addEventListener('selectionchange', () => {
+            const selection = window.getSelection();
+            if (!selection.toString().trim()) {
+                hideSelectionToolbar();
+            }
+        });
     </script>
 </body>
-    </html>
+</html>(subject, 20, yPos);
+                yPos += 15;
+            }
+            
+            if (content) {
+                doc.setFontSize(12);
+                doc.setFont(undefined, 'normal');
+                const splitText = doc.splitTextToSize(content, 170);
+                doc.text
