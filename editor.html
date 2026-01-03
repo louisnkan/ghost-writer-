@@ -18,6 +18,7 @@
     </script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.1.0/docx.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -110,11 +111,16 @@
             letter-spacing: -0.5px;
         }
 
-        .pdf-btn {
+        .header-right {
+            display: flex;
+            gap: 8px;
+        }
+
+        .export-btn {
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 16px;
             border-radius: 10px;
             font-size: 14px;
             font-weight: 600;
@@ -122,17 +128,17 @@
             min-height: 44px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
         }
 
-        .pdf-btn:hover {
+        .export-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
-        .pdf-btn:active {
+        .export-btn:active {
             transform: translateY(0);
         }
 
@@ -189,7 +195,6 @@
             margin: 8px 0;
         }
 
-        /* Floating Formatting Toolbar */
         .selection-toolbar {
             position: fixed;
             display: none;
@@ -343,7 +348,6 @@
             display: inline-block;
         }
 
-        /* iOS-Style Theme Toggle */
         .theme-switch {
             position: relative;
             display: inline-block;
@@ -568,6 +572,9 @@
                 flex-direction: column;
                 gap: 12px;
             }
+            .export-btn span {
+                display: none;
+            }
         }
 
         @media (min-width: 768px) {
@@ -595,10 +602,12 @@
             <button class="back-btn" onclick="goBack()">←</button>
             <div class="logo">SignalWrite</div>
         </div>
-        <button class="pdf-btn" onclick="exportPDF()">
-            <span>📄</span>
-            <span>Export PDF</span>
-        </button>
+        <div class="header-right">
+            <button class="export-btn" onclick="showExportModal()">
+                <span>📄</span>
+                <span>Export</span>
+            </button>
+        </div>
     </header>
 
     <div class="main-container">
@@ -619,15 +628,14 @@
         ></div>
     </div>
 
-    <!-- Floating Formatting Toolbar -->
     <div class="selection-toolbar" id="selectionToolbar">
-        <button class="format-btn" onmousedown="formatText('bold'); event.preventDefault();" title="Bold (Ctrl+B)">
+        <button class="format-btn" onmousedown="formatText('bold'); event.preventDefault();" title="Bold">
             <strong>B</strong>
         </button>
-        <button class="format-btn" onmousedown="formatText('italic'); event.preventDefault();" title="Italic (Ctrl+I)">
+        <button class="format-btn" onmousedown="formatText('italic'); event.preventDefault();" title="Italic">
             <em>I</em>
         </button>
-        <button class="format-btn" onmousedown="formatText('underline'); event.preventDefault();" title="Underline (Ctrl+U)">
+        <button class="format-btn" onmousedown="formatText('underline'); event.preventDefault();" title="Underline">
             <u>U</u>
         </button>
         <button class="format-btn" onmousedown="formatText('insertUnorderedList'); event.preventDefault();" title="Bullet List">
@@ -665,6 +673,21 @@
 
     <div class="status-msg" id="statusMsg">Refining...</div>
 
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <div class="modal-title">Export Document</div>
+            <button class="modal-btn" onclick="exportPDF()">
+                <strong>📄 Export as PDF</strong>
+                <small>Professional formatting with preserved styles</small>
+            </button>
+            <button class="modal-btn" onclick="exportDOCX()">
+                <strong>📝 Export as Word (.docx)</strong>
+                <small>Editable document for Microsoft Word</small>
+            </button>
+            <button class="modal-btn modal-btn-primary" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+
     <div class="modal" id="refineModal">
         <div class="modal-content">
             <div class="modal-title">Choose Refinement Mode</div>
@@ -687,8 +710,8 @@
     <div class="modal" id="historyModal">
         <div class="modal-content">
             <div class="modal-title">Document History</div>
-            <p style="opacity: 0.7; margin-bottom: 16px;">Download your current draft or load a saved file.</p>
-            <button class="modal-btn" onclick="downloadDraft()">💾 Download Current Draft</button>
+            <p style="opacity: 0.7; margin-bottom: 16px;">Download or load your drafts</p>
+            <button class="modal-btn" onclick="downloadDraft()">💾 Download Draft (.txt)</button>
             <button class="modal-btn" onclick="document.getElementById('fileInput').click()">📂 Load Saved Draft</button>
             <button class="modal-btn modal-btn-primary" onclick="closeModal()">Close</button>
         </div>
@@ -895,6 +918,10 @@
             document.getElementById('undoBtn').classList.remove('visible');
         }
 
+        function showExportModal() {
+            document.getElementById('exportModal').classList.add('active');
+        }
+
         function showRefineModal() {
             const editor = document.getElementById('editor').innerText.trim();
             
@@ -989,18 +1016,12 @@
             setTimeout(() => el.remove(), 2000);
         }
 
+        // 🔥 ROCK-SOLID PDF EXPORT
         function exportPDF() {
-            const subject = document.getElementById('subject').value;
+            closeModal();
+            
+            const subject = document.getElementById('subject').value.trim();
             const editor = document.getElementById('editor');
-            
-            // Check word limit
-            const allText = (subject + ' ' + editor.innerText).trim();
-            const wordCount = allText.split(/\s+/).length;
-            
-            if (wordCount > 3000) {
-                alert('Document too long! Maximum 3000 words for PDF export.\n\nCurrent: ' + wordCount + ' words\n\nPlease reduce content and try again.');
-                return;
-            }
             
             if (!subject && !editor.innerText.trim()) {
                 alert('Nothing to export!');
@@ -1014,153 +1035,240 @@
                 format: 'a4'
             });
             
+            const margin = 20;
             const pageWidth = 210;
-            const pageHeight = 297;
-            const margin = {
-                top: 20,
-                right: 20,
-                bottom: 25,
-                left: 20
-            };
-            const contentWidth = pageWidth - margin.left - margin.right;
-            const lineHeight = 7;
-            let yPos = margin.top;
-            let currentPage = 1;
+            const contentWidth = pageWidth - (margin * 2);
+            let y = margin;
             
-            // Helper: Add page number
-            function addPageNumber() {
-                doc.setFontSize(9);
-                doc.setTextColor(120);
-                doc.text(`Page ${currentPage}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
-                doc.setTextColor(0);
-            }
-            
-            // Helper: Check if new page needed
-            function checkNewPage() {
-                if (yPos > pageHeight - margin.bottom - 10) {
-                    addPageNumber();
+            // Helper: Add new page if needed
+            function checkPage() {
+                if (y > 270) {
                     doc.addPage();
-                    currentPage++;
-                    yPos = margin.top;
-                    return true;
+                    y = margin;
                 }
-                return false;
             }
             
-            // Add subject (title)
+            // Title
             if (subject) {
-                doc.setFontSize(18);
+                doc.setFontSize(20);
                 doc.setFont(undefined, 'bold');
                 const titleLines = doc.splitTextToSize(subject, contentWidth);
-                
-                for (let line of titleLines) {
-                    checkNewPage();
-                    doc.text(line, margin.left, yPos);
-                    yPos += lineHeight + 2;
-                }
-                
-                yPos += 5; // Extra space after title
+                titleLines.forEach(line => {
+                    checkPage();
+                    doc.text(line, margin, y);
+                    y += 8;
+                });
+                y += 5;
             }
             
-            // Process editor content with formatting
+            // Extract clean text with formatting info
             doc.setFontSize(12);
             doc.setFont(undefined, 'normal');
             
-            // Get all child nodes from editor
-            const processNode = (node, indent = 0) => {
+            function processNode(node) {
                 if (node.nodeType === Node.TEXT_NODE) {
                     const text = node.textContent.trim();
                     if (text) {
-                        const lines = doc.splitTextToSize(text, contentWidth - indent);
-                        for (let line of lines) {
-                            checkNewPage();
-                            doc.text(line, margin.left + indent, yPos);
-                            yPos += lineHeight;
-                        }
+                        const lines = doc.splitTextToSize(text, contentWidth);
+                        lines.forEach(line => {
+                            checkPage();
+                            doc.text(line, margin, y);
+                            y += 6;
+                        });
                     }
                 } else if (node.nodeType === Node.ELEMENT_NODE) {
                     const tag = node.tagName.toLowerCase();
                     
-                    // Handle formatting
                     if (tag === 'strong' || tag === 'b') {
                         doc.setFont(undefined, 'bold');
-                        processNode(node.firstChild || node, indent);
+                        Array.from(node.childNodes).forEach(processNode);
                         doc.setFont(undefined, 'normal');
                     } else if (tag === 'em' || tag === 'i') {
                         doc.setFont(undefined, 'italic');
-                        processNode(node.firstChild || node, indent);
+                        Array.from(node.childNodes).forEach(processNode);
                         doc.setFont(undefined, 'normal');
-                    } else if (tag === 'u') {
-                        // Underline not well supported, just process content
-                        for (let child of node.childNodes) {
-                            processNode(child, indent);
-                        }
                     } else if (tag === 'li') {
-                        checkNewPage();
-                        doc.text('•', margin.left + indent, yPos);
-                        
-                        for (let child of node.childNodes) {
-                            processNode(child, indent + 5);
-                        }
-                        
-                        yPos += 2;
+                        checkPage();
+                        doc.text('•', margin, y);
+                        const tempY = y;
+                        y = tempY;
+                        const text = node.innerText.trim();
+                        const lines = doc.splitTextToSize(text, contentWidth - 5);
+                        lines.forEach(line => {
+                            checkPage();
+                            doc.text(line, margin + 5, y);
+                            y += 6;
+                        });
+                        y += 2;
                     } else if (tag === 'ul' || tag === 'ol') {
-                        yPos += 3;
-                        for (let child of node.childNodes) {
-                            if (child.tagName && child.tagName.toLowerCase() === 'li') {
-                                processNode(child, indent);
-                            }
-                        }
-                        yPos += 3;
+                        y += 3;
+                        Array.from(node.children).forEach(processNode);
+                        y += 3;
                     } else if (tag === 'p' || tag === 'div') {
-                        for (let child of node.childNodes) {
-                            processNode(child, indent);
-                        }
-                        yPos += 4; // Paragraph spacing
+                        Array.from(node.childNodes).forEach(processNode);
+                        y += 4;
                     } else if (tag === 'br') {
-                        yPos += lineHeight;
+                        y += 6;
                     } else {
-                        // Generic element, process children
-                        for (let child of node.childNodes) {
-                            processNode(child, indent);
-                        }
+                        Array.from(node.childNodes).forEach(processNode);
                     }
-                }
-            };
-            
-            // Process all editor content
-            if (editor.childNodes.length > 0) {
-                for (let child of editor.childNodes) {
-                    processNode(child);
-                }
-            } else {
-                // Fallback to plain text if no nodes
-                const lines = doc.splitTextToSize(editor.innerText, contentWidth);
-                for (let line of lines) {
-                    checkNewPage();
-                    doc.text(line, margin.left, yPos);
-                    yPos += lineHeight;
                 }
             }
             
-            // Add footer to last page
-            addPageNumber();
-            doc.setFontSize(8);
-            doc.setTextColor(150);
-            doc.text('Created with SignalWrite', margin.left, pageHeight - 10);
+            if (editor.childNodes.length > 0) {
+                Array.from(editor.childNodes).forEach(processNode);
+            } else {
+                const text = editor.innerText;
+                const lines = doc.splitTextToSize(text, contentWidth);
+                lines.forEach(line => {
+                    checkPage();
+                    doc.text(line, margin, y);
+                    y += 6;
+                });
+            }
             
-            // Save
-            const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').toLowerCase();
+            // Footer
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(9);
+                doc.setTextColor(150);
+                doc.text(`Page ${i} of ${pageCount}`, pageWidth / 2, 287, { align: 'center' });
+                doc.text('Created with SignalWrite', margin, 287);
+            }
+            
+            const filename = subject ? subject.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'document';
             doc.save(`${filename}.pdf`);
             
-            showSuccessMessage(`PDF Exported ✓ (${currentPage} ${currentPage === 1 ? 'page' : 'pages'})`);
+            showSuccessMessage('PDF Exported ✓');
 
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'export_pdf', {
                     'event_category': 'Editor',
-                    'event_label': 'pdf_download',
-                    'value': currentPage
+                    'event_label': 'pdf_download'
                 });
+            }
+        }
+
+        // 💎 DOCX EXPORT (Microsoft Word)
+        async function exportDOCX() {
+            closeModal();
+            
+            const subject = document.getElementById('subject').value.trim();
+            const editor = document.getElementById('editor');
+            
+            if (!subject && !editor.innerText.trim()) {
+                alert('Nothing to export!');
+                return;
+            }
+
+            try {
+                const { Document, Paragraph, TextRun, AlignmentType, HeadingLevel } = docx;
+                
+                const children = [];
+                
+                // Add title
+                if (subject) {
+                    children.push(
+                        new Paragraph({
+                            text: subject,
+                            heading: HeadingLevel.HEADING_1,
+                            spacing: { after: 400 }
+                        })
+                    );
+                }
+                
+                // Process editor content
+                function processNode(node) {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        const text = node.textContent.trim();
+                        if (text) {
+                            children.push(new Paragraph({
+                                children: [new TextRun({ text })],
+                                spacing: { after: 200 }
+                            }));
+                        }
+                    } else if (node.nodeType === Node.ELEMENT_NODE) {
+                        const tag = node.tagName.toLowerCase();
+                        
+                        if (tag === 'p' || tag === 'div') {
+                            const runs = [];
+                            Array.from(node.childNodes).forEach(child => {
+                                if (child.nodeType === Node.TEXT_NODE) {
+                                    const text = child.textContent.trim();
+                                    if (text) runs.push(new TextRun({ text }));
+                                } else if (child.nodeType === Node.ELEMENT_NODE) {
+                                    const childTag = child.tagName.toLowerCase();
+                                    const text = child.innerText.trim();
+                                    if (text) {
+                                        runs.push(new TextRun({
+                                            text,
+                                            bold: childTag === 'strong' || childTag === 'b',
+                                            italics: childTag === 'em' || childTag === 'i',
+                                            underline: childTag === 'u' ? {} : undefined
+                                        }));
+                                    }
+                                }
+                            });
+                            if (runs.length > 0) {
+                                children.push(new Paragraph({
+                                    children: runs,
+                                    spacing: { after: 200 }
+                                }));
+                            }
+                        } else if (tag === 'li') {
+                            const text = node.innerText.trim();
+                            if (text) {
+                                children.push(new Paragraph({
+                                    text,
+                                    bullet: { level: 0 },
+                                    spacing: { after: 100 }
+                                }));
+                            }
+                        } else if (tag === 'ul' || tag === 'ol') {
+                            Array.from(node.children).forEach(processNode);
+                        } else {
+                            Array.from(node.childNodes).forEach(processNode);
+                        }
+                    }
+                }
+                
+                if (editor.childNodes.length > 0) {
+                    Array.from(editor.childNodes).forEach(processNode);
+                } else {
+                    children.push(new Paragraph({
+                        text: editor.innerText,
+                        spacing: { after: 200 }
+                    }));
+                }
+                
+                const doc = new Document({
+                    sections: [{
+                        properties: {},
+                        children
+                    }]
+                });
+                
+                const blob = await docx.Packer.toBlob(doc);
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                const filename = subject ? subject.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'document';
+                a.download = `${filename}.docx`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                showSuccessMessage('Word Doc Exported ✓');
+
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'export_docx', {
+                        'event_category': 'Editor',
+                        'event_label': 'docx_download'
+                    });
+                }
+            } catch (error) {
+                console.error('DOCX export error:', error);
+                alert('Word export failed. Please try PDF export instead.');
             }
         }
 
