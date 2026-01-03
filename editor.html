@@ -1,10 +1,780 @@
-body.classList.remove('light');
-                body.classList.add('dark');
-                document.querySelector('.theme-toggle').textContent = '🌙';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignalWrite - Professional Writing Editor</title>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W5644J7XBD"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-W5644J7XBD', {
+            'send_page_view': true,
+            'page_location': window.location.href
+        });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0F1115;
+            --surface-dark: #1a1a1a;
+            --text-dark: #E2E8F0;
+            --text-secondary-dark: #94a3b8;
+            --bg-light: #FDFCFB;
+            --surface-light: #ffffff;
+            --text-light: #1A202C;
+            --text-secondary-light: #64748b;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        body.light {
+            background: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .dark .header {
+            background: rgba(15, 17, 21, 0.95);
+        }
+
+        .light .header {
+            background: rgba(253, 252, 251, 0.95);
+            border-bottom-color: rgba(0,0,0,0.1);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            color: inherit;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .logo {
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .pdf-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+        }
+
+        .pdf-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .pdf-btn:active {
+            transform: translateY(0);
+        }
+
+        .main-container {
+            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 20px 140px;
+            position: relative;
+        }
+
+        .subject-field {
+            background: none;
+            border: none;
+            outline: none;
+            font-size: 28px;
+            font-weight: 700;
+            padding: 32px 0 20px;
+            color: inherit;
+            width: 100%;
+            letter-spacing: -0.5px;
+        }
+
+        .subject-field::placeholder {
+            opacity: 0.4;
+        }
+
+        .editor {
+            min-height: 400px;
+            outline: none;
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 18px;
+            line-height: 1.7;
+            padding: 12px 0;
+            color: inherit;
+        }
+
+        .editor:empty:before {
+            content: "Start writing...";
+            opacity: 0.4;
+        }
+
+        .editor p {
+            margin: 16px 0;
+        }
+
+        .editor ul {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        .editor li {
+            margin: 8px 0;
+        }
+
+        /* Floating Formatting Toolbar */
+        .selection-toolbar {
+            position: fixed;
+            display: none;
+            flex-direction: row;
+            gap: 4px;
+            padding: 6px;
+            border-radius: 12px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            z-index: 999;
+            pointer-events: all;
+        }
+
+        .dark .selection-toolbar {
+            background: rgba(26, 26, 26, 0.98);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .light .selection-toolbar {
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        }
+
+        .selection-toolbar.visible {
+            display: flex;
+        }
+
+        .format-btn {
+            background: none;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            color: inherit;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+
+        .dark .format-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .light .format-btn:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .format-btn:active {
+            transform: scale(0.95);
+        }
+
+        .format-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .dark .bottom-bar {
+            background: rgba(15, 17, 21, 0.95);
+        }
+
+        .light .bottom-bar {
+            background: rgba(253, 252, 251, 0.95);
+            border-top-color: rgba(0,0,0,0.1);
+        }
+
+        .refine-container {
+            padding: 16px 20px 12px;
+            text-align: center;
+        }
+
+        .refine-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            min-height: 48px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .refine-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        .refine-btn:active {
+            transform: translateY(0);
+        }
+
+        .bottom-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            font-size: 13px;
+            opacity: 0.7;
+            gap: 20px;
+        }
+
+        .info-left {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .info-link {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            padding: 4px 8px;
+            text-decoration: underline;
+            font-size: 13px;
+        }
+
+        .undo-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .undo-btn.visible {
+            display: inline-block;
+        }
+
+        /* iOS-Style Theme Toggle */
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #2a2a2a;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 34px;
+        }
+
+        body.light .slider {
+            background-color: #e0e0e0;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        body.light .slider:before {
+            background-color: #1a1a1a;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+            background-color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 200;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 100%;
+            max-height: 70vh;
+            border-radius: 20px 20px 0 0;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .dark .modal-content {
+            background: var(--surface-dark);
+        }
+
+        .light .modal-content {
+            background: var(--surface-light);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 16px;
+            margin: 8px 0;
+            border: 1px solid;
+            border-radius: 10px;
+            background: none;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: left;
+            color: inherit;
+            min-height: 48px;
+            transition: all 0.2s;
+        }
+
+        .dark .modal-btn {
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .light .modal-btn {
+            border-color: rgba(0,0,0,0.1);
+        }
+
+        .modal-btn:active {
+            transform: scale(0.98);
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .modal-btn-primary {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .modal-btn strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .modal-btn small {
+            display: block;
+            opacity: 0.7;
+            font-size: 13px;
+        }
+
+        .status-msg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--accent);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            display: none;
+            z-index: 300;
+        }
+
+        .status-msg.active {
+            display: block;
+        }
+
+        .footer-section {
+            background: inherit;
+            padding: 40px 20px 30px;
+            text-align: center;
+            font-size: 13px;
+            opacity: 0.7;
+            line-height: 1.8;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .light .footer-section {
+            border-top-color: rgba(0,0,0,0.1);
+        }
+
+        .footer-section a {
+            color: inherit;
+            text-decoration: none;
+            margin: 0 12px;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+
+        .footer-category {
+            margin: 20px 0;
+        }
+
+        .footer-category-title {
+            font-weight: 600;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            opacity: 0.5;
+        }
+
+        .theme-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        @media (max-width: 767px) {
+            .subject-field {
+                font-size: 24px;
+                padding: 24px 0 16px;
+            }
+            .editor {
+                font-size: 16px;
+            }
+            .main-container {
+                padding-bottom: 180px;
+            }
+            .bottom-info {
+                flex-direction: column;
+                gap: 12px;
             }
         }
 
-        // Back Button
+        @media (min-width: 768px) {
+            .header {
+                padding: 16px 40px;
+            }
+            .main-container {
+                padding: 0 40px 140px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .subject-field {
+                font-size: 32px;
+            }
+            .editor {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="dark">
+    <header class="header">
+        <div class="header-left">
+            <button class="back-btn" onclick="goBack()">←</button>
+            <div class="logo">SignalWrite</div>
+        </div>
+        <button class="pdf-btn" onclick="exportPDF()">
+            <span>📄</span>
+            <span>Export PDF</span>
+        </button>
+    </header>
+
+    <div class="main-container">
+        <input 
+            type="text" 
+            class="subject-field" 
+            id="subject"
+            placeholder="What are we writing today?"
+            onkeyup="updateWordCount()"
+        >
+        <div 
+            class="editor" 
+            id="editor" 
+            contenteditable="true"
+            onkeyup="updateWordCount()"
+            onmouseup="handleSelection()"
+            ontouchend="handleSelection()"
+        ></div>
+    </div>
+
+    <!-- Floating Formatting Toolbar -->
+    <div class="selection-toolbar" id="selectionToolbar">
+        <button class="format-btn" onmousedown="formatText('bold'); event.preventDefault();" title="Bold (Ctrl+B)">
+            <strong>B</strong>
+        </button>
+        <button class="format-btn" onmousedown="formatText('italic'); event.preventDefault();" title="Italic (Ctrl+I)">
+            <em>I</em>
+        </button>
+        <button class="format-btn" onmousedown="formatText('underline'); event.preventDefault();" title="Underline (Ctrl+U)">
+            <u>U</u>
+        </button>
+        <button class="format-btn" onmousedown="formatText('insertUnorderedList'); event.preventDefault();" title="Bullet List">
+            •
+        </button>
+        <button class="format-btn" onmousedown="removeFormatting(); event.preventDefault();" title="Remove Formatting">
+            ×
+        </button>
+        <button class="format-btn" onmousedown="showRefineModal(); event.preventDefault();" title="Refine with AI">
+            ✨
+        </button>
+    </div>
+
+    <div class="bottom-bar">
+        <div class="refine-container">
+            <button class="refine-btn" id="refineBtn" onclick="showRefineModal()">✨ Refine Writing</button>
+        </div>
+        <div class="bottom-info">
+            <div class="info-left">
+                <span id="wordCount">0 words</span>
+                <span>•</span>
+                <button class="info-link" onclick="showHistory()">History</button>
+                <span>•</span>
+                <button class="undo-btn" id="undoBtn" onclick="undo()">↩ Undo</button>
+            </div>
+            <div class="theme-footer">
+                <span style="font-size: 12px;">Theme</span>
+                <label class="theme-switch">
+                    <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-msg" id="statusMsg">Refining...</div>
+
+    <div class="modal" id="refineModal">
+        <div class="modal-content">
+            <div class="modal-title">Choose Refinement Mode</div>
+            <button class="modal-btn" onclick="refineText('professional')">
+                <strong>Professional</strong>
+                <small>Clear, confident, business-ready. Removes hedging language.</small>
+            </button>
+            <button class="modal-btn" onclick="refineText('anxiety-neutralizer')">
+                <strong>Anxiety Neutralizer</strong>
+                <small>Assertive and direct. Removes apologetic language.</small>
+            </button>
+            <button class="modal-btn" onclick="refineText('legal')">
+                <strong>Legal</strong>
+                <small>Formal legal structure. Factual, liability-aware, professional.</small>
+            </button>
+            <button class="modal-btn modal-btn-primary" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+
+    <div class="modal" id="historyModal">
+        <div class="modal-content">
+            <div class="modal-title">Document History</div>
+            <p style="opacity: 0.7; margin-bottom: 16px;">Download your current draft or load a saved file.</p>
+            <button class="modal-btn" onclick="downloadDraft()">💾 Download Current Draft</button>
+            <button class="modal-btn" onclick="document.getElementById('fileInput').click()">📂 Load Saved Draft</button>
+            <button class="modal-btn modal-btn-primary" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" accept=".txt" onchange="loadDraft(event)">
+
+    <footer class="footer-section">
+        <div style="margin-bottom: 20px; font-size: 14px;">
+            © 2025 SignalWrite • Crafted with precision
+        </div>
+        
+        <div style="display: flex; justify-content: center; gap: 20px; margin: 15px 0; flex-wrap: wrap; font-size: 12px;">
+            <span>Built for clarity, not complexity</span>
+            <span>•</span>
+            <span>Signal over noise, always</span>
+        </div>
+
+        <div class="footer-category">
+            <div class="footer-category-title">PRODUCT</div>
+            <a href="#" onclick="return false">Editor</a>
+            <a href="index.html#how-it-works">How It Works</a>
+        </div>
+
+        <div class="footer-category">
+            <div class="footer-category-title">RESOURCES</div>
+            <a href="#" onclick="alert('Coming soon')">Examples</a>
+            <a href="#" onclick="alert('Coming soon')">Writing Guide</a>
+        </div>
+
+        <div class="footer-category">
+            <div class="footer-category-title">CONNECT</div>
+            <a href="mailto:louisnkan21@gmail.com">Contact</a>
+            <a href="https://github.com/louisnkan" target="_blank">GitHub</a>
+        </div>
+    </footer>
+
+    <script>
+        const BACKEND_URL = 'https://signalwrite-backend-okbb.vercel.app';
+        let history = [];
+        let historyIndex = -1;
+        let selectedText = '';
+        let selectionRange = null;
+
+        updateWordCount();
+
+        function toggleTheme() {
+            const body = document.body;
+            const toggle = document.getElementById('themeToggle');
+            
+            if (toggle.checked) {
+                body.classList.remove('dark');
+                body.classList.add('light');
+                localStorage.setItem('theme', 'light');
+                
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'theme_change', {
+                        'event_category': 'UI',
+                        'event_label': 'light_mode'
+                    });
+                }
+            } else {
+                body.classList.remove('light');
+                body.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'theme_change', {
+                        'event_category': 'UI',
+                        'event_label': 'dark_mode'
+                    });
+                }
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const toggle = document.getElementById('themeToggle');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.remove('dark');
+                document.body.classList.add('light');
+                toggle.checked = true;
+            }
+        });
+
         function goBack() {
             const hasContent = document.getElementById('editor').innerText.trim() || 
                                document.getElementById('subject').value.trim();
@@ -221,480 +991,6 @@ body.classList.remove('light');
 
         function exportPDF() {
             const subject = document.getElementById('subject').value;
-            const editorContent = document.getElementById('editor');
-            
-            if (!subject && !editorContent.innerText.trim()) {
-                alert('Nothing to export!');
-                return;
-            }
-
-            // Word count check (3000 word limit for MVP)
-            const wordCount = (subject + ' ' + editorContent.innerText).trim().split(/\s+/).length;
-            if (wordCount > 3000) {
-                alert('Document too long! Maximum 3000 words for PDF export.\n\nUpgrade to Pro for unlimited exports (coming soon).');
-                return;
-            }
-
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // Page settings
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const pageHeight = doc.internal.pageSize.getHeight();
-            const margin = 20;
-            const maxWidth = pageWidth - (margin * 2);
-            const maxHeight = pageHeight - 40; // Leave space for footer
-            let yPos = margin;
-            let pageNum = 1;
-
-            // Helper function to add page number
-            function addPageNumber() {
-                doc.setFontSize(9);
-                doc.setTextColor(150);
-                doc.text(`Page ${pageNum}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
-                doc.setTextColor(0);
-            }
-
-            // Helper function to check if new page needed
-            function checkNewPage(lineHeight) {
-                if (yPos + lineHeight > maxHeight) {
-                    addPageNumber();
-                    doc.addPage();
-                    pageNum++;
-                    yPos = margin;
-                    return true;
-                }
-                return false;
-            }
-
-            // Add title
-            if (subject) {
-                doc.setFontSize(18);
-                doc.setFont(undefined, 'bold');
-                const titleLines = doc.splitTextToSize(subject, maxWidth);
-                
-                titleLines.forEach(line => {
-                    checkNewPage(10);
-                    doc.text(line, margin, yPos);
-                    yPos += 10;
-                });
-                
-                yPos += 5; // Extra space after title
-            }
-
-            // Process content with formatting
-            doc.setFontSize(12);
-            doc.setFont(undefined, 'normal');
-
-            // Get formatted content
-            const elements = editorContent.childNodes;
-            
-            if (elements.length === 0 || (elements.length === 1 && elements[0].nodeType === 3)) {
-                // Plain text without formatting
-                const text = editorContent.innerText;
-                const lines = doc.splitTextToSize(text, maxWidth);
-                
-                lines.forEach(line => {
-                    checkNewPage(7);
-                    doc.text(line, margin, yPos);
-                    yPos += 7;
-                });
-            } else {
-                // Process formatted content
-                elements.forEach(element => {
-                    if (element.nodeType === 3) {
-                        // Text node
-                        const text = element.textContent.trim();
-                        if (text) {
-                            const lines = doc.splitTextToSize(text, maxWidth);
-                            lines.forEach(line => {
-                                checkNewPage(7);
-                                doc.text(line, margin, yPos);
-                                yPos += 7;
-                            });
-                        }
-                    } else if (element.nodeType === 1) {
-                        // Element node
-                        const tagName = element.tagName.toLowerCase();
-                        
-                        if (tagName === 'p' || tagName === 'div') {
-                            const text = element.innerText.trim();
-                            if (text) {
-                                // Check for bold/italic
-                                const isBold = element.querySelector('strong, b') !== null;
-                                const isItalic = element.querySelector('em, i') !== null;
-                                
-                                if (isBold && isItalic) {
-                                    doc.setFont(undefined, 'bolditalic');
-                                } else if (isBold) {
-                                    doc.setFont(undefined, 'bold');
-                                } else if (isItalic) {
-                                    doc.setFont(undefined, 'italic');
-                                } else {
-                                    doc.setFont(undefined, 'normal');
-                                }
-                                
-                                const lines = doc.splitTextToSize(text, maxWidth);
-                                lines.forEach(line => {
-                                    checkNewPage(7);
-                                    doc.text(line, margin, yPos);
-                                    yPos += 7;
-                                });
-                                
-                                doc.setFont(undefined, 'normal');
-                                yPos += 3; // Paragraph spacing
-                            }
-                        } else if (tagName === 'ul') {
-                            // Bullet list
-                            const items = element.querySelectorAll('li');
-                            items.forEach(item => {
-                                const text = item.innerText.trim();
-                                if (text) {
-                                    checkNewPage(7);
-                                    doc.text('•', margin, yPos);
-                                    const lines = doc.splitTextToSize(text, maxWidth - 10);
-                                    lines.forEach((line, i) => {
-                                        if (i > 0) {
-                                            checkNewPage(7);
-                                        }
-                                        doc.text(line, margin + 10, yPos);
-                                        yPos += 7;
-                                    });
-                                }
-                            });
-                            yPos += 3;
-                        } else if (tagName === 'br') {
-                            yPos += 7;
-                        }
-                    }
-                });
-            }
-
-            // Add footer on last page
-            addPageNumber();
-            doc.setFontSize(8);
-            doc.setTextColor(150);
-            doc.text('Created with SignalWrite', margin, pageHeight - 10);
-
-            // Save with proper filename
-            const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            doc.save(`${filename}.pdf`);
-            
-            showSuccessMessage('PDF Exported ✓');
-
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'export_pdf', {
-                    'event_category': 'Editor',
-                    'event_label': 'pdf_download',
-                    'value': pageNum
-                });
-            }
-        }
-
-        function downloadDraft() {
-            const subject = document.getElementById('subject').value;
-            const content = document.getElementById('editor').innerText;
-            
-            if (!subject && !content) {
-                alert('Nothing to download!');
-                return;
-            }
-
-            const fullText = (subject ? subject + '\n\n' : '') + content;
-            const blob = new Blob([fullText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `signalwrite-draft-${Date.now()}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-            closeModal();
-            
-            showSuccessMessage('Downloaded ✓');
-        }
-
-        function loadDraft(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const text = e.target.result;
-                const lines = text.split('\n');
-                
-                if (lines.length > 0) {
-                    document.getElementById('subject').value = lines[0];
-                    document.getElementById('editor').innerText = lines.slice(2).join('\n');
-                    updateWordCount();
-                    showSuccessMessage('Loaded ✓');
-                }
-            };
-            reader.readAsText(file);
-            closeModal();
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey || e.metaKey) {
-                switch(e.key.toLowerCase()) {
-                    case 'b':
-                        e.preventDefault();
-                        formatText('bold');
-                        break;
-                    case 'i':
-                        e.preventDefault();
-                        formatText('italic');
-                        break;
-                    case 'u':
-                        e.preventDefault();
-                        formatText('underline');
-                        break;
-                    case 'z':
-                        if (!e.shiftKey) {
-                            e.preventDefault();
-                            undo();
-                        }
-                        break;
-                }
-            }
-        });
-
-        window.addEventListener('beforeunload', (e) => {
-            const hasContent = document.getElementById('editor').innerText.trim() || 
-                               document.getElementById('subject').value.trim();
-            if (hasContent) {
-                e.preventDefault();
-                e.returnValue = '';
-            }
-        });
-
-        document.addEventListener('selectionchange', () => {
-            const selection = window.getSelection();
-            if (!selection.toString().trim()) {
-                hideSelectionToolbar();
-            }
-        });
-    </script>
-</body>
-</html>
-                    window.location.href = 'index.html';
-                }
-            } else {
-                window.location.href = 'index.html';
-            }
-        }
-
-        // Word Count
-        function updateWordCount() {
-            const subject = document.getElementById('subject').value;
-            const editor = document.getElementById('editor').innerText;
-            const allText = (subject + ' ' + editor).trim();
-            const words = allText ? allText.split(/\s+/).length : 0;
-            const chars = allText.length;
-            document.getElementById('wordCount').textContent = `${words} words • ${chars} chars`;
-        }
-
-        // Text Selection
-        function checkSelection() {
-            const selection = window.getSelection();
-            selectedText = selection.toString().trim();
-            
-            if (selectedText.length > 0) {
-                selectionRange = selection.getRangeAt(0);
-                showSelectionToolbar();
-                document.getElementById('refineBtn').textContent = '✨ Refine Selection';
-            } else {
-                hideSelectionToolbar();
-                document.getElementById('refineBtn').textContent = '✨ Refine Writing';
-            }
-        }
-
-        function showSelectionToolbar() {
-            const selection = window.getSelection();
-            if (selection.rangeCount === 0) return;
-            
-            const range = selection.getRangeAt(0);
-            const rect = range.getBoundingClientRect();
-            const toolbar = document.getElementById('selectionToolbar');
-            
-            // Position above selection
-            const top = rect.top + window.scrollY - 60;
-            const left = rect.left + window.scrollX + (rect.width / 2) - (toolbar.offsetWidth / 2);
-            
-            toolbar.style.top = top + 'px';
-            toolbar.style.left = Math.max(10, left) + 'px';
-            toolbar.classList.add('active');
-        }
-
-        function hideSelectionToolbar() {
-            const toolbar = document.getElementById('selectionToolbar');
-            // Delay hiding to allow button clicks
-            setTimeout(() => {
-                if (!selectedText) {
-                    toolbar.classList.remove('active');
-                }
-            }, 100);
-        }
-
-        // Text Formatting
-        function formatText(command) {
-            document.execCommand(command, false, null);
-            document.getElementById('editor').focus();
-        }
-
-        function removeFormatting() {
-            document.execCommand('removeFormat', false, null);
-            document.execCommand('unlink', false, null);
-            document.getElementById('editor').focus();
-        }
-
-        // History Management
-        function saveState() {
-            const state = {
-                subject: document.getElementById('subject').value,
-                content: document.getElementById('editor').innerHTML,
-                timestamp: Date.now()
-            };
-            
-            history = history.slice(0, historyIndex + 1);
-            history.push(state);
-            historyIndex = history.length - 1;
-            
-            if (history.length > 20) {
-                history.shift();
-                historyIndex--;
-            }
-        }
-
-        function undo() {
-            if (historyIndex > 0) {
-                historyIndex--;
-                const state = history[historyIndex];
-                document.getElementById('subject').value = state.subject;
-                document.getElementById('editor').innerHTML = state.content;
-                updateWordCount();
-                hideUndoButton();
-            }
-        }
-
-        function showUndoButton() {
-            const btn = document.getElementById('undoBtn');
-            btn.classList.add('visible');
-            
-            setTimeout(() => {
-                btn.classList.remove('visible');
-            }, 10000);
-        }
-
-        function hideUndoButton() {
-            document.getElementById('undoBtn').classList.remove('visible');
-        }
-
-        // Modal Functions
-        function showRefineModal() {
-            const editor = document.getElementById('editor').innerText.trim();
-            
-            if (!selectedText && !editor) {
-                alert('Please write something first!');
-                return;
-            }
-            
-            hideSelectionToolbar();
-            document.getElementById('refineModal').classList.add('active');
-        }
-
-        function showHistory() {
-            document.getElementById('historyModal').classList.add('active');
-        }
-
-        function closeModal() {
-            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
-        }
-
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal();
-            });
-        });
-
-        // AI Refinement
-        async function refineText(mode) {
-            closeModal();
-            
-            saveState();
-            
-            let textToRefine = selectedText || document.getElementById('editor').innerText.trim();
-            
-            if (!textToRefine) {
-                alert('No text to refine!');
-                return;
-            }
-
-            document.getElementById('statusMsg').classList.add('active');
-
-            try {
-                const response = await fetch(`${BACKEND_URL}/refine`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        text: textToRefine,
-                        mode: mode
-                    })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                const refined = data.refined;
-
-                if (selectedText && selectionRange) {
-                    selectionRange.deleteContents();
-                    const textNode = document.createTextNode(refined);
-                    selectionRange.insertNode(textNode);
-                    window.getSelection().removeAllRanges();
-                } else {
-                    document.getElementById('editor').innerText = refined;
-                }
-
-                selectedText = '';
-                selectionRange = null;
-                document.getElementById('refineBtn').textContent = '✨ Refine Writing';
-                updateWordCount();
-                showUndoButton();
-
-                document.getElementById('statusMsg').classList.remove('active');
-                showSuccessMessage('Refined ✓');
-
-            } catch (error) {
-                document.getElementById('statusMsg').classList.remove('active');
-                alert('Refinement failed. Please check your connection and try again.');
-                console.error('Error:', error);
-            }
-        }
-
-        function showSuccessMessage(msg) {
-            const el = document.createElement('div');
-            el.textContent = msg;
-            el.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: var(--success);
-                color: white;
-                padding: 12px 20px;
-                border-radius: 8px;
-                z-index: 300;
-                font-size: 16px;
-            `;
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 2000);
-        }
-
-        // PDF Export (REAL PDF)
-        function exportPDF() {
-            const subject = document.getElementById('subject').value;
             const content = document.getElementById('editor').innerText;
             
             if (!subject && !content) {
@@ -710,104 +1006,7 @@ body.classList.remove('light');
             if (subject) {
                 doc.setFontSize(20);
                 doc.setFont(undefined, 'bold');
-                doc.text(splitText, 20, yPos);
-            }
-            
-            doc.setFontSize(8);
-            doc.setTextColor(150);
-            doc.text('Created with SignalWrite', 20, 285);
-            
-            const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            doc.save(`${filename}.pdf`);
-            
-            showSuccessMessage('PDF Exported ✓');
-        }
-
-        function downloadDraft() {
-            const subject = document.getElementById('subject').value;
-            const content = document.getElementById('editor').innerText;
-            
-            if (!subject && !content) {
-                alert('Nothing to download!');
-                return;
-            }
-
-            const fullText = (subject ? subject + '\n\n' : '') + content;
-            const blob = new Blob([fullText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `signalwrite-draft-${Date.now()}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-            closeModal();
-            
-            showSuccessMessage('Downloaded ✓');
-        }
-
-        function loadDraft(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const text = e.target.result;
-                const lines = text.split('\n');
-                
-                if (lines.length > 0) {
-                    document.getElementById('subject').value = lines[0];
-                    document.getElementById('editor').innerText = lines.slice(2).join('\n');
-                    updateWordCount();
-                    showSuccessMessage('Loaded ✓');
-                }
-            };
-            reader.readAsText(file);
-            closeModal();
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey || e.metaKey) {
-                switch(e.key.toLowerCase()) {
-                    case 'b':
-                        e.preventDefault();
-                        formatText('bold');
-                        break;
-                    case 'i':
-                        e.preventDefault();
-                        formatText('italic');
-                        break;
-                    case 'u':
-                        e.preventDefault();
-                        formatText('underline');
-                        break;
-                    case 'z':
-                        if (!e.shiftKey) {
-                            e.preventDefault();
-                            undo();
-                        }
-                        break;
-                }
-            }
-        });
-
-        window.addEventListener('beforeunload', (e) => {
-            const hasContent = document.getElementById('editor').innerText.trim() || 
-                               document.getElementById('subject').value.trim();
-            if (hasContent) {
-                e.preventDefault();
-                e.returnValue = '';
-            }
-        });
-
-        document.addEventListener('selectionchange', () => {
-            const selection = window.getSelection();
-            if (!selection.toString().trim()) {
-                hideSelectionToolbar();
-            }
-        });
-    </script>
-</body>
-</html>(subject, 20, yPos);
+                doc.text(subject, 20, yPos);
                 yPos += 15;
             }
             
@@ -826,9 +1025,15 @@ body.classList.remove('light');
             doc.save(`${filename}.pdf`);
             
             showSuccessMessage('PDF Exported ✓');
+
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'export_pdf', {
+                    'event_category': 'Editor',
+                    'event_label': 'pdf_download'
+                });
+            }
         }
 
-        // Download Draft
         function downloadDraft() {
             const subject = document.getElementById('subject').value;
             const content = document.getElementById('editor').innerText;
@@ -851,7 +1056,6 @@ body.classList.remove('light');
             showSuccessMessage('Downloaded ✓');
         }
 
-        // Load Draft
         function loadDraft(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -872,7 +1076,6 @@ body.classList.remove('light');
             closeModal();
         }
 
-        // Keyboard Shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
                 switch(e.key.toLowerCase()) {
@@ -889,10 +1092,7 @@ body.classList.remove('light');
                         formatText('underline');
                         break;
                     case 'z':
-                        if (e.shiftKey) {
-                            e.preventDefault();
-                            // Redo not implemented
-                        } else {
+                        if (!e.shiftKey) {
                             e.preventDefault();
                             undo();
                         }
@@ -901,7 +1101,6 @@ body.classList.remove('light');
             }
         });
 
-        // Handle browser back button
         window.addEventListener('beforeunload', (e) => {
             const hasContent = document.getElementById('editor').innerText.trim() || 
                                document.getElementById('subject').value.trim();
@@ -910,6 +1109,13 @@ body.classList.remove('light');
                 e.returnValue = '';
             }
         });
+
+        document.addEventListener('selectionchange', () => {
+            const selection = window.getSelection();
+            if (!selection.toString().trim()) {
+                hideSelectionToolbar();
+            }
+        });
     </script>
 </body>
-</html>
+                       </html>
