@@ -12,11 +12,9 @@
         gtag('js', new Date());
         gtag('config', 'G-W5644J7XBD');
         
-        // Copyright Protection
         console.log('%c⚠️ STOP!', 'font-size: 40px; color: red; font-weight: bold;');
         console.log('%c© 2025 SignalWrite - All Rights Reserved', 'font-size: 16px; color: #6366f1; font-weight: bold;');
-        console.log('%cUnauthorized copying, distribution, or modification of this code is strictly prohibited.', 'font-size: 14px; color: #666;');
-        console.log('%cViolators will be prosecuted to the fullest extent of the law.', 'font-size: 14px; color: red;');
+        console.log('%cUnauthorized copying prohibited.', 'font-size: 14px; color: #666;');
     </script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -42,6 +40,7 @@
             --accent-hover: #4f46e5;
             --success: #10b981;
             --error: #ef4444;
+            --warning: #f59e0b;
         }
 
         body {
@@ -72,7 +71,7 @@
             align-items: center;
             padding: 14px 20px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
         }
 
         .dark .header {
@@ -116,13 +115,12 @@
             letter-spacing: -0.5px;
         }
 
-        /* Modern Export Button */
         .export-btn {
             position: relative;
-            background: transparent;
-            border: 1.5px solid var(--accent);
-            color: var(--accent);
-            padding: 9px 18px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 18px;
             border-radius: 10px;
             font-size: 14px;
             font-weight: 600;
@@ -132,38 +130,17 @@
             align-items: center;
             gap: 8px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-        }
-
-        .export-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 100%;
-            background: var(--accent);
-            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: -1;
-        }
-
-        .export-btn:hover::before {
-            width: 100%;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
         }
 
         .export-btn:hover {
-            color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+            background: var(--accent-hover);
         }
 
         .export-btn-icon {
             font-size: 16px;
-            transition: transform 0.3s;
-        }
-
-        .export-btn:hover .export-btn-icon {
-            transform: scale(1.1);
         }
 
         .main-container {
@@ -198,7 +175,6 @@
             line-height: 1.7;
             padding: 12px 0;
             color: inherit;
-            position: relative;
         }
 
         .editor:empty:before {
@@ -217,52 +193,6 @@
 
         .editor li {
             margin: 8px 0;
-        }
-
-        /* Spell Check Highlighting */
-        .spelling-error {
-            background: linear-gradient(to top, rgba(239, 68, 68, 0.3) 0%, rgba(239, 68, 68, 0.3) 2px, transparent 2px);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .grammar-error {
-            background: linear-gradient(to top, rgba(251, 146, 60, 0.3) 0%, rgba(251, 146, 60, 0.3) 2px, transparent 2px);
-            cursor: pointer;
-        }
-
-        .spell-check-badge {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            display: none;
-            z-index: 99;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .dark .spell-check-badge {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .light .spell-check-badge {
-            background: rgba(239, 68, 68, 0.1);
-            color: #dc2626;
-            border: 1px solid rgba(239, 68, 68, 0.2);
-        }
-
-        .spell-check-badge.visible {
-            display: block;
-        }
-
-        .spell-check-badge:hover {
-            transform: scale(1.05);
         }
 
         .selection-toolbar {
@@ -391,6 +321,7 @@
             display: flex;
             gap: 12px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .info-link {
@@ -399,8 +330,15 @@
             color: inherit;
             cursor: pointer;
             padding: 4px 8px;
-            text-decoration: underline;
+            text-decoration: none;
             font-size: 13px;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .info-link:hover {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent);
         }
 
         .undo-btn {
@@ -473,6 +411,7 @@
             background-color: white;
         }
 
+        /* Modern Modal Design */
         .modal {
             display: none;
             position: fixed;
@@ -480,10 +419,18 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
             z-index: 200;
             justify-content: center;
-            align-items: flex-end;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal.active {
@@ -492,71 +439,180 @@
 
         .modal-content {
             width: 100%;
-            max-height: 70vh;
-            border-radius: 20px 20px 0 0;
-            padding: 24px;
+            max-width: 500px;
+            max-height: 85vh;
+            border-radius: 20px;
+            padding: 28px;
             overflow-y: auto;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .dark .modal-content {
-            background: var(--surface-dark);
+            background: linear-gradient(145deg, #1e1e1e 0%, #1a1a1a 100%);
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .light .modal-content {
-            background: var(--surface-light);
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
         }
 
         .modal-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 20px;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
-        .modal-btn {
-            width: 100%;
-            padding: 16px;
-            margin: 8px 0;
-            border: 1px solid;
-            border-radius: 10px;
+        .modal-close {
             background: none;
-            font-size: 16px;
+            border: none;
+            font-size: 24px;
             cursor: pointer;
-            text-align: left;
-            color: inherit;
-            min-height: 48px;
+            color: var(--text-secondary-dark);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
             transition: all 0.2s;
         }
 
-        .dark .modal-btn {
+        .modal-close:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-dark);
+        }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .modal-option {
+            padding: 20px 16px;
+            border: 2px solid;
+            border-radius: 14px;
+            background: transparent;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: inherit;
+        }
+
+        .dark .modal-option {
             border-color: rgba(255,255,255,0.1);
         }
 
-        .light .modal-btn {
+        .light .modal-option {
             border-color: rgba(0,0,0,0.1);
         }
 
-        .modal-btn:active {
-            transform: scale(0.98);
-            background: var(--accent);
-            color: white;
+        .modal-option:hover {
+            transform: translateY(-4px);
             border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
         }
 
-        .modal-btn-primary {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
+        .modal-option:active {
+            transform: translateY(-2px);
         }
 
-        .modal-btn strong {
-            display: block;
+        .modal-option-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .modal-option-title {
+            font-weight: 600;
+            font-size: 15px;
             margin-bottom: 4px;
         }
 
-        .modal-btn small {
-            display: block;
-            opacity: 0.7;
+        .modal-option-desc {
+            font-size: 12px;
+            opacity: 0.6;
+        }
+
+        .history-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+        }
+
+        .history-item {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid;
+        }
+
+        .dark .history-item {
+            background: rgba(255,255,255,0.03);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .light .history-item {
+            background: rgba(0,0,0,0.02);
+            border-color: rgba(0,0,0,0.08);
+        }
+
+        .history-item:hover {
+            transform: translateX(4px);
+            border-color: var(--accent);
+        }
+
+        .history-item-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+
+        .history-item-preview {
             font-size: 13px;
+            opacity: 0.6;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .history-item-date {
+            font-size: 11px;
+            opacity: 0.5;
+            margin-top: 4px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
         }
 
         .status-msg {
@@ -573,10 +629,12 @@
             z-index: 300;
             max-width: 80%;
             text-align: center;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
         }
 
         .status-msg.active {
             display: block;
+            animation: slideUp 0.3s ease;
         }
 
         input[type="file"] {
@@ -598,14 +656,16 @@
                 flex-direction: column;
                 gap: 12px;
             }
-            .spell-check-badge {
-                top: 70px;
-                right: 10px;
+            .modal-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-content {
+                padding: 24px;
             }
         }
 
         @media print {
-            .header, .bottom-bar, .selection-toolbar, .spell-check-badge {
+            .header, .bottom-bar, .selection-toolbar {
                 display: none !important;
             }
             body {
@@ -631,24 +691,20 @@
         </button>
     </header>
 
-    <div class="spell-check-badge" id="spellCheckBadge" onclick="runSpellCheck()">
-        <span id="errorCount">0</span> issues found • Click to check
-    </div>
-
     <div class="main-container">
         <input 
             type="text" 
             class="subject-field" 
             id="subject"
             placeholder="What are we writing today?"
-            onkeyup="updateWordCount(); debouncedSpellCheck()"
+            onkeyup="updateWordCount(); autoSave()"
             spellcheck="true"
         >
         <div 
             class="editor" 
             id="editor" 
             contenteditable="true"
-            onkeyup="updateWordCount(); debouncedSpellCheck()"
+            onkeyup="updateWordCount(); autoSave()"
             onmouseup="handleSelection()"
             ontouchend="handleSelection()"
             spellcheck="true"
@@ -684,7 +740,7 @@
             <div class="info-left">
                 <span id="wordCount">0 words</span>
                 <span>•</span>
-                <button class="info-link" onclick="showHistory()">History</button>
+                <button class="info-link" onclick="showHistory()">📚 History</button>
                 <span>•</span>
                 <button class="undo-btn" id="undoBtn" onclick="undo()">↩ Undo</button>
             </div>
@@ -700,142 +756,118 @@
 
     <div class="status-msg" id="statusMsg">Processing...</div>
 
-    <!-- Export Modal -->
+    <!-- Modern Export Modal -->
     <div class="modal" id="exportModal">
         <div class="modal-content">
-            <div class="modal-title">Export Options</div>
-            <button class="modal-btn" onclick="exportPDF()">
-                <strong>📄 PDF Document</strong>
-                <small>Professional locked format, perfect typography</small>
-            </button>
-            <button class="modal-btn" onclick="exportDOCX()">
-                <strong>📝 Word (.docx)</strong>
-                <small>Editable format for Microsoft Word</small>
-            </button>
-            <button class="modal-btn" onclick="printDocument()">
-                <strong>🖨️ Print</strong>
-                <small>Send to printer or save as PDF</small>
-            </button>
-            <button class="modal-btn" onclick="shareDocument()">
-                <strong>📤 Share</strong>
-                <small>Share via email, messaging, or apps</small>
-            </button>
-            <button class="modal-btn modal-btn-primary" onclick="closeModal()">Cancel</button>
+            <div class="modal-header">
+                <div class="modal-title">Export Document</div>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-grid">
+                <button class="modal-option" onclick="exportPDF()">
+                    <div class="modal-option-icon">📄</div>
+                    <div class="modal-option-title">PDF</div>
+                    <div class="modal-option-desc">Locked format</div>
+                </button>
+                <button class="modal-option" onclick="exportDOCX()">
+                    <div class="modal-option-icon">📝</div>
+                    <div class="modal-option-title">Word</div>
+                    <div class="modal-option-desc">Editable doc</div>
+                </button>
+                <button class="modal-option" onclick="printDocument()">
+                    <div class="modal-option-icon">🖨️</div>
+                    <div class="modal-option-title">Print</div>
+                    <div class="modal-option-desc">Physical copy</div>
+                </button>
+                <button class="modal-option" onclick="shareDocument()">
+                    <div class="modal-option-icon">📤</div>
+                    <div class="modal-option-title">Share</div>
+                    <div class="modal-option-desc">Send to apps</div>
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Refine Modal -->
+    <!-- Modern Refine Modal -->
     <div class="modal" id="refineModal">
         <div class="modal-content">
-            <div class="modal-title">AI Refinement Mode</div>
-            <p style="opacity: 0.7; margin-bottom: 16px; font-size: 14px;">✨ Powered by Mistral 7B AI</p>
-            <button class="modal-btn" onclick="refineText('professional')">
-                <strong>💼 Professional</strong>
-                <small>Business-ready, confident, removes hedging</small>
-            </button>
-            <button class="modal-btn" onclick="refineText('anxiety-neutralizer')">
-                <strong>🧘 Anxiety Neutralizer</strong>
-                <small>Direct, assertive, removes apologetic tone</small>
-            </button>
-            <button class="modal-btn" onclick="refineText('legal')">
-                <strong>⚖️ Legal</strong>
-                <small>Formal structure, factual, professional</small>
-            </button>
-            <button class="modal-btn modal-btn-primary" onclick="closeModal()">Cancel</button>
+            <div class="modal-header">
+                <div class="modal-title">AI Refinement</div>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <p style="opacity: 0.6; margin-bottom: 20px; font-size: 14px;">✨ Powered by Mistral 7B AI</p>
+            <div class="modal-grid">
+                <button class="modal-option" onclick="refineText('professional')">
+                    <div class="modal-option-icon">💼</div>
+                    <div class="modal-option-title">Professional</div>
+                    <div class="modal-option-desc">Business-ready</div>
+                </button>
+                <button class="modal-option" onclick="refineText('anxiety-neutralizer')">
+                    <div class="modal-option-icon">🧘</div>
+                    <div class="modal-option-title">Confident</div>
+                    <div class="modal-option-desc">Remove anxiety</div>
+                </button>
+                <button class="modal-option" onclick="refineText('legal')">
+                    <div class="modal-option-icon">⚖️</div>
+                    <div class="modal-option-title">Legal</div>
+                    <div class="modal-option-desc">Formal tone</div>
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- History Modal -->
+    <!-- Modern History Modal -->
     <div class="modal" id="historyModal">
         <div class="modal-content">
-            <div class="modal-title">Document History</div>
-            <p style="opacity: 0.7; margin-bottom: 16px;">Save or load your drafts</p>
-            <button class="modal-btn" onclick="downloadDraft()">💾 Download Draft (.txt)</button>
-            <button class="modal-btn" onclick="document.getElementById('fileInput').click()">📂 Load Draft</button>
-            <button class="modal-btn modal-btn-primary" onclick="closeModal()">Close</button>
+            <div class="modal-header">
+                <div class="modal-title">Document History</div>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="history-list" id="historyList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📝</div>
+                    <div>No saved documents yet</div>
+                </div>
+            </div>
+            <div class="modal-grid">
+                <button class="modal-option" onclick="downloadDraft()">
+                    <div class="modal-option-icon">💾</div>
+                    <div class="modal-option-title">Save</div>
+                    <div class="modal-option-desc">Download draft</div>
+                </button>
+                <button class="modal-option" onclick="document.getElementById('fileInput').click()">
+                    <div class="modal-option-icon">📂</div>
+                    <div class="modal-option-title">Load</div>
+                    <div class="modal-option-desc">Open file</div>
+                </button>
+            </div>
         </div>
     </div>
 
     <input type="file" id="fileInput" accept=".txt" onchange="loadDraft(event)">
 
     <script>
-        // Code Protection
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'U' || e.key === 'S')) {
-                if (e.key === 'u' || e.key === 'U') {
-                    e.preventDefault();
-                    alert('© 2025 SignalWrite - Code inspection disabled');
-                }
-            }
-        });
-
-        const BACKEND_URL = 'backend-signalwrite-git-main-louis-nkan-enobong-s-projects.vercel.app';
-        let history = [];
-        let historyIndex = -1;
+        
+        const BACKEND_URL = 'https://backend-signalwrite-git-main-louis-nkan-enobong-s-projects.vercel.app';
         let selectedText = '';
         let selectionRange = null;
-        let spellCheckTimeout;
+        let autoSaveTimeout;
 
         updateWordCount();
-
-        // Spell Check with LanguageTool
-        let spellCheckDebounce;
-        function debouncedSpellCheck() {
-            clearTimeout(spellCheckDebounce);
-            spellCheckDebounce = setTimeout(() => runSpellCheck(), 2000);
-        }
-
-        async function runSpellCheck() {
-            const text = document.getElementById('editor').innerText.trim();
-            if (!text || text.length < 10) return;
-
-            try {
-                const response = await fetch('https://api.languagetool.org/v2/check', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: new URLSearchParams({
-                        text: text,
-                        language: 'en-US',
-                        enabledOnly: 'false'
-                    })
-                });
-
-                const data = await response.json();
-                const errorCount = data.matches ? data.matches.length : 0;
-
-                const badge = document.getElementById('spellCheckBadge');
-                const errorCountEl = document.getElementById('errorCount');
-
-                if (errorCount > 0) {
-                    errorCountEl.textContent = errorCount;
-                    badge.classList.add('visible');
-                } else {
-                    badge.classList.remove('visible');
-                }
-            } catch (error) {
-                console.error('Spell check failed:', error);
-            }
-        }
+        loadHistory();
 
         function toggleTheme() {
             const body = document.body;
             const toggle = document.getElementById('themeToggle');
-            
             if (toggle.checked) {
                 body.classList.remove('dark');
                 body.classList.add('light');
                 localStorage.setItem('theme', 'light');
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'theme_change', { 'event_label': 'light_mode' });
-                }
             } else {
                 body.classList.remove('light');
                 body.classList.add('dark');
                 localStorage.setItem('theme', 'dark');
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'theme_change', { 'event_label': 'dark_mode' });
-                }
             }
         }
 
@@ -868,6 +900,60 @@
             const words = allText ? allText.split(/\s+/).length : 0;
             const chars = allText.length;
             document.getElementById('wordCount').textContent = `${words} words • ${chars} chars`;
+        }
+
+        function autoSave() {
+            clearTimeout(autoSaveTimeout);
+            autoSaveTimeout = setTimeout(() => {
+                const subject = document.getElementById('subject').value.trim();
+                const content = document.getElementById('editor').innerText.trim();
+                if (subject || content) {
+                    const draft = {
+                        id: Date.now(),
+                        subject: subject || 'Untitled',
+                        content: content,
+                        date: new Date().toISOString()
+                    };
+                    let history = JSON.parse(localStorage.getItem('documentHistory') || '[]');
+                    history = [draft, ...history.slice(0, 19)];
+                    localStorage.setItem('documentHistory', JSON.stringify(history));
+                }
+            }, 3000);
+        }
+
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('documentHistory') || '[]');
+            const historyList = document.getElementById('historyList');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <div>No saved documents yet</div>
+                    </div>
+                `;
+                return;
+            }
+
+            historyList.innerHTML = history.map(item => `
+                <div class="history-item" onclick="loadHistoryItem(${item.id})">
+                    <div class="history-item-title">${item.subject}</div>
+                    <div class="history-item-preview">${item.content.substring(0, 60)}...</div>
+                    <div class="history-item-date">${new Date(item.date).toLocaleDateString()}</div>
+                </div>
+            `).join('');
+        }
+
+        function loadHistoryItem(id) {
+            const history = JSON.parse(localStorage.getItem('documentHistory') || '[]');
+            const item = history.find(h => h.id === id);
+            if (item) {
+                document.getElementById('subject').value = item.subject;
+                document.getElementById('editor').innerText = item.content;
+                updateWordCount();
+                closeModal();
+                showSuccessMessage('Document loaded ✓');
+            }
         }
 
         function handleSelection() {
@@ -907,9 +993,6 @@
         function formatText(command) {
             document.execCommand(command, false, null);
             document.getElementById('editor').focus();
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'text_format', { 'event_label': command });
-            }
             handleSelection();
         }
 
@@ -920,40 +1003,15 @@
             handleSelection();
         }
 
-        function saveState() {
-            const state = {
-                subject: document.getElementById('subject').value,
-                content: document.getElementById('editor').innerHTML,
-                timestamp: Date.now()
-            };
-            history = history.slice(0, historyIndex + 1);
-            history.push(state);
-            historyIndex = history.length - 1;
-            if (history.length > 20) {
-                history.shift();
-                historyIndex--;
-            }
-        }
-
         function undo() {
-            if (historyIndex > 0) {
-                historyIndex--;
-                const state = history[historyIndex];
-                document.getElementById('subject').value = state.subject;
-                document.getElementById('editor').innerHTML = state.content;
-                updateWordCount();
-                hideUndoButton();
-            }
+            document.execCommand('undo');
+            updateWordCount();
         }
 
         function showUndoButton() {
             const btn = document.getElementById('undoBtn');
             btn.classList.add('visible');
             setTimeout(() => btn.classList.remove('visible'), 10000);
-        }
-
-        function hideUndoButton() {
-            document.getElementById('undoBtn').classList.remove('visible');
         }
 
         function showExportModal() {
@@ -971,6 +1029,7 @@
         }
 
         function showHistory() {
+            loadHistory();
             document.getElementById('historyModal').classList.add('active');
         }
 
@@ -984,10 +1043,8 @@
             });
         });
 
-        // AI Refinement with Mistral 7B
         async function refineText(mode) {
             closeModal();
-            saveState();
             let textToRefine = selectedText || document.getElementById('editor').innerText.trim();
             if (!textToRefine) {
                 alert('No text to refine!');
@@ -996,9 +1053,9 @@
 
             const refineBtn = document.getElementById('refineBtn');
             refineBtn.disabled = true;
-            refineBtn.innerHTML = '⏳ Refining with AI...';
+            refineBtn.innerHTML = '⏳ Refining...';
             
-            document.getElementById('statusMsg').textContent = 'AI is refining your text... (may take 10-20 seconds)';
+            document.getElementById('statusMsg').textContent = 'AI is refining (10-20 sec)...';
             document.getElementById('statusMsg').classList.add('active');
 
             try {
@@ -1010,21 +1067,16 @@
 
                 if (!response.ok) {
                     if (response.status === 503) {
-                        throw new Error('Model is loading. Please wait 20 seconds and try again.');
+                        throw new Error('Model loading. Wait 20 seconds and try again.');
                     }
                     throw new Error(`Server error: ${response.status}`);
                 }
 
                 const data = await response.json();
-                
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-
-                const refined = data.refined || data.refined_text || '';
+                const refined = data.refined || '';
 
                 if (!refined) {
-                    throw new Error('No refined text received from AI');
+                    throw new Error('No refined text received');
                 }
 
                 if (selectedText && selectionRange) {
@@ -1037,20 +1089,15 @@
 
                 selectedText = '';
                 selectionRange = null;
-                document.getElementById('refineBtn').textContent = '✨ Refine Writing';
                 updateWordCount();
                 showUndoButton();
-
                 document.getElementById('statusMsg').classList.remove('active');
-                showSuccessMessage('✨ AI Refined Successfully!');
+                showSuccessMessage('✨ Refined by AI!');
 
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'refine_text', { 'event_label': mode, 'value': 'mistral-7b' });
-                }
             } catch (error) {
                 document.getElementById('statusMsg').classList.remove('active');
-                console.error('Refinement error:', error);
-                alert(`Refinement failed: ${error.message}\n\nTip: If model is loading, wait 20 seconds and try again.`);
+                console.error('Error:', error);
+                alert(`Refinement failed: ${error.message}\n\nTip: Wait 20 seconds if model is loading.`);
             } finally {
                 refineBtn.disabled = false;
                 refineBtn.innerHTML = '✨ Refine Writing';
@@ -1062,12 +1109,11 @@
             el.textContent = msg;
             el.style.cssText = `position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
                 background: var(--success); color: white; padding: 12px 20px;
-                border-radius: 8px; z-index: 300; font-size: 16px;`;
+                border-radius: 8px; z-index: 300; font-size: 16px; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);`;
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 2000);
         }
 
-        // PDF Export
         function exportPDF() {
             closeModal();
             const subject = document.getElementById('subject').value.trim();
@@ -1078,6 +1124,7 @@
             }
             document.getElementById('statusMsg').textContent = 'Creating PDF...';
             document.getElementById('statusMsg').classList.add('active');
+            
             setTimeout(() => {
                 try {
                     const { jsPDF } = window.jspdf;
@@ -1085,7 +1132,6 @@
                     const margin = 20;
                     const pageWidth = 210;
                     const pageHeight = 297;
-                    const lineHeight = 7;
                     const maxWidth = pageWidth - (margin * 2);
                     let y = margin;
 
@@ -1095,7 +1141,7 @@
                     }
 
                     function checkSpace(needed) {
-                        if (y + needed > pageHeight - margin) {
+                        if (y + needed > pageHeight - margin - 15) {
                             addPage();
                         }
                     }
@@ -1109,25 +1155,26 @@
                             doc.text(line, margin, y);
                             y += 9;
                         });
-                        y += 8;
+                        y += 10;
                     }
 
-                    doc.setFontSize(11);
+                    doc.setFontSize(12);
                     doc.setFont('helvetica', 'normal');
 
-                    const fullText = editor.innerText;
-                    const paragraphs = fullText.split(/\n\n+/);
+                    const text = editor.innerText.trim();
+                    const paragraphs = text.split(/\n\n+/);
 
                     paragraphs.forEach(para => {
                         para = para.trim();
                         if (!para) return;
+                        
                         const lines = doc.splitTextToSize(para, maxWidth);
                         lines.forEach(line => {
-                            checkSpace(lineHeight);
+                            checkSpace(7);
                             doc.text(line, margin, y);
-                            y += lineHeight;
+                            y += 7;
                         });
-                        y += 3;
+                        y += 4;
                     });
 
                     const pageCount = doc.internal.getNumberOfPages();
@@ -1140,22 +1187,19 @@
                         doc.setTextColor(0);
                     }
 
-                    const filename = subject ? subject.replace(/[^a-z0-9]/gi, '_').substring(0, 50).toLowerCase() : 'document';
+                    const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').substring(0, 50).toLowerCase();
                     doc.save(`${filename}.pdf`);
+                    
                     document.getElementById('statusMsg').classList.remove('active');
                     showSuccessMessage('PDF Exported ✓');
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'export_pdf', { 'event_label': 'success' });
-                    }
                 } catch (error) {
                     document.getElementById('statusMsg').classList.remove('active');
                     console.error('PDF Error:', error);
-                    alert('PDF export failed. Please try again.');
+                    alert('PDF export failed. Try again.');
                 }
             }, 100);
         }
 
-        // DOCX Export
         async function exportDOCX() {
             closeModal();
             const subject = document.getElementById('subject').value.trim();
@@ -1164,7 +1208,7 @@
                 alert('Nothing to export!');
                 return;
             }
-            document.getElementById('statusMsg').textContent = 'Creating Word document...';
+            document.getElementById('statusMsg').textContent = 'Creating Word doc...';
             document.getElementById('statusMsg').classList.add('active');
 
             try {
@@ -1197,30 +1241,24 @@
                 });
 
                 const doc = new Document({
-                    sections: [{
-                        properties: {},
-                        children: children
-                    }]
+                    sections: [{ properties: {}, children: children }]
                 });
 
                 const blob = await docx.Packer.toBlob(doc);
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                const filename = subject ? subject.replace(/[^a-z0-9]/gi, '_').substring(0, 50).toLowerCase() : 'document';
+                const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').substring(0, 50).toLowerCase();
                 a.download = `${filename}.docx`;
                 a.click();
                 URL.revokeObjectURL(url);
                 
                 document.getElementById('statusMsg').classList.remove('active');
                 showSuccessMessage('Word Doc Exported ✓');
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'export_docx', { 'event_label': 'success' });
-                }
             } catch (error) {
                 document.getElementById('statusMsg').classList.remove('active');
                 console.error('DOCX Error:', error);
-                alert('Word export failed. Try PDF export instead.');
+                alert('Word export failed. Try PDF instead.');
             }
         }
 
@@ -1233,9 +1271,6 @@
                 return;
             }
             window.print();
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'print_document', { 'event_label': 'print' });
-            }
         }
 
         async function shareDocument() {
@@ -1257,9 +1292,6 @@
             if (navigator.share) {
                 try {
                     await navigator.share(shareData);
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'share_document', { 'event_label': 'native_share' });
-                    }
                 } catch (error) {
                     if (error.name !== 'AbortError') {
                         console.error('Share error:', error);
@@ -1269,9 +1301,6 @@
                 try {
                     await navigator.clipboard.writeText(shareText);
                     showSuccessMessage('Copied to clipboard ✓');
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'share_document', { 'event_label': 'clipboard' });
-                    }
                 } catch (error) {
                     alert('Share not supported. Try exporting instead.');
                 }
