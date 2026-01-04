@@ -11,6 +11,12 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-W5644J7XBD');
+        
+        // Copyright Protection
+        console.log('%c⚠️ STOP!', 'font-size: 40px; color: red; font-weight: bold;');
+        console.log('%c© 2025 SignalWrite - All Rights Reserved', 'font-size: 16px; color: #6366f1; font-weight: bold;');
+        console.log('%cUnauthorized copying, distribution, or modification of this code is strictly prohibited.', 'font-size: 14px; color: #666;');
+        console.log('%cViolators will be prosecuted to the fullest extent of the law.', 'font-size: 14px; color: red;');
     </script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -35,6 +41,7 @@
             --accent: #6366f1;
             --accent-hover: #4f46e5;
             --success: #10b981;
+            --error: #ef4444;
         }
 
         body {
@@ -43,6 +50,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            user-select: text;
         }
 
         body.dark {
@@ -108,26 +116,54 @@
             letter-spacing: -0.5px;
         }
 
+        /* Modern Export Button */
         .export-btn {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
-            color: white;
-            border: none;
-            padding: 10px 20px;
+            position: relative;
+            background: transparent;
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+            padding: 9px 18px;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            min-height: 44px;
+            min-height: 42px;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .export-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .export-btn:hover::before {
+            width: 100%;
         }
 
         .export-btn:hover {
+            color: white;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .export-btn-icon {
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+
+        .export-btn:hover .export-btn-icon {
+            transform: scale(1.1);
         }
 
         .main-container {
@@ -162,6 +198,7 @@
             line-height: 1.7;
             padding: 12px 0;
             color: inherit;
+            position: relative;
         }
 
         .editor:empty:before {
@@ -180,6 +217,52 @@
 
         .editor li {
             margin: 8px 0;
+        }
+
+        /* Spell Check Highlighting */
+        .spelling-error {
+            background: linear-gradient(to top, rgba(239, 68, 68, 0.3) 0%, rgba(239, 68, 68, 0.3) 2px, transparent 2px);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .grammar-error {
+            background: linear-gradient(to top, rgba(251, 146, 60, 0.3) 0%, rgba(251, 146, 60, 0.3) 2px, transparent 2px);
+            cursor: pointer;
+        }
+
+        .spell-check-badge {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            display: none;
+            z-index: 99;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dark .spell-check-badge {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .light .spell-check-badge {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .spell-check-badge.visible {
+            display: block;
+        }
+
+        .spell-check-badge:hover {
+            transform: scale(1.05);
         }
 
         .selection-toolbar {
@@ -286,6 +369,12 @@
         .refine-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        .refine-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .bottom-info {
@@ -482,6 +571,8 @@
             font-size: 16px;
             display: none;
             z-index: 300;
+            max-width: 80%;
+            text-align: center;
         }
 
         .status-msg.active {
@@ -507,10 +598,14 @@
                 flex-direction: column;
                 gap: 12px;
             }
+            .spell-check-badge {
+                top: 70px;
+                right: 10px;
+            }
         }
 
         @media print {
-            .header, .bottom-bar, .selection-toolbar {
+            .header, .bottom-bar, .selection-toolbar, .spell-check-badge {
                 display: none !important;
             }
             body {
@@ -531,9 +626,14 @@
             <div class="logo">SignalWrite</div>
         </div>
         <button class="export-btn" onclick="showExportModal()">
-            📤 Export
+            <span class="export-btn-icon">↗</span>
+            <span>Export</span>
         </button>
     </header>
+
+    <div class="spell-check-badge" id="spellCheckBadge" onclick="runSpellCheck()">
+        <span id="errorCount">0</span> issues found • Click to check
+    </div>
 
     <div class="main-container">
         <input 
@@ -541,15 +641,17 @@
             class="subject-field" 
             id="subject"
             placeholder="What are we writing today?"
-            onkeyup="updateWordCount()"
+            onkeyup="updateWordCount(); debouncedSpellCheck()"
+            spellcheck="true"
         >
         <div 
             class="editor" 
             id="editor" 
             contenteditable="true"
-            onkeyup="updateWordCount()"
+            onkeyup="updateWordCount(); debouncedSpellCheck()"
             onmouseup="handleSelection()"
             ontouchend="handleSelection()"
+            spellcheck="true"
         ></div>
     </div>
 
@@ -612,11 +714,11 @@
             </button>
             <button class="modal-btn" onclick="printDocument()">
                 <strong>🖨️ Print</strong>
-                <small>Send to printer or save as PDF from browser</small>
+                <small>Send to printer or save as PDF</small>
             </button>
             <button class="modal-btn" onclick="shareDocument()">
                 <strong>📤 Share</strong>
-                <small>Share via email, messaging, or other apps</small>
+                <small>Share via email, messaging, or apps</small>
             </button>
             <button class="modal-btn modal-btn-primary" onclick="closeModal()">Cancel</button>
         </div>
@@ -626,6 +728,7 @@
     <div class="modal" id="refineModal">
         <div class="modal-content">
             <div class="modal-title">AI Refinement Mode</div>
+            <p style="opacity: 0.7; margin-bottom: 16px; font-size: 14px;">✨ Powered by Mistral 7B AI</p>
             <button class="modal-btn" onclick="refineText('professional')">
                 <strong>💼 Professional</strong>
                 <small>Business-ready, confident, removes hedging</small>
@@ -656,13 +759,64 @@
     <input type="file" id="fileInput" accept=".txt" onchange="loadDraft(event)">
 
     <script>
-        const BACKEND_URL = 'https://signalwrite-backend-okbb.vercel.app';
+        // Code Protection
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && (e.key === 'u' || e.key === 's' || e.key === 'U' || e.key === 'S')) {
+                if (e.key === 'u' || e.key === 'U') {
+                    e.preventDefault();
+                    alert('© 2025 SignalWrite - Code inspection disabled');
+                }
+            }
+        });
+
+        const BACKEND_URL = 'backend-signalwrite-git-main-louis-nkan-enobong-s-projects.vercel.app';
         let history = [];
         let historyIndex = -1;
         let selectedText = '';
         let selectionRange = null;
+        let spellCheckTimeout;
 
         updateWordCount();
+
+        // Spell Check with LanguageTool
+        let spellCheckDebounce;
+        function debouncedSpellCheck() {
+            clearTimeout(spellCheckDebounce);
+            spellCheckDebounce = setTimeout(() => runSpellCheck(), 2000);
+        }
+
+        async function runSpellCheck() {
+            const text = document.getElementById('editor').innerText.trim();
+            if (!text || text.length < 10) return;
+
+            try {
+                const response = await fetch('https://api.languagetool.org/v2/check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({
+                        text: text,
+                        language: 'en-US',
+                        enabledOnly: 'false'
+                    })
+                });
+
+                const data = await response.json();
+                const errorCount = data.matches ? data.matches.length : 0;
+
+                const badge = document.getElementById('spellCheckBadge');
+                const errorCountEl = document.getElementById('errorCount');
+
+                if (errorCount > 0) {
+                    errorCountEl.textContent = errorCount;
+                    badge.classList.add('visible');
+                } else {
+                    badge.classList.remove('visible');
+                }
+            } catch (error) {
+                console.error('Spell check failed:', error);
+            }
+        }
 
         function toggleTheme() {
             const body = document.body;
@@ -830,6 +984,7 @@
             });
         });
 
+        // AI Refinement with Mistral 7B
         async function refineText(mode) {
             closeModal();
             saveState();
@@ -838,17 +993,40 @@
                 alert('No text to refine!');
                 return;
             }
-            document.getElementById('statusMsg').textContent = 'Refining...';
+
+            const refineBtn = document.getElementById('refineBtn');
+            refineBtn.disabled = true;
+            refineBtn.innerHTML = '⏳ Refining with AI...';
+            
+            document.getElementById('statusMsg').textContent = 'AI is refining your text... (may take 10-20 seconds)';
             document.getElementById('statusMsg').classList.add('active');
+
             try {
                 const response = await fetch(`${BACKEND_URL}/refine`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ text: textToRefine, mode: mode })
                 });
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                if (!response.ok) {
+                    if (response.status === 503) {
+                        throw new Error('Model is loading. Please wait 20 seconds and try again.');
+                    }
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
                 const data = await response.json();
-                const refined = data.refined;
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                const refined = data.refined || data.refined_text || '';
+
+                if (!refined) {
+                    throw new Error('No refined text received from AI');
+                }
+
                 if (selectedText && selectionRange) {
                     selectionRange.deleteContents();
                     selectionRange.insertNode(document.createTextNode(refined));
@@ -856,20 +1034,26 @@
                 } else {
                     document.getElementById('editor').innerText = refined;
                 }
+
                 selectedText = '';
                 selectionRange = null;
                 document.getElementById('refineBtn').textContent = '✨ Refine Writing';
                 updateWordCount();
                 showUndoButton();
+
                 document.getElementById('statusMsg').classList.remove('active');
-                showSuccessMessage('Refined ✓');
+                showSuccessMessage('✨ AI Refined Successfully!');
+
                 if (typeof gtag !== 'undefined') {
-                    gtag('event', 'refine_text', { 'event_label': mode });
+                    gtag('event', 'refine_text', { 'event_label': mode, 'value': 'mistral-7b' });
                 }
             } catch (error) {
                 document.getElementById('statusMsg').classList.remove('active');
-                alert('Refinement failed. Please check connection.');
-                console.error('Error:', error);
+                console.error('Refinement error:', error);
+                alert(`Refinement failed: ${error.message}\n\nTip: If model is loading, wait 20 seconds and try again.`);
+            } finally {
+                refineBtn.disabled = false;
+                refineBtn.innerHTML = '✨ Refine Writing';
             }
         }
 
@@ -883,7 +1067,7 @@
             setTimeout(() => el.remove(), 2000);
         }
 
-        // 🔥 PERFECT PDF EXPORT
+        // PDF Export
         function exportPDF() {
             closeModal();
             const subject = document.getElementById('subject').value.trim();
@@ -916,7 +1100,6 @@
                         }
                     }
 
-                    // Title
                     if (subject) {
                         doc.setFontSize(18);
                         doc.setFont('helvetica', 'bold');
@@ -929,35 +1112,15 @@
                         y += 8;
                     }
 
-                    // Body text
                     doc.setFontSize(11);
                     doc.setFont('helvetica', 'normal');
 
-                    const getPlainText = (node) => {
-                        if (node.nodeType === Node.TEXT_NODE) {
-                            return node.textContent;
-                        }
-                        if (node.nodeType === Node.ELEMENT_NODE) {
-                            const tag = node.tagName.toLowerCase();
-                            if (tag === 'br') return '\n';
-                            let text = '';
-                            for (let child of node.childNodes) {
-                                text += getPlainText(child);
-                            }
-                            if (tag === 'p' || tag === 'div') text += '\n\n';
-                            if (tag === 'li') text = '• ' + text + '\n';
-                            return text;
-                        }
-                        return '';
-                    };
-
-                    const fullText = getPlainText(editor);
+                    const fullText = editor.innerText;
                     const paragraphs = fullText.split(/\n\n+/);
 
                     paragraphs.forEach(para => {
                         para = para.trim();
                         if (!para) return;
-
                         const lines = doc.splitTextToSize(para, maxWidth);
                         lines.forEach(line => {
                             checkSpace(lineHeight);
@@ -967,7 +1130,6 @@
                         y += 3;
                     });
 
-                    // Footer
                     const pageCount = doc.internal.getNumberOfPages();
                     for (let i = 1; i <= pageCount; i++) {
                         doc.setPage(i);
@@ -993,7 +1155,7 @@
             }, 100);
         }
 
-        // 💎 DOCX EXPORT
+        // DOCX Export
         async function exportDOCX() {
             closeModal();
             const subject = document.getElementById('subject').value.trim();
@@ -1010,10 +1172,9 @@
                     throw new Error('DOCX library not loaded');
                 }
 
-                const { Document, Paragraph, TextRun, HeadingLevel, AlignmentType } = docx;
+                const { Document, Paragraph, TextRun, HeadingLevel } = docx;
                 const children = [];
 
-                // Title
                 if (subject) {
                     children.push(new Paragraph({
                         text: subject,
@@ -1022,7 +1183,6 @@
                     }));
                 }
 
-                // Body
                 const text = editor.innerText;
                 const paragraphs = text.split(/\n+/);
                 
@@ -1064,7 +1224,6 @@
             }
         }
 
-        // 🖨️ PRINT
         function printDocument() {
             closeModal();
             const hasContent = document.getElementById('editor').innerText.trim() || 
@@ -1079,7 +1238,6 @@
             }
         }
 
-        // 📤 SHARE
         async function shareDocument() {
             closeModal();
             const subject = document.getElementById('subject').value.trim();
@@ -1108,7 +1266,6 @@
                     }
                 }
             } else {
-                // Fallback: copy to clipboard
                 try {
                     await navigator.clipboard.writeText(shareText);
                     showSuccessMessage('Copied to clipboard ✓');
@@ -1170,8 +1327,10 @@
                         formatText('italic');
                         break;
                     case 'u':
-                        e.preventDefault();
-                        formatText('underline');
+                        if (!e.ctrlKey) {
+                            e.preventDefault();
+                            formatText('underline');
+                        }
                         break;
                     case 'z':
                         if (!e.shiftKey) {
@@ -1204,4 +1363,4 @@
         });
     </script>
 </body>
-    </html>
+        </html>
