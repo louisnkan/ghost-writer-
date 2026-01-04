@@ -13,8 +13,7 @@
         gtag('config', 'G-W5644J7XBD');
         
         console.log('%c⚠️ STOP!', 'font-size: 40px; color: red; font-weight: bold;');
-        console.log('%c© 2025 SignalWrite - All Rights Reserved', 'font-size: 16px; color: #6366f1; font-weight: bold;');
-        console.log('%cUnauthorized copying prohibited.', 'font-size: 14px; color: #666;');
+        console.log('%c© 2025 SignalWrite - All Rights Reserved', 'font-size: 16px; color: #6366f1;');
     </script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -40,7 +39,6 @@
             --accent-hover: #4f46e5;
             --success: #10b981;
             --error: #ef4444;
-            --warning: #f59e0b;
         }
 
         body {
@@ -139,10 +137,6 @@
             background: var(--accent-hover);
         }
 
-        .export-btn-icon {
-            font-size: 16px;
-        }
-
         .main-container {
             flex: 1;
             max-width: 800px;
@@ -200,20 +194,20 @@
             display: none;
             flex-direction: row;
             gap: 4px;
-            padding: 6px;
-            border-radius: 12px;
+            padding: 8px;
+            border-radius: 16px;
             backdrop-filter: blur(20px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             z-index: 999;
         }
 
         .dark .selection-toolbar {
-            background: rgba(26, 26, 26, 0.98);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(255,255,255,0.15);
         }
 
         .light .selection-toolbar {
-            background: rgba(255, 255, 255, 0.98);
+            background: rgba(255, 255, 255, 0.95);
             border: 1px solid rgba(0,0,0,0.1);
             box-shadow: 0 8px 32px rgba(0,0,0,0.15);
         }
@@ -227,7 +221,7 @@
             border: none;
             width: 44px;
             height: 44px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -248,11 +242,6 @@
 
         .format-btn:active {
             transform: scale(0.95);
-        }
-
-        .format-btn.active {
-            background: var(--accent);
-            color: white;
         }
 
         .bottom-bar {
@@ -411,7 +400,7 @@
             background-color: white;
         }
 
-        /* Modern Modal Design */
+        /* GLASSMORPHISM MODALS */
         .modal {
             display: none;
             position: fixed;
@@ -419,8 +408,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
             z-index: 200;
             justify-content: center;
             align-items: center;
@@ -439,13 +428,13 @@
 
         .modal-content {
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             max-height: 85vh;
-            border-radius: 20px;
-            padding: 28px;
+            border-radius: 24px;
+            padding: 32px;
             overflow-y: auto;
             animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            backdrop-filter: blur(20px);
         }
 
         @keyframes slideUp {
@@ -460,24 +449,26 @@
         }
 
         .dark .modal-content {
-            background: linear-gradient(145deg, #1e1e1e 0%, #1a1a1a 100%);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
 
         .light .modal-content {
-            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-            border: 1px solid rgba(0,0,0,0.08);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .modal-title {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
             letter-spacing: -0.5px;
         }
@@ -485,53 +476,64 @@
         .modal-close {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             color: var(--text-secondary-dark);
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
+            border-radius: 10px;
             transition: all 0.2s;
         }
 
         .modal-close:hover {
             background: rgba(255,255,255,0.1);
-            color: var(--text-dark);
+            transform: rotate(90deg);
         }
 
         .modal-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .modal-option {
-            padding: 20px 16px;
+            padding: 28px 20px;
             border: 2px solid;
-            border-radius: 14px;
+            border-radius: 20px;
             background: transparent;
             cursor: pointer;
             text-align: center;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: inherit;
+            backdrop-filter: blur(10px);
         }
 
         .dark .modal-option {
-            border-color: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.03);
         }
 
         .light .modal-option {
-            border-color: rgba(0,0,0,0.1);
+            border-color: rgba(0,0,0,0.08);
+            background: rgba(0,0,0,0.02);
         }
 
         .modal-option:hover {
             transform: translateY(-4px);
             border-color: var(--accent);
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 12px 28px rgba(99, 102, 241, 0.25);
+        }
+
+        .dark .modal-option:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .light .modal-option:hover {
+            background: rgba(99, 102, 241, 0.05);
         }
 
         .modal-option:active {
@@ -539,39 +541,42 @@
         }
 
         .modal-option-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
+            font-size: 38px;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
         }
 
         .modal-option-title {
             font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 4px;
+            font-size: 16px;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
         }
 
         .modal-option-desc {
-            font-size: 12px;
+            font-size: 13px;
             opacity: 0.6;
         }
 
         .history-list {
             max-height: 400px;
             overflow-y: auto;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .history-item {
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            padding: 18px;
+            border-radius: 16px;
+            margin-bottom: 14px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
             border: 1px solid;
+            backdrop-filter: blur(10px);
         }
 
         .dark .history-item {
-            background: rgba(255,255,255,0.03);
-            border-color: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.12);
         }
 
         .light .history-item {
@@ -580,13 +585,14 @@
         }
 
         .history-item:hover {
-            transform: translateX(4px);
+            transform: translateX(6px);
             border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
         }
 
         .history-item-title {
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             font-size: 15px;
         }
 
@@ -601,18 +607,18 @@
         .history-item-date {
             font-size: 11px;
             opacity: 0.5;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
+            padding: 48px 20px;
             opacity: 0.5;
         }
 
         .empty-state-icon {
-            font-size: 48px;
-            margin-bottom: 12px;
+            font-size: 56px;
+            margin-bottom: 14px;
         }
 
         .status-msg {
@@ -622,14 +628,15 @@
             transform: translate(-50%, -50%);
             background: var(--accent);
             color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
+            padding: 18px 28px;
+            border-radius: 16px;
             font-size: 16px;
             display: none;
             z-index: 300;
-            max-width: 80%;
+            max-width: 85%;
             text-align: center;
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4);
+            backdrop-filter: blur(10px);
         }
 
         .status-msg.active {
@@ -660,7 +667,7 @@
                 grid-template-columns: 1fr;
             }
             .modal-content {
-                padding: 24px;
+                padding: 28px;
             }
         }
 
@@ -686,7 +693,7 @@
             <div class="logo">SignalWrite</div>
         </div>
         <button class="export-btn" onclick="showExportModal()">
-            <span class="export-btn-icon">↗</span>
+            <span style="font-size: 16px;">↗</span>
             <span>Export</span>
         </button>
     </header>
@@ -756,7 +763,7 @@
 
     <div class="status-msg" id="statusMsg">Processing...</div>
 
-    <!-- Modern Export Modal -->
+    <!-- GLASSMORPHISM Export Modal -->
     <div class="modal" id="exportModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -788,14 +795,13 @@
         </div>
     </div>
 
-    <!-- Modern Refine Modal -->
+    <!-- GLASSMORPHISM Refine Modal -->
     <div class="modal" id="refineModal">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">AI Refinement</div>
                 <button class="modal-close" onclick="closeModal()">×</button>
             </div>
-            <p style="opacity: 0.6; margin-bottom: 20px; font-size: 14px;">✨ Powered by Mistral 7B AI</p>
             <div class="modal-grid">
                 <button class="modal-option" onclick="refineText('professional')">
                     <div class="modal-option-icon">💼</div>
@@ -816,7 +822,7 @@
         </div>
     </div>
 
-    <!-- Modern History Modal -->
+    <!-- GLASSMORPHISM History Modal -->
     <div class="modal" id="historyModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -849,7 +855,9 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
         
-        const BACKEND_URL = 'https://backend-signalwrite-git-main-louis-nkan-enobong-s-projects.vercel.app';
+        // CRITICAL: Update this with your EXACT Vercel URL
+        const BACKEND_URL = 'https://backend-signalwrite.vercel.app';
+        
         let selectedText = '';
         let selectionRange = null;
         let autoSaveTimeout;
@@ -1055,28 +1063,37 @@
             refineBtn.disabled = true;
             refineBtn.innerHTML = '⏳ Refining...';
             
-            document.getElementById('statusMsg').textContent = 'AI is refining (10-20 sec)...';
+            document.getElementById('statusMsg').textContent = 'AI is refining your text...';
             document.getElementById('statusMsg').classList.add('active');
 
             try {
                 const response = await fetch(`${BACKEND_URL}/refine`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: textToRefine, mode: mode })
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        text: textToRefine, 
+                        mode: mode 
+                    })
                 });
 
                 if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Backend error:', errorText);
+                    
                     if (response.status === 503) {
-                        throw new Error('Model loading. Wait 20 seconds and try again.');
+                        throw new Error('AI model is loading. Wait 20 seconds and try again.');
                     }
                     throw new Error(`Server error: ${response.status}`);
                 }
 
                 const data = await response.json();
-                const refined = data.refined || '';
+                const refined = data.refined || data.refined_text || '';
 
                 if (!refined) {
-                    throw new Error('No refined text received');
+                    throw new Error('No refined text received from AI');
                 }
 
                 if (selectedText && selectionRange) {
@@ -1092,12 +1109,19 @@
                 updateWordCount();
                 showUndoButton();
                 document.getElementById('statusMsg').classList.remove('active');
-                showSuccessMessage('✨ Refined by AI!');
+                showSuccessMessage('✨ Refined successfully!');
 
             } catch (error) {
                 document.getElementById('statusMsg').classList.remove('active');
-                console.error('Error:', error);
-                alert(`Refinement failed: ${error.message}\n\nTip: Wait 20 seconds if model is loading.`);
+                console.error('Refinement error:', error);
+                
+                let errorMsg = 'Refinement failed: ' + error.message;
+                
+                if (error.message.includes('Failed to fetch')) {
+                    errorMsg = 'Cannot connect to AI server.\n\nPossible fixes:\n1. Check your internet connection\n2. Backend might be down\n3. CORS might be blocking request\n\nContact support if issue persists.';
+                }
+                
+                alert(errorMsg);
             } finally {
                 refineBtn.disabled = false;
                 refineBtn.innerHTML = '✨ Refine Writing';
@@ -1108,10 +1132,11 @@
             const el = document.createElement('div');
             el.textContent = msg;
             el.style.cssText = `position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                background: var(--success); color: white; padding: 12px 20px;
-                border-radius: 8px; z-index: 300; font-size: 16px; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);`;
+                background: var(--success); color: white; padding: 16px 24px;
+                border-radius: 12px; z-index: 300; font-size: 16px; 
+                box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4);`;
             document.body.appendChild(el);
-            setTimeout(() => el.remove(), 2000);
+            setTimeout(() => el.remove(), 2500);
         }
 
         function exportPDF() {
@@ -1392,4 +1417,4 @@
         });
     </script>
 </body>
-        </html>
+                    </html>
