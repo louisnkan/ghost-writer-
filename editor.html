@@ -11,7 +11,6 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-W5644J7XBD');
-        
         console.log('%c⚠️ STOP!', 'font-size: 40px; color: red; font-weight: bold;');
         console.log('%c© 2025 SignalWrite - All Rights Reserved', 'font-size: 16px; color: #6366f1;');
     </script>
@@ -50,15 +49,8 @@
             user-select: text;
         }
 
-        body.dark {
-            background: var(--bg-dark);
-            color: var(--text-dark);
-        }
-
-        body.light {
-            background: var(--bg-light);
-            color: var(--text-light);
-        }
+        body.dark { background: var(--bg-dark); color: var(--text-dark); }
+        body.light { background: var(--bg-light); color: var(--text-light); }
 
         .header {
             position: sticky;
@@ -72,20 +64,10 @@
             backdrop-filter: blur(20px);
         }
 
-        .dark .header {
-            background: rgba(15, 17, 21, 0.95);
-        }
+        .dark .header { background: rgba(15, 17, 21, 0.95); }
+        .light .header { background: rgba(253, 252, 251, 0.95); border-bottom-color: rgba(0,0,0,0.1); }
 
-        .light .header {
-            background: rgba(253, 252, 251, 0.95);
-            border-bottom-color: rgba(0,0,0,0.1);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .header-left { display: flex; align-items: center; gap: 12px; }
 
         .back-btn {
             font-size: 24px;
@@ -103,18 +85,11 @@
             transition: background 0.2s;
         }
 
-        .back-btn:hover {
-            background: rgba(255,255,255,0.05);
-        }
+        .back-btn:hover { background: rgba(255,255,255,0.05); }
 
-        .logo {
-            font-size: 17px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
+        .logo { font-size: 17px; font-weight: 600; letter-spacing: -0.5px; }
 
         .export-btn {
-            position: relative;
             background: var(--accent);
             color: white;
             border: none;
@@ -127,7 +102,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
         }
 
@@ -157,9 +132,7 @@
             letter-spacing: -0.5px;
         }
 
-        .subject-field::placeholder {
-            opacity: 0.4;
-        }
+        .subject-field::placeholder { opacity: 0.4; }
 
         .editor {
             min-height: 400px;
@@ -171,23 +144,10 @@
             color: inherit;
         }
 
-        .editor:empty:before {
-            content: "Start writing...";
-            opacity: 0.4;
-        }
-
-        .editor p {
-            margin: 16px 0;
-        }
-
-        .editor ul {
-            margin: 16px 0;
-            padding-left: 24px;
-        }
-
-        .editor li {
-            margin: 8px 0;
-        }
+        .editor:empty:before { content: "Start writing..."; opacity: 0.4; }
+        .editor p { margin: 16px 0; }
+        .editor ul { margin: 16px 0; padding-left: 24px; }
+        .editor li { margin: 8px 0; }
 
         .selection-toolbar {
             position: fixed;
@@ -201,20 +161,9 @@
             z-index: 999;
         }
 
-        .dark .selection-toolbar {
-            background: rgba(26, 26, 26, 0.95);
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-
-        .light .selection-toolbar {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(0,0,0,0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-        }
-
-        .selection-toolbar.visible {
-            display: flex;
-        }
+        .dark .selection-toolbar { background: rgba(26, 26, 26, 0.95); border: 1px solid rgba(255,255,255,0.15); }
+        .light .selection-toolbar { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(0,0,0,0.1); }
+        .selection-toolbar.visible { display: flex; }
 
         .format-btn {
             background: none;
@@ -232,17 +181,9 @@
             justify-content: center;
         }
 
-        .dark .format-btn:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .light .format-btn:hover {
-            background: rgba(0,0,0,0.05);
-        }
-
-        .format-btn:active {
-            transform: scale(0.95);
-        }
+        .dark .format-btn:hover { background: rgba(255,255,255,0.1); }
+        .light .format-btn:hover { background: rgba(0,0,0,0.05); }
+        .format-btn:active { transform: scale(0.95); }
 
         .bottom-bar {
             position: fixed;
@@ -254,19 +195,10 @@
             border-top: 1px solid rgba(255,255,255,0.1);
         }
 
-        .dark .bottom-bar {
-            background: rgba(15, 17, 21, 0.95);
-        }
+        .dark .bottom-bar { background: rgba(15, 17, 21, 0.95); }
+        .light .bottom-bar { background: rgba(253, 252, 251, 0.95); border-top-color: rgba(0,0,0,0.1); }
 
-        .light .bottom-bar {
-            background: rgba(253, 252, 251, 0.95);
-            border-top-color: rgba(0,0,0,0.1);
-        }
-
-        .refine-container {
-            padding: 16px 20px 12px;
-            text-align: center;
-        }
+        .refine-container { padding: 16px 20px 12px; text-align: center; }
 
         .refine-btn {
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
@@ -285,16 +217,8 @@
             box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
         }
 
-        .refine-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
-        }
-
-        .refine-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .refine-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4); }
+        .refine-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .bottom-info {
             display: flex;
@@ -306,12 +230,7 @@
             gap: 20px;
         }
 
-        .info-left {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+        .info-left { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 
         .info-link {
             background: none;
@@ -325,10 +244,7 @@
             transition: all 0.2s;
         }
 
-        .info-link:hover {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--accent);
-        }
+        .info-link:hover { background: rgba(99, 102, 241, 0.1); color: var(--accent); }
 
         .undo-btn {
             background: var(--success);
@@ -341,22 +257,10 @@
             display: none;
         }
 
-        .undo-btn.visible {
-            display: inline-block;
-        }
+        .undo-btn.visible { display: inline-block; }
 
-        .theme-switch {
-            position: relative;
-            display: inline-block;
-            width: 50px;
-            height: 28px;
-        }
-
-        .theme-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
+        .theme-switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
 
         .slider {
             position: absolute;
@@ -370,9 +274,7 @@
             border-radius: 34px;
         }
 
-        body.light .slider {
-            background-color: #e0e0e0;
-        }
+        body.light .slider { background-color: #e0e0e0; }
 
         .slider:before {
             position: absolute;
@@ -387,20 +289,10 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        body.light .slider:before {
-            background-color: #1a1a1a;
-        }
+        body.light .slider:before { background-color: #1a1a1a; }
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(22px); background-color: white; }
 
-        input:checked + .slider {
-            background-color: var(--accent);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(22px);
-            background-color: white;
-        }
-
-        /* GLASSMORPHISM MODALS */
         .modal {
             display: none;
             position: fixed;
@@ -417,14 +309,8 @@
             animation: fadeIn 0.2s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal.active {
-            display: flex;
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal.active { display: flex; }
 
         .modal-content {
             width: 100%;
@@ -437,16 +323,7 @@
             backdrop-filter: blur(20px);
         }
 
-        @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         .dark .modal-content {
             background: rgba(26, 26, 26, 0.95);
@@ -460,18 +337,8 @@
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
         }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
+        .modal-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
 
         .modal-close {
             background: none;
@@ -488,17 +355,9 @@
             transition: all 0.2s;
         }
 
-        .modal-close:hover {
-            background: rgba(255,255,255,0.1);
-            transform: rotate(90deg);
-        }
+        .modal-close:hover { background: rgba(255,255,255,0.1); transform: rotate(90deg); }
 
-        .modal-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 20px;
-        }
+        .modal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px; }
 
         .modal-option {
             padding: 28px 20px;
@@ -507,20 +366,13 @@
             background: transparent;
             cursor: pointer;
             text-align: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             color: inherit;
             backdrop-filter: blur(10px);
         }
 
-        .dark .modal-option {
-            border-color: rgba(255,255,255,0.12);
-            background: rgba(255,255,255,0.03);
-        }
-
-        .light .modal-option {
-            border-color: rgba(0,0,0,0.08);
-            background: rgba(0,0,0,0.02);
-        }
+        .dark .modal-option { border-color: rgba(255,255,255,0.12); background: rgba(255,255,255,0.03); }
+        .light .modal-option { border-color: rgba(0,0,0,0.08); background: rgba(0,0,0,0.02); }
 
         .modal-option:hover {
             transform: translateY(-4px);
@@ -528,41 +380,15 @@
             box-shadow: 0 12px 28px rgba(99, 102, 241, 0.25);
         }
 
-        .dark .modal-option:hover {
-            background: rgba(99, 102, 241, 0.1);
-        }
+        .dark .modal-option:hover { background: rgba(99, 102, 241, 0.1); }
+        .light .modal-option:hover { background: rgba(99, 102, 241, 0.05); }
+        .modal-option:active { transform: translateY(-2px); }
 
-        .light .modal-option:hover {
-            background: rgba(99, 102, 241, 0.05);
-        }
+        .modal-option-icon { font-size: 38px; margin-bottom: 12px; }
+        .modal-option-title { font-weight: 600; font-size: 16px; margin-bottom: 6px; }
+        .modal-option-desc { font-size: 13px; opacity: 0.6; }
 
-        .modal-option:active {
-            transform: translateY(-2px);
-        }
-
-        .modal-option-icon {
-            font-size: 38px;
-            margin-bottom: 12px;
-            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
-        }
-
-        .modal-option-title {
-            font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 6px;
-            letter-spacing: -0.3px;
-        }
-
-        .modal-option-desc {
-            font-size: 13px;
-            opacity: 0.6;
-        }
-
-        .history-list {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
+        .history-list { max-height: 400px; overflow-y: auto; margin-bottom: 20px; }
 
         .history-item {
             padding: 18px;
@@ -572,54 +398,54 @@
             transition: all 0.3s;
             border: 1px solid;
             backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
         }
 
-        .dark .history-item {
-            background: rgba(255,255,255,0.04);
-            border-color: rgba(255,255,255,0.12);
+        .dark .history-item { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.12); }
+        .light .history-item { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.08); }
+
+        .history-item:hover { transform: translateX(6px); border-color: var(--accent); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2); }
+
+        .history-item-content { flex: 1; min-width: 0; }
+        .history-item-title { font-weight: 600; margin-bottom: 6px; font-size: 15px; }
+        .history-item-preview { font-size: 13px; opacity: 0.6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .history-item-date { font-size: 11px; opacity: 0.5; margin-top: 6px; }
+
+        .history-delete-btn {
+            background: var(--error);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
         }
 
-        .light .history-item {
-            background: rgba(0,0,0,0.02);
-            border-color: rgba(0,0,0,0.08);
-        }
+        .history-delete-btn:hover { transform: scale(1.05); background: #dc2626; }
 
-        .history-item:hover {
-            transform: translateX(6px);
-            border-color: var(--accent);
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
-        }
-
-        .history-item-title {
+        .clear-history-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--error);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
             font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 15px;
+            cursor: pointer;
+            margin-bottom: 16px;
+            transition: all 0.2s;
         }
 
-        .history-item-preview {
-            font-size: 13px;
-            opacity: 0.6;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+        .clear-history-btn:hover { background: #dc2626; transform: translateY(-2px); }
 
-        .history-item-date {
-            font-size: 11px;
-            opacity: 0.5;
-            margin-top: 6px;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 48px 20px;
-            opacity: 0.5;
-        }
-
-        .empty-state-icon {
-            font-size: 56px;
-            margin-bottom: 14px;
-        }
+        .empty-state { text-align: center; padding: 48px 20px; opacity: 0.5; }
+        .empty-state-icon { font-size: 56px; margin-bottom: 14px; }
 
         .status-msg {
             position: fixed;
@@ -636,53 +462,25 @@
             max-width: 85%;
             text-align: center;
             box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4);
-            backdrop-filter: blur(10px);
         }
 
-        .status-msg.active {
-            display: block;
-            animation: slideUp 0.3s ease;
-        }
+        .status-msg.active { display: block; animation: slideUp 0.3s ease; }
 
-        input[type="file"] {
-            display: none;
-        }
+        input[type="file"] { display: none; }
 
         @media (max-width: 767px) {
-            .subject-field {
-                font-size: 24px;
-                padding: 24px 0 16px;
-            }
-            .editor {
-                font-size: 16px;
-            }
-            .main-container {
-                padding-bottom: 180px;
-            }
-            .bottom-info {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .modal-grid {
-                grid-template-columns: 1fr;
-            }
-            .modal-content {
-                padding: 28px;
-            }
+            .subject-field { font-size: 24px; padding: 24px 0 16px; }
+            .editor { font-size: 16px; }
+            .main-container { padding-bottom: 180px; }
+            .bottom-info { flex-direction: column; gap: 12px; }
+            .modal-grid { grid-template-columns: 1fr; }
+            .modal-content { padding: 28px; }
         }
 
         @media print {
-            .header, .bottom-bar, .selection-toolbar {
-                display: none !important;
-            }
-            body {
-                background: white !important;
-                color: black !important;
-            }
-            .main-container {
-                max-width: 100%;
-                padding: 20px;
-            }
+            .header, .bottom-bar, .selection-toolbar { display: none !important; }
+            body { background: white !important; color: black !important; }
+            .main-container { max-width: 100%; padding: 20px; }
         }
     </style>
 </head>
@@ -719,24 +517,12 @@
     </div>
 
     <div class="selection-toolbar" id="selectionToolbar">
-        <button class="format-btn" onmousedown="formatText('bold'); event.preventDefault();">
-            <strong>B</strong>
-        </button>
-        <button class="format-btn" onmousedown="formatText('italic'); event.preventDefault();">
-            <em>I</em>
-        </button>
-        <button class="format-btn" onmousedown="formatText('underline'); event.preventDefault();">
-            <u>U</u>
-        </button>
-        <button class="format-btn" onmousedown="formatText('insertUnorderedList'); event.preventDefault();">
-            •
-        </button>
-        <button class="format-btn" onmousedown="removeFormatting(); event.preventDefault();">
-            ×
-        </button>
-        <button class="format-btn" onmousedown="showRefineModal(); event.preventDefault();">
-            ✨
-        </button>
+        <button class="format-btn" onmousedown="formatText('bold'); event.preventDefault();"><strong>B</strong></button>
+        <button class="format-btn" onmousedown="formatText('italic'); event.preventDefault();"><em>I</em></button>
+        <button class="format-btn" onmousedown="formatText('underline'); event.preventDefault();"><u>U</u></button>
+        <button class="format-btn" onmousedown="formatText('insertUnorderedList'); event.preventDefault();">•</button>
+        <button class="format-btn" onmousedown="removeFormatting(); event.preventDefault();">×</button>
+        <button class="format-btn" onmousedown="showRefineModal(); event.preventDefault();">✨</button>
     </div>
 
     <div class="bottom-bar">
@@ -763,7 +549,6 @@
 
     <div class="status-msg" id="statusMsg">Processing...</div>
 
-    <!-- GLASSMORPHISM Export Modal -->
     <div class="modal" id="exportModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -795,7 +580,6 @@
         </div>
     </div>
 
-    <!-- GLASSMORPHISM Refine Modal -->
     <div class="modal" id="refineModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -822,13 +606,13 @@
         </div>
     </div>
 
-    <!-- GLASSMORPHISM History Modal -->
     <div class="modal" id="historyModal">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">Document History</div>
                 <button class="modal-close" onclick="closeModal()">×</button>
             </div>
+            <button class="clear-history-btn" onclick="clearAllHistory()" style="display:none" id="clearAllBtn">🗑️ Clear All History</button>
             <div class="history-list" id="historyList">
                 <div class="empty-state">
                     <div class="empty-state-icon">📝</div>
@@ -855,8 +639,8 @@
     <script>
         document.addEventListener('contextmenu', e => e.preventDefault());
         
-        // CRITICAL: Update this with your EXACT Vercel URL
-        const BACKEND_URL = 'https://signal-write-git-main-louis-nkan-enobong-s-projects.vercel.app/';
+        // YOUR CORRECT BACKEND URL
+        const BACKEND_URL = 'https://signal-write-git-main-louis-nkan-enobong-s-projects.vercel.app';
         
         let selectedText = '';
         let selectionRange = null;
@@ -932,6 +716,7 @@
         function loadHistory() {
             const history = JSON.parse(localStorage.getItem('documentHistory') || '[]');
             const historyList = document.getElementById('historyList');
+            const clearAllBtn = document.getElementById('clearAllBtn');
             
             if (history.length === 0) {
                 historyList.innerHTML = `
@@ -940,16 +725,39 @@
                         <div>No saved documents yet</div>
                     </div>
                 `;
+                clearAllBtn.style.display = 'none';
                 return;
             }
 
+            clearAllBtn.style.display = 'block';
             historyList.innerHTML = history.map(item => `
-                <div class="history-item" onclick="loadHistoryItem(${item.id})">
-                    <div class="history-item-title">${item.subject}</div>
-                    <div class="history-item-preview">${item.content.substring(0, 60)}...</div>
-                    <div class="history-item-date">${new Date(item.date).toLocaleDateString()}</div>
+                <div class="history-item">
+                    <div class="history-item-content" onclick="loadHistoryItem(${item.id})">
+                        <div class="history-item-title">${item.subject}</div>
+                        <div class="history-item-preview">${item.content.substring(0, 60)}...</div>
+                        <div class="history-item-date">${new Date(item.date).toLocaleDateString()}</div>
+                    </div>
+                    <button class="history-delete-btn" onclick="deleteHistoryItem(${item.id}); event.stopPropagation();">🗑️</button>
                 </div>
             `).join('');
+        }
+
+        function deleteHistoryItem(id) {
+            if (confirm('Delete this document?')) {
+                let history = JSON.parse(localStorage.getItem('documentHistory') || '[]');
+                history = history.filter(h => h.id !== id);
+                localStorage.setItem('documentHistory', JSON.stringify(history));
+                loadHistory();
+                showSuccessMessage('Deleted ✓');
+            }
+        }
+
+        function clearAllHistory() {
+            if (confirm('Clear ALL history? This cannot be undone!')) {
+                localStorage.removeItem('documentHistory');
+                loadHistory();
+                showSuccessMessage('History cleared ✓');
+            }
         }
 
         function loadHistoryItem(id) {
@@ -1063,10 +871,12 @@
             refineBtn.disabled = true;
             refineBtn.innerHTML = '⏳ Refining...';
             
-            document.getElementById('statusMsg').textContent = 'AI is refining your text...';
+            document.getElementById('statusMsg').textContent = 'AI is refining... (10-20 sec first time)';
             document.getElementById('statusMsg').classList.add('active');
 
             try {
+                console.log('Connecting to backend:', BACKEND_URL);
+                
                 const response = await fetch(`${BACKEND_URL}/refine`, {
                     method: 'POST',
                     headers: { 
@@ -1079,17 +889,26 @@
                     })
                 });
 
+                console.log('Response status:', response.status);
+
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error('Backend error:', errorText);
+                    console.error('Backend error:', response.status, errorText);
                     
                     if (response.status === 503) {
                         throw new Error('AI model is loading. Wait 20 seconds and try again.');
                     }
+                    
+                    if (response.status === 500) {
+                        throw new Error('Backend server error. Please try again in a moment.');
+                    }
+                    
                     throw new Error(`Server error: ${response.status}`);
                 }
 
                 const data = await response.json();
+                console.log('Response data:', data);
+                
                 const refined = data.refined || data.refined_text || '';
 
                 if (!refined) {
@@ -1118,7 +937,16 @@
                 let errorMsg = 'Refinement failed: ' + error.message;
                 
                 if (error.message.includes('Failed to fetch')) {
-                    errorMsg = 'Cannot connect to AI server.\n\nPossible fixes:\n1. Check your internet connection\n2. Backend might be down\n3. CORS might be blocking request\n\nContact support if issue persists.';
+                    errorMsg = `Cannot connect to AI server.
+
+Possible fixes:
+1. Check your internet connection
+2. Backend might be down - check Vercel
+3. CORS might be blocking request
+
+Backend URL: ${BACKEND_URL}
+
+Contact support if issue persists.`;
                 }
                 
                 alert(errorMsg);
@@ -1417,4 +1245,4 @@
         });
     </script>
 </body>
-                    </html>
+    </html>
