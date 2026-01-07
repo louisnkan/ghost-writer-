@@ -415,18 +415,24 @@
         .history-item-date { font-size: 11px; opacity: 0.5; margin-top: 6px; }
 
         .history-delete-btn {
-            background: var(--error);
-            color: white;
-            border: none;
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+            border: 1px solid rgba(239, 68, 68, 0.3);
             padding: 8px 12px;
             border-radius: 8px;
             font-size: 12px;
             cursor: pointer;
             transition: all 0.2s;
             flex-shrink: 0;
+            backdrop-filter: blur(10px);
         }
 
-        .history-delete-btn:hover { transform: scale(1.05); background: #dc2626; }
+        .history-delete-btn:hover { 
+            background: var(--error);
+            color: white;
+            border-color: var(--error);
+            transform: scale(1.05);
+        }
 
         .clear-history-btn {
             width: 100%;
@@ -1245,4 +1251,4 @@ Contact support if issue persists.`;
         });
     </script>
 </body>
-    </html>
+                                                                   </html>
