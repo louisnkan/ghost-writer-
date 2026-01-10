@@ -11,19 +11,13 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-W5644J7XBD');
-        console.log('%c⚠️ STOP!', 'font-size: 40px; color: red; font-weight: bold;');
-        console.log('%c© 2025 SignalWrite - All Rights Reserved', 'font-size: 16px; color: #6366f1;');
     </script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://unpkg.com/docx@7.8.2/build/index.js"></script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --bg-dark: #0F1115;
@@ -38,6 +32,7 @@
             --accent-hover: #4f46e5;
             --success: #10b981;
             --error: #ef4444;
+            --warning: #f59e0b;
         }
 
         body {
@@ -86,7 +81,6 @@
         }
 
         .back-btn:hover { background: rgba(255,255,255,0.05); }
-
         .logo { font-size: 17px; font-weight: 600; letter-spacing: -0.5px; }
 
         .export-btn {
@@ -146,8 +140,6 @@
 
         .editor:empty:before { content: "Start writing..."; opacity: 0.4; }
         .editor p { margin: 16px 0; }
-        .editor ul { margin: 16px 0; padding-left: 24px; }
-        .editor li { margin: 8px 0; }
 
         .selection-toolbar {
             position: fixed;
@@ -183,7 +175,6 @@
 
         .dark .format-btn:hover { background: rgba(255,255,255,0.1); }
         .light .format-btn:hover { background: rgba(0,0,0,0.05); }
-        .format-btn:active { transform: scale(0.95); }
 
         .bottom-bar {
             position: fixed;
@@ -246,19 +237,6 @@
 
         .info-link:hover { background: rgba(99, 102, 241, 0.1); color: var(--accent); }
 
-        .undo-btn {
-            background: var(--success);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-            display: none;
-        }
-
-        .undo-btn.visible { display: inline-block; }
-
         .theme-switch { position: relative; display: inline-block; width: 50px; height: 28px; }
         .theme-switch input { opacity: 0; width: 0; height: 0; }
 
@@ -306,10 +284,8 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            animation: fadeIn 0.2s ease;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .modal.active { display: flex; }
 
         .modal-content {
@@ -319,11 +295,8 @@
             border-radius: 24px;
             padding: 32px;
             overflow-y: auto;
-            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(20px);
         }
-
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         .dark .modal-content {
             background: rgba(26, 26, 26, 0.95);
@@ -380,10 +353,6 @@
             box-shadow: 0 12px 28px rgba(99, 102, 241, 0.25);
         }
 
-        .dark .modal-option:hover { background: rgba(99, 102, 241, 0.1); }
-        .light .modal-option:hover { background: rgba(99, 102, 241, 0.05); }
-        .modal-option:active { transform: translateY(-2px); }
-
         .modal-option-icon { font-size: 38px; margin-bottom: 12px; }
         .modal-option-title { font-weight: 600; font-size: 16px; margin-bottom: 6px; }
         .modal-option-desc { font-size: 13px; opacity: 0.6; }
@@ -407,7 +376,7 @@
         .dark .history-item { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.12); }
         .light .history-item { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.08); }
 
-        .history-item:hover { transform: translateX(6px); border-color: var(--accent); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2); }
+        .history-item:hover { transform: translateX(6px); border-color: var(--accent); }
 
         .history-item-content { flex: 1; min-width: 0; }
         .history-item-title { font-weight: 600; margin-bottom: 6px; font-size: 15px; }
@@ -415,31 +384,36 @@
         .history-item-date { font-size: 11px; opacity: 0.5; margin-top: 6px; }
 
         .history-delete-btn {
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--error);
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: rgba(148, 163, 184, 0.1);
+            color: var(--text-secondary-dark);
+            border: 1px solid rgba(148, 163, 184, 0.2);
             padding: 8px 12px;
             border-radius: 8px;
             font-size: 12px;
             cursor: pointer;
             transition: all 0.2s;
             flex-shrink: 0;
-            backdrop-filter: blur(10px);
+        }
+
+        body.light .history-delete-btn {
+            background: rgba(100, 116, 139, 0.1);
+            color: var(--text-secondary-light);
+            border-color: rgba(100, 116, 139, 0.2);
         }
 
         .history-delete-btn:hover { 
-            background: var(--error);
+            background: var(--warning);
             color: white;
-            border-color: var(--error);
+            border-color: var(--warning);
             transform: scale(1.05);
         }
 
         .clear-history-btn {
             width: 100%;
             padding: 14px;
-            background: var(--error);
-            color: white;
-            border: none;
+            background: rgba(148, 163, 184, 0.15);
+            color: var(--text-secondary-dark);
+            border: 1px solid rgba(148, 163, 184, 0.25);
             border-radius: 12px;
             font-size: 14px;
             font-weight: 600;
@@ -448,7 +422,18 @@
             transition: all 0.2s;
         }
 
-        .clear-history-btn:hover { background: #dc2626; transform: translateY(-2px); }
+        body.light .clear-history-btn {
+            background: rgba(100, 116, 139, 0.15);
+            color: var(--text-secondary-light);
+            border-color: rgba(100, 116, 139, 0.25);
+        }
+
+        .clear-history-btn:hover { 
+            background: var(--warning);
+            color: white;
+            border-color: var(--warning);
+            transform: translateY(-2px);
+        }
 
         .empty-state { text-align: center; padding: 48px 20px; opacity: 0.5; }
         .empty-state-icon { font-size: 56px; margin-bottom: 14px; }
@@ -470,23 +455,13 @@
             box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4);
         }
 
-        .status-msg.active { display: block; animation: slideUp 0.3s ease; }
-
-        input[type="file"] { display: none; }
+        .status-msg.active { display: block; }
 
         @media (max-width: 767px) {
             .subject-field { font-size: 24px; padding: 24px 0 16px; }
             .editor { font-size: 16px; }
             .main-container { padding-bottom: 180px; }
-            .bottom-info { flex-direction: column; gap: 12px; }
             .modal-grid { grid-template-columns: 1fr; }
-            .modal-content { padding: 28px; }
-        }
-
-        @media print {
-            .header, .bottom-bar, .selection-toolbar { display: none !important; }
-            body { background: white !important; color: black !important; }
-            .main-container { max-width: 100%; padding: 20px; }
         }
     </style>
 </head>
@@ -509,7 +484,6 @@
             id="subject"
             placeholder="What are we writing today?"
             onkeyup="updateWordCount(); autoSave()"
-            spellcheck="true"
         >
         <div 
             class="editor" 
@@ -518,7 +492,6 @@
             onkeyup="updateWordCount(); autoSave()"
             onmouseup="handleSelection()"
             ontouchend="handleSelection()"
-            spellcheck="true"
         ></div>
     </div>
 
@@ -526,8 +499,6 @@
         <button class="format-btn" onmousedown="formatText('bold'); event.preventDefault();"><strong>B</strong></button>
         <button class="format-btn" onmousedown="formatText('italic'); event.preventDefault();"><em>I</em></button>
         <button class="format-btn" onmousedown="formatText('underline'); event.preventDefault();"><u>U</u></button>
-        <button class="format-btn" onmousedown="formatText('insertUnorderedList'); event.preventDefault();">•</button>
-        <button class="format-btn" onmousedown="removeFormatting(); event.preventDefault();">×</button>
         <button class="format-btn" onmousedown="showRefineModal(); event.preventDefault();">✨</button>
     </div>
 
@@ -540,8 +511,6 @@
                 <span id="wordCount">0 words</span>
                 <span>•</span>
                 <button class="info-link" onclick="showHistory()">📚 History</button>
-                <span>•</span>
-                <button class="undo-btn" id="undoBtn" onclick="undo()">↩ Undo</button>
             </div>
             <div style="display: flex; align-items: center; gap: 12px;">
                 <span style="font-size: 12px;">Theme</span>
@@ -625,32 +594,18 @@
                     <div>No saved documents yet</div>
                 </div>
             </div>
-            <div class="modal-grid">
-                <button class="modal-option" onclick="downloadDraft()">
-                    <div class="modal-option-icon">💾</div>
-                    <div class="modal-option-title">Save</div>
-                    <div class="modal-option-desc">Download draft</div>
-                </button>
-                <button class="modal-option" onclick="document.getElementById('fileInput').click()">
-                    <div class="modal-option-icon">📂</div>
-                    <div class="modal-option-title">Load</div>
-                    <div class="modal-option-desc">Open file</div>
-                </button>
-            </div>
         </div>
     </div>
 
-    <input type="file" id="fileInput" accept=".txt" onchange="loadDraft(event)">
-
     <script>
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        
-        // VERIFIED CORRECT BACKEND URL FROM YOUR VERCEL DEPLOYMENT
+        // ============ CRITICAL FIX: CORRECT BACKEND URL ============
         const BACKEND_URL = 'https://signalwrite-backend-git-main-louis-nkan-enobong-s-projects.vercel.app';
         
+        console.log('🚀 SignalWrite initialized');
+        console.log('📍 Backend URL:', BACKEND_URL);
+
         let selectedText = '';
         let selectionRange = null;
-        let autoSaveTimeout;
 
         updateWordCount();
         loadHistory();
@@ -701,22 +656,19 @@
         }
 
         function autoSave() {
-            clearTimeout(autoSaveTimeout);
-            autoSaveTimeout = setTimeout(() => {
-                const subject = document.getElementById('subject').value.trim();
-                const content = document.getElementById('editor').innerText.trim();
-                if (subject || content) {
-                    const draft = {
-                        id: Date.now(),
-                        subject: subject || 'Untitled',
-                        content: content,
-                        date: new Date().toISOString()
-                    };
-                    let history = JSON.parse(localStorage.getItem('documentHistory') || '[]');
-                    history = [draft, ...history.slice(0, 19)];
-                    localStorage.setItem('documentHistory', JSON.stringify(history));
-                }
-            }, 3000);
+            const subject = document.getElementById('subject').value.trim();
+            const content = document.getElementById('editor').innerText.trim();
+            if (subject || content) {
+                const draft = {
+                    id: Date.now(),
+                    subject: subject || 'Untitled',
+                    content: content,
+                    date: new Date().toISOString()
+                };
+                let history = JSON.parse(localStorage.getItem('documentHistory') || '[]');
+                history = [draft, ...history.slice(0, 19)];
+                localStorage.setItem('documentHistory', JSON.stringify(history));
+            }
         }
 
         function loadHistory() {
@@ -818,24 +770,6 @@
             handleSelection();
         }
 
-        function removeFormatting() {
-            document.execCommand('removeFormat', false, null);
-            document.execCommand('unlink', false, null);
-            document.getElementById('editor').focus();
-            handleSelection();
-        }
-
-        function undo() {
-            document.execCommand('undo');
-            updateWordCount();
-        }
-
-        function showUndoButton() {
-            const btn = document.getElementById('undoBtn');
-            btn.classList.add('visible');
-            setTimeout(() => btn.classList.remove('visible'), 10000);
-        }
-
         function showExportModal() {
             document.getElementById('exportModal').classList.add('active');
         }
@@ -877,13 +811,15 @@
             refineBtn.disabled = true;
             refineBtn.innerHTML = '⏳ Refining...';
             
-            document.getElementById('statusMsg').textContent = 'AI is refining... (10-20 sec first time)';
+            document.getElementById('statusMsg').textContent = 'AI is refining your text...';
             document.getElementById('statusMsg').classList.add('active');
 
             try {
-                console.log('Connecting to backend:', BACKEND_URL);
+                console.log('🔄 Sending request to:', BACKEND_URL + '/refine');
+                console.log('📝 Text length:', textToRefine.length);
+                console.log('🎯 Mode:', mode);
                 
-                const response = await fetch(`${BACKEND_URL}/refine`, {
+                const response = await fetch(BACKEND_URL + '/refine', {
                     method: 'POST',
                     headers: { 
                         'Content-Type': 'application/json',
@@ -895,30 +831,22 @@
                     })
                 });
 
-                console.log('Response status:', response.status);
+                console.log('📥 Response status:', response.status);
+                console.log('📥 Response ok:', response.ok);
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    console.error('Backend error:', response.status, errorText);
-                    
-                    if (response.status === 503) {
-                        throw new Error('AI model is loading. Wait 20 seconds and try again.');
-                    }
-                    
-                    if (response.status === 500) {
-                        throw new Error('Backend server error. Please try again in a moment.');
-                    }
-                    
+                    console.error('❌ Server error:', response.status, errorText);
                     throw new Error(`Server error: ${response.status}`);
                 }
 
                 const data = await response.json();
-                console.log('Response data:', data);
+                console.log('✅ Response received:', data);
                 
                 const refined = data.refined || data.refined_text || '';
 
                 if (!refined) {
-                    throw new Error('No refined text received from AI');
+                    throw new Error('No refined text received');
                 }
 
                 if (selectedText && selectionRange) {
@@ -932,25 +860,26 @@
                 selectedText = '';
                 selectionRange = null;
                 updateWordCount();
-                showUndoButton();
                 document.getElementById('statusMsg').classList.remove('active');
                 showSuccessMessage('✨ Refined successfully!');
 
             } catch (error) {
                 document.getElementById('statusMsg').classList.remove('active');
-                console.error('Refinement error:', error);
+                console.error('❌ Refinement error:', error);
                 
                 let errorMsg = 'Refinement failed: ' + error.message;
                 
-                if (error.message.includes('Failed to fetch')) {
+                if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
                     errorMsg = `Cannot connect to AI server.
 
-Possible fixes:
-1. Check your internet connection
-2. Backend might be down - check Vercel
-3. CORS might be blocking request
+Your backend URL is:
+${BACKEND_URL}
 
-Backend URL: ${BACKEND_URL}
+Troubleshooting steps:
+1. Check if backend is online at: ${BACKEND_URL}
+2. Verify GROQ_API_KEY is set in Vercel
+3. Check internet connection
+4. Wait 20 seconds if model is loading
 
 Contact support if issue persists.`;
                 }
@@ -981,76 +910,71 @@ Contact support if issue persists.`;
                 alert('Nothing to export!');
                 return;
             }
+            
             document.getElementById('statusMsg').textContent = 'Creating PDF...';
             document.getElementById('statusMsg').classList.add('active');
             
             setTimeout(() => {
                 try {
                     const { jsPDF } = window.jspdf;
-                    const doc = new jsPDF('p', 'mm', 'a4');
+                    const doc = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+                    
                     const margin = 20;
-                    const pageWidth = 210;
-                    const pageHeight = 297;
-                    const maxWidth = pageWidth - (margin * 2);
+                    const pageWidth = 170;
+                    const lineHeight = 7;
                     let y = margin;
 
-                    function addPage() {
-                        doc.addPage();
-                        y = margin;
-                    }
-
-                    function checkSpace(needed) {
-                        if (y + needed > pageHeight - margin - 15) {
-                            addPage();
-                        }
-                    }
-
+                    // Title
                     if (subject) {
-                        doc.setFontSize(18);
+                        doc.setFontSize(16);
                         doc.setFont('helvetica', 'bold');
-                        const titleLines = doc.splitTextToSize(subject, maxWidth);
-                        titleLines.forEach(line => {
-                            checkSpace(10);
-                            doc.text(line, margin, y);
-                            y += 9;
-                        });
-                        y += 10;
+                        doc.text(subject, margin, y);
+                        y += 12;
                     }
 
-                    doc.setFontSize(12);
+                    // Content
+                    doc.setFontSize(11);
                     doc.setFont('helvetica', 'normal');
 
                     const text = editor.innerText.trim();
-                    const paragraphs = text.split(/\n\n+/);
+                    const paragraphs = text.split('\n\n');
 
                     paragraphs.forEach(para => {
-                        para = para.trim();
-                        if (!para) return;
+                        if (!para.trim()) return;
                         
-                        const lines = doc.splitTextToSize(para, maxWidth);
+                        const lines = doc.splitTextToSize(para.trim(), pageWidth);
+                        
                         lines.forEach(line => {
-                            checkSpace(7);
+                            if (y > 270) {
+                                doc.addPage();
+                                y = margin;
+                            }
                             doc.text(line, margin, y);
-                            y += 7;
+                            y += lineHeight;
                         });
-                        y += 4;
+                        
+                        y += 3;
                     });
 
+                    // Footer
                     const pageCount = doc.internal.getNumberOfPages();
                     for (let i = 1; i <= pageCount; i++) {
                         doc.setPage(i);
                         doc.setFontSize(9);
-                        doc.setTextColor(120);
-                        doc.text(`Page ${i} of ${pageCount}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
-                        doc.text('Created with SignalWrite', margin, pageHeight - 10);
+                        doc.setTextColor(100);
+                        doc.text(`Page ${i}`, 105, 287, { align: 'center' });
                         doc.setTextColor(0);
                     }
 
-                    const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').substring(0, 50).toLowerCase();
-                    doc.save(`${filename}.pdf`);
+                    const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').substring(0, 30).toLowerCase() + '.pdf';
+                    doc.save(filename);
                     
                     document.getElementById('statusMsg').classList.remove('active');
-                    showSuccessMessage('PDF Exported ✓');
+                    showSuccessMessage('📄 PDF Exported!');
                 } catch (error) {
                     document.getElementById('statusMsg').classList.remove('active');
                     console.error('PDF Error:', error);
@@ -1067,14 +991,11 @@ Contact support if issue persists.`;
                 alert('Nothing to export!');
                 return;
             }
+            
             document.getElementById('statusMsg').textContent = 'Creating Word doc...';
             document.getElementById('statusMsg').classList.add('active');
 
             try {
-                if (typeof docx === 'undefined') {
-                    throw new Error('DOCX library not loaded');
-                }
-
                 const { Document, Paragraph, TextRun, HeadingLevel } = docx;
                 const children = [];
 
@@ -1086,14 +1007,13 @@ Contact support if issue persists.`;
                     }));
                 }
 
-                const text = editor.innerText;
-                const paragraphs = text.split(/\n+/);
+                const text = editor.innerText.trim();
+                const paragraphs = text.split('\n\n');
                 
                 paragraphs.forEach(para => {
-                    para = para.trim();
-                    if (para) {
+                    if (para.trim()) {
                         children.push(new Paragraph({
-                            children: [new TextRun(para)],
+                            children: [new TextRun(para.trim())],
                             spacing: { after: 200 }
                         }));
                     }
@@ -1107,13 +1027,13 @@ Contact support if issue persists.`;
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').substring(0, 50).toLowerCase();
-                a.download = `${filename}.docx`;
+                const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').substring(0, 30).toLowerCase() + '.docx';
+                a.download = filename;
                 a.click();
                 URL.revokeObjectURL(url);
                 
                 document.getElementById('statusMsg').classList.remove('active');
-                showSuccessMessage('Word Doc Exported ✓');
+                showSuccessMessage('📝 Word Exported!');
             } catch (error) {
                 document.getElementById('statusMsg').classList.remove('active');
                 console.error('DOCX Error:', error);
@@ -1166,43 +1086,6 @@ Contact support if issue persists.`;
             }
         }
 
-        function downloadDraft() {
-            const subject = document.getElementById('subject').value;
-            const content = document.getElementById('editor').innerText;
-            if (!subject && !content) {
-                alert('Nothing to download!');
-                return;
-            }
-            const fullText = (subject ? subject + '\n\n' : '') + content;
-            const blob = new Blob([fullText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `signalwrite-${Date.now()}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-            closeModal();
-            showSuccessMessage('Downloaded ✓');
-        }
-
-        function loadDraft(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const text = e.target.result;
-                const lines = text.split('\n');
-                if (lines.length > 0) {
-                    document.getElementById('subject').value = lines[0];
-                    document.getElementById('editor').innerText = lines.slice(2).join('\n');
-                    updateWordCount();
-                    showSuccessMessage('Loaded ✓');
-                }
-            };
-            reader.readAsText(file);
-            closeModal();
-        }
-
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
                 switch(e.key.toLowerCase()) {
@@ -1218,12 +1101,6 @@ Contact support if issue persists.`;
                         if (!e.ctrlKey) {
                             e.preventDefault();
                             formatText('underline');
-                        }
-                        break;
-                    case 'z':
-                        if (!e.shiftKey) {
-                            e.preventDefault();
-                            undo();
                         }
                         break;
                     case 'p':
@@ -1251,4 +1128,4 @@ Contact support if issue persists.`;
         });
     </script>
 </body>
-                                                                   </html>
+                    </html>
