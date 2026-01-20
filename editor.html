@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SignalWrite - Professional Writing Editor</title>
     
+    <!-- Google Analytics - REPLACE WITH YOUR TAG -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-W5644J7XBD"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-W5644J7XBD');
-        
-        console.log('%c⚠️ STOP!', 'font-size: 40px; color: red; font-weight: bold;');
-        console.log('%c© 2025 SignalWrite - All Rights Reserved', 'font-size: 16px; color: #6366f1; font-weight: bold;');
-        console.log('%cUnauthorized copying prohibited.', 'font-size: 14px; color: #666;');
     </script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -25,43 +22,41 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
-            --bg-dark: #0F1115;
-            --surface-dark: #1a1a1a;
-            --text-dark: #E2E8F0;
-            --text-secondary-dark: #94a3b8;
-            --bg-light: #FDFCFB;
-            --surface-light: #ffffff;
-            --text-light: #1A202C;
-            --text-secondary-light: #64748b;
-            --accent: #6366f1;
-            --accent-hover: #4f46e5;
-            --success: #10b981;
-            --error: #ef4444;
-            --warning: #f59e0b;
+            --bg-dark: #1A1D2E;
+            --surface-dark: #252938;
+            --text-dark: #E8EAF0;
+            --text-secondary-dark: #9B9FB4;
+            --bg-light: #FAFBFC;
+            --surface-light: #FFFFFF;
+            --text-light: #1F2937;
+            --text-secondary-light: #6B7280;
+            --accent: #6366F1;
+            --accent-hover: #4F46E5;
+            --success: #10B981;
+            --error: #EF4444;
+            --warning: #F59E0B;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            transition: background 0.4s, color 0.4s;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            user-select: text;
-        }
-
-        body.dark {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
             background: var(--bg-dark);
             color: var(--text-dark);
+            min-height: 100vh;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: text;
+            -webkit-user-select: text;
         }
 
-        body.light {
+        body.light-theme {
             background: var(--bg-light);
             color: var(--text-light);
         }
 
+        /* Header */
         .header {
             position: sticky;
             top: 0;
@@ -69,93 +64,89 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(20px);
+            padding: 16px 24px;
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .dark .header {
-            background: rgba(15, 17, 21, 0.95);
-        }
-
-        .light .header {
-            background: rgba(253, 252, 251, 0.95);
-            border-bottom-color: rgba(0,0,0,0.1);
+        .light-theme .header {
+            background: rgba(250, 251, 252, 0.85);
+            border-bottom-color: rgba(0, 0, 0, 0.06);
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
 
         .back-btn {
-            font-size: 24px;
-            background: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
             border: none;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-dark);
+            font-size: 20px;
             cursor: pointer;
-            padding: 8px;
-            color: inherit;
-            min-width: 44px;
-            min-height: 44px;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
-            transition: background 0.2s;
+        }
+
+        .light-theme .back-btn {
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--text-light);
         }
 
         .back-btn:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgba(99, 102, 241, 0.12);
+            transform: translateX(-2px);
         }
 
         .logo {
-            font-size: 17px;
-            font-weight: 600;
+            font-size: 19px;
+            font-weight: 700;
             letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--accent), #8B5CF6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .export-btn {
-            position: relative;
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--accent), #8B5CF6);
             color: white;
             border: none;
-            padding: 10px 18px;
-            border-radius: 10px;
-            font-size: 14px;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            min-height: 42px;
             display: flex;
             align-items: center;
             gap: 8px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
         }
 
         .export-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
-            background: var(--accent-hover);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
         }
 
-        .export-btn-icon {
-            font-size: 16px;
-        }
-
+        /* Main Container */
         .main-container {
-            flex: 1;
             max-width: 800px;
             margin: 0 auto;
-            width: 100%;
-            padding: 0 20px 140px;
+            padding: 0 24px 160px;
         }
 
         .subject-field {
             background: none;
             border: none;
             outline: none;
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 700;
             padding: 32px 0 20px;
             color: inherit;
@@ -164,141 +155,74 @@
         }
 
         .subject-field::placeholder {
-            opacity: 0.4;
+            color: var(--text-secondary-dark);
+            opacity: 0.5;
+        }
+
+        .light-theme .subject-field::placeholder {
+            color: var(--text-secondary-light);
         }
 
         .editor {
             min-height: 400px;
             outline: none;
-            font-family: Georgia, 'Times New Roman', serif;
+            font-family: 'Charter', 'Georgia', serif;
             font-size: 18px;
-            line-height: 1.7;
-            padding: 12px 0;
+            line-height: 1.75;
             color: inherit;
+            padding: 12px 0;
         }
 
         .editor:empty:before {
             content: "Start writing...";
-            opacity: 0.4;
+            color: var(--text-secondary-dark);
+            opacity: 0.5;
         }
 
-        .editor p {
-            margin: 16px 0;
+        .light-theme .editor:empty:before {
+            color: var(--text-secondary-light);
         }
 
-        .editor ul {
-            margin: 16px 0;
-            padding-left: 24px;
-        }
-
-        .editor li {
-            margin: 8px 0;
-        }
-
-        .selection-toolbar {
-            position: fixed;
-            display: none;
-            flex-direction: row;
-            gap: 4px;
-            padding: 6px;
-            border-radius: 12px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-            z-index: 999;
-        }
-
-        .dark .selection-toolbar {
-            background: rgba(26, 26, 26, 0.98);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .light .selection-toolbar {
-            background: rgba(255, 255, 255, 0.98);
-            border: 1px solid rgba(0,0,0,0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-        }
-
-        .selection-toolbar.visible {
-            display: flex;
-        }
-
-        .format-btn {
-            background: none;
-            border: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            color: inherit;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .dark .format-btn:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .light .format-btn:hover {
-            background: rgba(0,0,0,0.05);
-        }
-
-        .format-btn:active {
-            transform: scale(0.95);
-        }
-
-        .format-btn.active {
-            background: var(--accent);
-            color: white;
-        }
-
+        /* Bottom Bar */
         .bottom-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             z-index: 100;
-            backdrop-filter: blur(10px);
-            border-top: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .dark .bottom-bar {
-            background: rgba(15, 17, 21, 0.95);
-        }
-
-        .light .bottom-bar {
-            background: rgba(253, 252, 251, 0.95);
-            border-top-color: rgba(0,0,0,0.1);
+        .light-theme .bottom-bar {
+            background: rgba(250, 251, 252, 0.85);
+            border-top-color: rgba(0, 0, 0, 0.06);
         }
 
         .refine-container {
-            padding: 16px 20px 12px;
+            padding: 16px 24px 12px;
             text-align: center;
         }
 
         .refine-btn {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+            background: linear-gradient(135deg, var(--accent), #8B5CF6);
             color: white;
             border: none;
-            padding: 14px 32px;
-            border-radius: 24px;
+            padding: 16px 40px;
+            border-radius: 16px;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            min-height: 48px;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
+            gap: 10px;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
         }
 
         .refine-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
         }
 
         .refine-btn:disabled {
@@ -311,17 +235,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
-            font-size: 13px;
-            opacity: 0.7;
-            gap: 20px;
+            padding: 12px 24px;
+            font-size: 14px;
+            color: var(--text-secondary-dark);
+        }
+
+        .light-theme .bottom-info {
+            color: var(--text-secondary-light);
         }
 
         .info-left {
             display: flex;
-            gap: 12px;
+            gap: 16px;
             align-items: center;
-            flex-wrap: wrap;
         }
 
         .info-link {
@@ -329,11 +255,10 @@
             border: none;
             color: inherit;
             cursor: pointer;
-            padding: 4px 8px;
-            text-decoration: none;
-            font-size: 13px;
-            border-radius: 4px;
+            padding: 6px 12px;
+            border-radius: 8px;
             transition: all 0.2s;
+            font-size: 14px;
         }
 
         .info-link:hover {
@@ -341,25 +266,10 @@
             color: var(--accent);
         }
 
-        .undo-btn {
-            background: var(--success);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            cursor: pointer;
-            display: none;
-        }
-
-        .undo-btn.visible {
-            display: inline-block;
-        }
-
+        /* Theme Toggle */
         .theme-switch {
             position: relative;
-            display: inline-block;
-            width: 50px;
+            width: 54px;
             height: 28px;
         }
 
@@ -376,42 +286,37 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #2a2a2a;
-            transition: 0.4s;
+            background: #2A2F3F;
+            transition: 0.3s;
             border-radius: 34px;
         }
 
-        body.light .slider {
-            background-color: #e0e0e0;
+        .light-theme .slider {
+            background: #D1D5DB;
         }
 
         .slider:before {
             position: absolute;
             content: "";
-            height: 20px;
-            width: 20px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: 0.4s;
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            transition: 0.3s;
             border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        body.light .slider:before {
-            background-color: #1a1a1a;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         input:checked + .slider {
-            background-color: var(--accent);
+            background: var(--accent);
         }
 
         input:checked + .slider:before {
-            transform: translateX(22px);
-            background-color: white;
+            transform: translateX(26px);
         }
 
-        /* Modern Modal Design */
+        /* Modal Base */
         .modal {
             display: none;
             position: fixed;
@@ -419,7 +324,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
             z-index: 200;
             justify-content: center;
@@ -428,52 +333,42 @@
             animation: fadeIn 0.2s ease;
         }
 
+        .modal.active {
+            display: flex;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
 
-        .modal.active {
-            display: flex;
-        }
-
         .modal-content {
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
             max-height: 85vh;
-            border-radius: 20px;
-            padding: 28px;
+            background: var(--surface-dark);
+            border-radius: 24px;
+            padding: 32px;
             overflow-y: auto;
             animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .light-theme .modal-content {
+            background: var(--surface-light);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
         }
 
         @keyframes slideUp {
-            from {
-                transform: translateY(30px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .dark .modal-content {
-            background: linear-gradient(145deg, #1e1e1e 0%, #1a1a1a 100%);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .light .modal-content {
-            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-            border: 1px solid rgba(0,0,0,0.08);
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .modal-title {
@@ -483,210 +378,300 @@
         }
 
         .modal-close {
-            background: none;
+            background: rgba(255, 255, 255, 0.08);
             border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             font-size: 24px;
             cursor: pointer;
             color: var(--text-secondary-dark);
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
             transition: all 0.2s;
         }
 
+        .light-theme .modal-close {
+            background: rgba(0, 0, 0, 0.06);
+            color: var(--text-secondary-light);
+        }
+
         .modal-close:hover {
-            background: rgba(255,255,255,0.1);
-            color: var(--text-dark);
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+            transform: rotate(90deg);
         }
 
-        .modal-grid {
+        /* Refinement Modal */
+        .refine-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-bottom: 16px;
         }
 
-        .modal-option {
-            padding: 20px 16px;
-            border: 2px solid;
-            border-radius: 14px;
-            background: transparent;
+        .refine-option {
+            padding: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
             cursor: pointer;
-            text-align: center;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
-        .dark .modal-option {
-            border-color: rgba(255,255,255,0.1);
+        .light-theme .refine-option {
+            border-color: rgba(0, 0, 0, 0.08);
+            background: rgba(0, 0, 0, 0.02);
         }
 
-        .light .modal-option {
-            border-color: rgba(0,0,0,0.1);
-        }
-
-        .modal-option:hover {
-            transform: translateY(-4px);
+        .refine-option:hover {
             border-color: var(--accent);
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2);
+            background: rgba(99, 102, 241, 0.08);
+            transform: translateX(4px);
         }
 
-        .modal-option:active {
-            transform: translateY(-2px);
-        }
-
-        .modal-option-icon {
+        .refine-option-icon {
             font-size: 32px;
-            margin-bottom: 8px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(99, 102, 241, 0.12);
+            border-radius: 12px;
         }
 
-        .modal-option-title {
+        .refine-option-content h3 {
+            font-size: 17px;
             font-weight: 600;
-            font-size: 15px;
             margin-bottom: 4px;
         }
 
-        .modal-option-desc {
-            font-size: 12px;
-            opacity: 0.6;
+        .refine-option-content p {
+            font-size: 14px;
+            color: var(--text-secondary-dark);
+        }
+
+        .light-theme .refine-option-content p {
+            color: var(--text-secondary-light);
+        }
+
+        /* Export Modal */
+        .export-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .export-option {
+            padding: 28px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .light-theme .export-option {
+            border-color: rgba(0, 0, 0, 0.08);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .export-option:hover {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .export-option-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .export-option-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .export-option-desc {
+            font-size: 13px;
+            color: var(--text-secondary-dark);
+        }
+
+        .light-theme .export-option-desc {
+            color: var(--text-secondary-light);
+        }
+
+        /* History Modal */
+        .history-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .clear-all-btn {
+            padding: 10px 18px;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--error);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .clear-all-btn:hover {
+            background: var(--error);
+            color: white;
+            transform: scale(1.02);
         }
 
         .history-list {
             max-height: 400px;
             overflow-y: auto;
-            margin-bottom: 16px;
         }
 
         .history-item {
-            padding: 16px;
-            border-radius: 12px;
+            padding: 18px;
+            border-radius: 14px;
             margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
         }
 
-        .dark .history-item {
-            background: rgba(255,255,255,0.03);
-            border-color: rgba(255,255,255,0.1);
-        }
-
-        .light .history-item {
-            background: rgba(0,0,0,0.02);
-            border-color: rgba(0,0,0,0.08);
+        .light-theme .history-item {
+            border-color: rgba(0, 0, 0, 0.08);
+            background: rgba(0, 0, 0, 0.02);
         }
 
         .history-item:hover {
-            transform: translateX(4px);
             border-color: var(--accent);
+            transform: translateX(4px);
+        }
+
+        .history-item-content {
+            flex: 1;
+            min-width: 0;
         }
 
         .history-item-title {
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             font-size: 15px;
         }
 
         .history-item-preview {
-            font-size: 13px;
-            opacity: 0.6;
+            font-size: 14px;
+            color: var(--text-secondary-dark);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
+        .light-theme .history-item-preview {
+            color: var(--text-secondary-light);
+        }
+
         .history-item-date {
-            font-size: 11px;
-            opacity: 0.5;
+            font-size: 12px;
+            color: var(--text-secondary-dark);
+            opacity: 0.7;
             margin-top: 4px;
+        }
+
+        .history-delete-btn {
+            padding: 8px;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--error);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+        }
+
+        .history-delete-btn:hover {
+            background: var(--error);
+            color: white;
+            transform: scale(1.1);
         }
 
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
-            opacity: 0.5;
+            padding: 60px 20px;
+            color: var(--text-secondary-dark);
+        }
+
+        .light-theme .empty-state {
+            color: var(--text-secondary-light);
         }
 
         .empty-state-icon {
             font-size: 48px;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            opacity: 0.5;
         }
 
+        /* Status Messages */
         .status-msg {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: var(--accent);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
+            background: var(--surface-dark);
+            color: var(--text-dark);
+            padding: 20px 32px;
+            border-radius: 16px;
             font-size: 16px;
             display: none;
             z-index: 300;
-            max-width: 80%;
-            text-align: center;
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .light-theme .status-msg {
+            background: var(--surface-light);
+            color: var(--text-light);
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
         }
 
         .status-msg.active {
             display: block;
-            animation: slideUp 0.3s ease;
         }
 
-        input[type="file"] {
-            display: none;
-        }
-
-        @media (max-width: 767px) {
-            .subject-field {
-                font-size: 24px;
-                padding: 24px 0 16px;
-            }
-            .editor {
-                font-size: 16px;
-            }
+        @media (max-width: 640px) {
             .main-container {
-                padding-bottom: 180px;
+                padding-bottom: 200px;
             }
-            .bottom-info {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .modal-grid {
+            .export-grid {
                 grid-template-columns: 1fr;
-            }
-            .modal-content {
-                padding: 24px;
-            }
-        }
-
-        @media print {
-            .header, .bottom-bar, .selection-toolbar {
-                display: none !important;
-            }
-            body {
-                background: white !important;
-                color: black !important;
-            }
-            .main-container {
-                max-width: 100%;
-                padding: 20px;
             }
         }
     </style>
 </head>
-<body class="dark">
+<body class="dark-theme">
     <header class="header">
         <div class="header-left">
             <button class="back-btn" onclick="goBack()">←</button>
             <div class="logo">SignalWrite</div>
         </div>
         <button class="export-btn" onclick="showExportModal()">
-            <span class="export-btn-icon">↗</span>
+            <span>↗</span>
             <span>Export</span>
         </button>
     </header>
@@ -698,54 +683,30 @@
             id="subject"
             placeholder="What are we writing today?"
             onkeyup="updateWordCount(); autoSave()"
-            spellcheck="true"
         >
         <div 
             class="editor" 
             id="editor" 
             contenteditable="true"
             onkeyup="updateWordCount(); autoSave()"
-            onmouseup="handleSelection()"
-            ontouchend="handleSelection()"
-            spellcheck="true"
         ></div>
-    </div>
-
-    <div class="selection-toolbar" id="selectionToolbar">
-        <button class="format-btn" onmousedown="formatText('bold'); event.preventDefault();">
-            <strong>B</strong>
-        </button>
-        <button class="format-btn" onmousedown="formatText('italic'); event.preventDefault();">
-            <em>I</em>
-        </button>
-        <button class="format-btn" onmousedown="formatText('underline'); event.preventDefault();">
-            <u>U</u>
-        </button>
-        <button class="format-btn" onmousedown="formatText('insertUnorderedList'); event.preventDefault();">
-            •
-        </button>
-        <button class="format-btn" onmousedown="removeFormatting(); event.preventDefault();">
-            ×
-        </button>
-        <button class="format-btn" onmousedown="showRefineModal(); event.preventDefault();">
-            ✨
-        </button>
     </div>
 
     <div class="bottom-bar">
         <div class="refine-container">
-            <button class="refine-btn" id="refineBtn" onclick="showRefineModal()">✨ Refine Writing</button>
+            <button class="refine-btn" id="refineBtn" onclick="showRefineModal()">
+                <span>✨</span>
+                <span>Refine Writing</span>
+            </button>
         </div>
         <div class="bottom-info">
             <div class="info-left">
-                <span id="wordCount">0 words</span>
+                <span id="wordCount">0 words • 0 chars</span>
                 <span>•</span>
                 <button class="info-link" onclick="showHistory()">📚 History</button>
-                <span>•</span>
-                <button class="undo-btn" id="undoBtn" onclick="undo()">↩ Undo</button>
             </div>
             <div style="display: flex; align-items: center; gap: 12px;">
-                <span style="font-size: 12px;">Theme</span>
+                <span style="font-size: 13px;">Theme</span>
                 <label class="theme-switch">
                     <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
                     <span class="slider"></span>
@@ -754,74 +715,114 @@
         </div>
     </div>
 
-    <div class="status-msg" id="statusMsg">Processing...</div>
+    <div class="status-msg" id="statusMsg"></div>
 
-    <!-- Modern Export Modal -->
-    <div class="modal" id="exportModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="modal-title">Export Document</div>
-                <button class="modal-close" onclick="closeModal()">×</button>
-            </div>
-            <div class="modal-grid">
-                <button class="modal-option" onclick="exportPDF()">
-                    <div class="modal-option-icon">📄</div>
-                    <div class="modal-option-title">PDF</div>
-                    <div class="modal-option-desc">Locked format</div>
-                </button>
-                <button class="modal-option" onclick="exportDOCX()">
-                    <div class="modal-option-icon">📝</div>
-                    <div class="modal-option-title">Word</div>
-                    <div class="modal-option-desc">Editable doc</div>
-                </button>
-                <button class="modal-option" onclick="printDocument()">
-                    <div class="modal-option-icon">🖨️</div>
-                    <div class="modal-option-title">Print</div>
-                    <div class="modal-option-desc">Physical copy</div>
-                </button>
-                <button class="modal-option" onclick="shareDocument()">
-                    <div class="modal-option-icon">📤</div>
-                    <div class="modal-option-title">Share</div>
-                    <div class="modal-option-desc">Send to apps</div>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modern Refine Modal -->
+    <!-- Refinement Modal -->
     <div class="modal" id="refineModal">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">AI Refinement</div>
                 <button class="modal-close" onclick="closeModal()">×</button>
             </div>
-            <p style="opacity: 0.6; margin-bottom: 20px; font-size: 14px;">✨ Powered by Mistral 7B AI</p>
-            <div class="modal-grid">
-                <button class="modal-option" onclick="refineText('professional')">
-                    <div class="modal-option-icon">💼</div>
-                    <div class="modal-option-title">Professional</div>
-                    <div class="modal-option-desc">Business-ready</div>
-                </button>
-                <button class="modal-option" onclick="refineText('anxiety-neutralizer')">
-                    <div class="modal-option-icon">🧘</div>
-                    <div class="modal-option-title">Confident</div>
-                    <div class="modal-option-desc">Remove anxiety</div>
-                </button>
-                <button class="modal-option" onclick="refineText('legal')">
-                    <div class="modal-option-icon">⚖️</div>
-                    <div class="modal-option-title">Legal</div>
-                    <div class="modal-option-desc">Formal tone</div>
-                </button>
+            <div class="refine-grid">
+                <div class="refine-option" onclick="refineText('professional')">
+                    <div class="refine-option-icon">💼</div>
+                    <div class="refine-option-content">
+                        <h3>Professional</h3>
+                        <p>Business-ready tone</p>
+                    </div>
+                </div>
+                <div class="refine-option" onclick="refineText('anxiety-neutralizer')">
+                    <div class="refine-option-icon">🧘</div>
+                    <div class="refine-option-content">
+                        <h3>Confident</h3>
+                        <p>Remove anxiety & uncertainty</p>
+                    </div>
+                </div>
+                <div class="refine-option" onclick="refineText('legal')">
+                    <div class="refine-option-icon">⚖️</div>
+                    <div class="refine-option-content">
+                        <h3>Legal</h3>
+                        <p>Formal & precise language</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Modern History Modal -->
+    <!-- Export Modal -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Export Document</div>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="export-grid">
+                <div class="export-option" onclick="exportPDF()">
+                    <div class="export-option-icon">📄</div>
+                    <div class="export-option-title">PDF</div>
+                    <div class="export-option-desc">Locked format</div>
+                </div>
+                <div class="export-option" onclick="exportDOCX()">
+                    <div class="export-option-icon">📝</div>
+                    <div class="export-option-title">Word</div>
+                    <div class="export-option-desc">Editable doc</div>
+                </div>
+                <div class="export-option" onclick="printDocument()">
+                    <div class="export-option-icon">🖨️</div>
+                    <div class="export-option-title">Print</div>
+                    <div class="export-option-desc">Physical copy</div>
+                </div>
+                <div class="export-option" onclick="showShareOptions()">
+                    <div class="export-option-icon">📤</div>
+                    <div class="export-option-title">Share</div>
+                    <div class="export-option-desc">Social media</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Share Document</div>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="export-grid">
+                <div class="export-option" onclick="shareToWhatsApp()">
+                    <div class="export-option-icon">📱</div>
+                    <div class="export-option-title">WhatsApp</div>
+                </div>
+                <div class="export-option" onclick="shareToTwitter()">
+                    <div class="export-option-icon">🐦</div>
+                    <div class="export-option-title">Twitter/X</div>
+                </div>
+                <div class="export-option" onclick="shareToFacebook()">
+                    <div class="export-option-icon">📘</div>
+                    <div class="export-option-title">Facebook</div>
+                </div>
+                <div class="export-option" onclick="shareToInstagram()">
+                    <div class="export-option-icon">📸</div>
+                    <div class="export-option-title">Instagram</div>
+                </div>
+                <div class="export-option" onclick="copyToClipboard()">
+                    <div class="export-option-icon">📋</div>
+                    <div class="export-option-title">Copy Text</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Modal -->
     <div class="modal" id="historyModal">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">Document History</div>
                 <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="history-header-bar" style="display:none" id="historyHeaderBar">
+                <button class="clear-all-btn" onclick="clearAllHistory()">🗑️ Clear All</button>
             </div>
             <div class="history-list" id="historyList">
                 <div class="empty-state">
@@ -829,62 +830,50 @@
                     <div>No saved documents yet</div>
                 </div>
             </div>
-            <div class="modal-grid">
-                <button class="modal-option" onclick="downloadDraft()">
-                    <div class="modal-option-icon">💾</div>
-                    <div class="modal-option-title">Save</div>
-                    <div class="modal-option-desc">Download draft</div>
-                </button>
-                <button class="modal-option" onclick="document.getElementById('fileInput').click()">
-                    <div class="modal-option-icon">📂</div>
-                    <div class="modal-option-title">Load</div>
-                    <div class="modal-option-desc">Open file</div>
-                </button>
-            </div>
         </div>
     </div>
 
-    <input type="file" id="fileInput" accept=".txt" onchange="loadDraft(event)">
-
     <script>
+        // Copyright Protection
         document.addEventListener('contextmenu', e => e.preventDefault());
-        
-        const BACKEND_URL = 'https://backend-signalwrite-git-main-louis-nkan-enobong-s-projects.vercel.app';
-        let selectedText = '';
-        let selectionRange = null;
-        let autoSaveTimeout;
-
-        updateWordCount();
-        loadHistory();
-
-        function toggleTheme() {
-            const body = document.body;
-            const toggle = document.getElementById('themeToggle');
-            if (toggle.checked) {
-                body.classList.remove('dark');
-                body.classList.add('light');
-                localStorage.setItem('theme', 'light');
-            } else {
-                body.classList.remove('light');
-                body.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            const toggle = document.getElementById('themeToggle');
-            if (savedTheme === 'light') {
-                document.body.classList.remove('dark');
-                document.body.classList.add('light');
-                toggle.checked = true;
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+                (e.ctrlKey && e.shiftKey && e.key === 'C') || (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
             }
         });
 
+        // ========== CONFIGURATION ==========
+        const API_URL = 'https://signalwrite-api-clean.vercel.app';
+        
+        let history = JSON.parse(localStorage.getItem('signalwrite_history') || '[]');
+
+        const $ = {
+            subject: document.getElementById('subject'),
+            editor: document.getElementById('editor'),
+            refineBtn: document.getElementById('refineBtn'),
+            wordCount: document.getElementById('wordCount'),
+            statusMsg: document.getElementById('statusMsg'),
+            historyList: document.getElementById('historyList'),
+            themeToggle: document.getElementById('themeToggle'),
+            historyHeaderBar: document.getElementById('historyHeaderBar')
+        };
+
+        // ========== THEME ==========
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            document.body.classList.toggle('dark-theme');
+            localStorage.setItem('signalwrite_theme', document.body.classList.contains('light-theme') ? 'light' : 'dark');
+        }
+
+        if (localStorage.getItem('signalwrite_theme') === 'light') {
+            document.body.classList.remove('dark-theme');
+            document.body.classList.add('light-theme');
+            $.themeToggle.checked = true;
+        }
+
         function goBack() {
-            const hasContent = document.getElementById('editor').innerText.trim() || 
-                               document.getElementById('subject').value.trim();
-            if (hasContent) {
+            if ($.editor.innerText.trim() || $.subject.value.trim()) {
                 if (confirm('Leave editor? Unsaved changes will be lost.')) {
                     window.location.href = 'index.html';
                 }
@@ -893,20 +882,21 @@
             }
         }
 
+        // ========== WORD COUNT ==========
         function updateWordCount() {
-            const subject = document.getElementById('subject').value;
-            const editor = document.getElementById('editor').innerText;
-            const allText = (subject + ' ' + editor).trim();
-            const words = allText ? allText.split(/\s+/).length : 0;
-            const chars = allText.length;
-            document.getElementById('wordCount').textContent = `${words} words • ${chars} chars`;
+            const text = ($.subject.value + ' ' + $.editor.innerText).trim();
+            const words = text ? text.split(/\s+/).length : 0;
+            const chars = text.length;
+            $.wordCount.textContent = `${words} words • ${chars} chars`;
         }
 
+        // ========== AUTO SAVE ==========
+        let autoSaveTimeout;
         function autoSave() {
             clearTimeout(autoSaveTimeout);
             autoSaveTimeout = setTimeout(() => {
-                const subject = document.getElementById('subject').value.trim();
-                const content = document.getElementById('editor').innerText.trim();
+                const subject = $.subject.value.trim();
+                const content = $.editor.innerText.trim();
                 if (subject || content) {
                     const draft = {
                         id: Date.now(),
@@ -914,118 +904,25 @@
                         content: content,
                         date: new Date().toISOString()
                     };
-                    let history = JSON.parse(localStorage.getItem('documentHistory') || '[]');
-                    history = [draft, ...history.slice(0, 19)];
-                    localStorage.setItem('documentHistory', JSON.stringify(history));
+                    history.unshift(draft);
+                    if (history.length > 20) history = history.slice(0, 20);
+                    localStorage.setItem('signalwrite_history', JSON.stringify(history));
+                    loadHistory();
                 }
             }, 3000);
         }
 
-        function loadHistory() {
-            const history = JSON.parse(localStorage.getItem('documentHistory') || '[]');
-            const historyList = document.getElementById('historyList');
-            
-            if (history.length === 0) {
-                historyList.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📝</div>
-                        <div>No saved documents yet</div>
-                    </div>
-                `;
+        // ========== MODALS ==========
+        function showRefineModal() {
+            if (!$.editor.innerText.trim()) {
+                showStatus('Please write something first!');
                 return;
             }
-
-            historyList.innerHTML = history.map(item => `
-                <div class="history-item" onclick="loadHistoryItem(${item.id})">
-                    <div class="history-item-title">${item.subject}</div>
-                    <div class="history-item-preview">${item.content.substring(0, 60)}...</div>
-                    <div class="history-item-date">${new Date(item.date).toLocaleDateString()}</div>
-                </div>
-            `).join('');
-        }
-
-        function loadHistoryItem(id) {
-            const history = JSON.parse(localStorage.getItem('documentHistory') || '[]');
-            const item = history.find(h => h.id === id);
-            if (item) {
-                document.getElementById('subject').value = item.subject;
-                document.getElementById('editor').innerText = item.content;
-                updateWordCount();
-                closeModal();
-                showSuccessMessage('Document loaded ✓');
-            }
-        }
-
-        function handleSelection() {
-            setTimeout(() => {
-                const selection = window.getSelection();
-                selectedText = selection.toString().trim();
-                if (selectedText.length > 0 && selection.rangeCount > 0) {
-                    selectionRange = selection.getRangeAt(0);
-                    showSelectionToolbar();
-                    document.getElementById('refineBtn').textContent = '✨ Refine Selection';
-                } else {
-                    hideSelectionToolbar();
-                    document.getElementById('refineBtn').textContent = '✨ Refine Writing';
-                }
-            }, 10);
-        }
-
-        function showSelectionToolbar() {
-            const selection = window.getSelection();
-            if (selection.rangeCount === 0 || !selectedText) return;
-            const range = selection.getRangeAt(0);
-            const rect = range.getBoundingClientRect();
-            const toolbar = document.getElementById('selectionToolbar');
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-            const top = rect.top + scrollTop - 60;
-            const left = rect.left + scrollLeft + (rect.width / 2) - 140;
-            toolbar.style.top = Math.max(80, top) + 'px';
-            toolbar.style.left = Math.max(10, Math.min(left, window.innerWidth - 290)) + 'px';
-            toolbar.classList.add('visible');
-        }
-
-        function hideSelectionToolbar() {
-            document.getElementById('selectionToolbar').classList.remove('visible');
-        }
-
-        function formatText(command) {
-            document.execCommand(command, false, null);
-            document.getElementById('editor').focus();
-            handleSelection();
-        }
-
-        function removeFormatting() {
-            document.execCommand('removeFormat', false, null);
-            document.execCommand('unlink', false, null);
-            document.getElementById('editor').focus();
-            handleSelection();
-        }
-
-        function undo() {
-            document.execCommand('undo');
-            updateWordCount();
-        }
-
-        function showUndoButton() {
-            const btn = document.getElementById('undoBtn');
-            btn.classList.add('visible');
-            setTimeout(() => btn.classList.remove('visible'), 10000);
+            document.getElementById('refineModal').classList.add('active');
         }
 
         function showExportModal() {
             document.getElementById('exportModal').classList.add('active');
-        }
-
-        function showRefineModal() {
-            const editor = document.getElementById('editor').innerText.trim();
-            if (!selectedText && !editor) {
-                alert('Please write something first!');
-                return;
-            }
-            hideSelectionToolbar();
-            document.getElementById('refineModal').classList.add('active');
         }
 
         function showHistory() {
@@ -1033,189 +930,233 @@
             document.getElementById('historyModal').classList.add('active');
         }
 
+        function showShareOptions() {
+            closeModal();
+            document.getElementById('shareModal').classList.add('active');
+        }
+
         function closeModal() {
             document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
         }
 
         document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
+            modal.addEventListener('click', e => {
                 if (e.target === modal) closeModal();
             });
         });
 
+        // ========== STATUS MESSAGES ==========
+        function showStatus(message, duration = 2500) {
+            $.statusMsg.textContent = message;
+            $.statusMsg.classList.add('active');
+            setTimeout(() => $.statusMsg.classList.remove('active'), duration);
+        }
+
+        // ========== AI REFINEMENT ==========
         async function refineText(mode) {
             closeModal();
-            let textToRefine = selectedText || document.getElementById('editor').innerText.trim();
-            if (!textToRefine) {
-                alert('No text to refine!');
+            const text = $.editor.innerText.trim();
+            
+            if (!text) {
+                showStatus('No text to refine!');
                 return;
             }
 
-            const refineBtn = document.getElementById('refineBtn');
-            refineBtn.disabled = true;
-            refineBtn.innerHTML = '⏳ Refining...';
-            
-            document.getElementById('statusMsg').textContent = 'AI is refining (10-20 sec)...';
-            document.getElementById('statusMsg').classList.add('active');
+            $.refineBtn.disabled = true;
+            $.refineBtn.innerHTML = '<span>⏳</span><span>Refining...</span>';
+            showStatus('AI is refining your text...', 30000);
 
             try {
-                const response = await fetch(`${BACKEND_URL}/refine`, {
+                const response = await fetch(`${API_URL}/api/refine`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: textToRefine, mode: mode })
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ text, mode })
                 });
 
                 if (!response.ok) {
-                    if (response.status === 503) {
-                        throw new Error('Model loading. Wait 20 seconds and try again.');
-                    }
-                    throw new Error(`Server error: ${response.status}`);
+                    const error = await response.json();
+                    throw new Error(error.error || 'Refinement failed');
                 }
 
                 const data = await response.json();
-                const refined = data.refined || '';
-
-                if (!refined) {
-                    throw new Error('No refined text received');
-                }
-
-                if (selectedText && selectionRange) {
-                    selectionRange.deleteContents();
-                    selectionRange.insertNode(document.createTextNode(refined));
-                    window.getSelection().removeAllRanges();
-                } else {
-                    document.getElementById('editor').innerText = refined;
-                }
-
-                selectedText = '';
-                selectionRange = null;
+                $.editor.innerText = data.refined;
                 updateWordCount();
-                showUndoButton();
-                document.getElementById('statusMsg').classList.remove('active');
-                showSuccessMessage('✨ Refined by AI!');
+                showStatus('✨ Text refined successfully!');
 
             } catch (error) {
-                document.getElementById('statusMsg').classList.remove('active');
-                console.error('Error:', error);
-                alert(`Refinement failed: ${error.message}\n\nTip: Wait 20 seconds if model is loading.`);
+                console.error('Refinement error:', error);
+                let errorMsg = error.message;
+                
+                if (error.message.includes('Failed to fetch')) {
+                    errorMsg = 'Cannot connect to AI server. Check your internet connection.';
+                }
+                
+                showStatus('❌ ' + errorMsg);
             } finally {
-                refineBtn.disabled = false;
-                refineBtn.innerHTML = '✨ Refine Writing';
+                $.refineBtn.disabled = false;
+                $.refineBtn.innerHTML = '<span>✨</span><span>Refine Writing</span>';
             }
         }
 
-        function showSuccessMessage(msg) {
-            const el = document.createElement('div');
-            el.textContent = msg;
-            el.style.cssText = `position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                background: var(--success); color: white; padding: 12px 20px;
-                border-radius: 8px; z-index: 300; font-size: 16px; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);`;
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 2000);
-        }
-
-        function exportPDF() {
-            closeModal();
-            const subject = document.getElementById('subject').value.trim();
-            const editor = document.getElementById('editor');
-            if (!subject && !editor.innerText.trim()) {
-                alert('Nothing to export!');
+        // ========== HISTORY ==========
+        function loadHistory() {
+            if (history.length === 0) {
+                $.historyList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <div>No saved documents yet</div>
+                    </div>
+                `;
+                $.historyHeaderBar.style.display = 'none';
                 return;
             }
-            document.getElementById('statusMsg').textContent = 'Creating PDF...';
-            document.getElementById('statusMsg').classList.add('active');
+
+            $.historyHeaderBar.style.display = 'flex';
+            $.historyList.innerHTML = history.map(item => `
+                <div class="history-item">
+                    <div class="history-item-content" onclick="loadHistoryItem(${item.id})">
+                        <div class="history-item-title">${item.subject}</div>
+                        <div class="history-item-preview">${item.content.substring(0, 80)}...</div>
+                        <div class="history-item-date">${new Date(item.date).toLocaleDateString()}</div>
+                    </div>
+                    <button class="history-delete-btn" onclick="event.stopPropagation(); deleteHistoryItem(${item.id})" title="Delete">
+                        🗑️
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function loadHistoryItem(id) {
+            const item = history.find(h => h.id === id);
+            if (item) {
+                $.subject.value = item.subject;
+                $.editor.innerText = item.content;
+                updateWordCount();
+                closeModal();
+                showStatus('✓ Document loaded');
+            }
+        }
+
+        function deleteHistoryItem(id) {
+            if (confirm('Delete this document?')) {
+                history = history.filter(h => h.id !== id);
+                localStorage.setItem('signalwrite_history', JSON.stringify(history));
+                loadHistory();
+                showStatus('✓ Document deleted');
+            }
+        }
+
+        function clearAllHistory() {
+            if (confirm('Delete ALL documents? This cannot be undone!')) {
+                history = [];
+                localStorage.removeItem('signalwrite_history');
+                loadHistory();
+                showStatus('✓ All history cleared');
+            }
+        }
+
+        // ========== EXPORT PDF ==========
+        function exportPDF() {
+            closeModal();
+            const subject = $.subject.value.trim();
+            const content = $.editor.innerText.trim();
             
+            if (!subject && !content) {
+                showStatus('Nothing to export!');
+                return;
+            }
+
+            showStatus('Creating PDF...', 5000);
+
             setTimeout(() => {
                 try {
                     const { jsPDF } = window.jspdf;
-                    const doc = new jsPDF('p', 'mm', 'a4');
+                    const doc = new jsPDF({
+                        orientation: 'portrait',
+                        unit: 'mm',
+                        format: 'a4'
+                    });
+
                     const margin = 20;
-                    const pageWidth = 210;
-                    const pageHeight = 297;
-                    const maxWidth = pageWidth - (margin * 2);
+                    const pageWidth = 170;
+                    const lineHeight = 7;
                     let y = margin;
 
-                    function addPage() {
-                        doc.addPage();
-                        y = margin;
-                    }
-
-                    function checkSpace(needed) {
-                        if (y + needed > pageHeight - margin - 15) {
-                            addPage();
-                        }
-                    }
-
+                    // Title
                     if (subject) {
-                        doc.setFontSize(18);
+                        doc.setFontSize(16);
                         doc.setFont('helvetica', 'bold');
-                        const titleLines = doc.splitTextToSize(subject, maxWidth);
+                        const titleLines = doc.splitTextToSize(subject, pageWidth);
                         titleLines.forEach(line => {
-                            checkSpace(10);
+                            if (y > 270) {
+                                doc.addPage();
+                                y = margin;
+                            }
                             doc.text(line, margin, y);
                             y += 9;
                         });
                         y += 10;
                     }
 
-                    doc.setFontSize(12);
+                    // Content
+                    doc.setFontSize(11);
                     doc.setFont('helvetica', 'normal');
 
-                    const text = editor.innerText.trim();
-                    const paragraphs = text.split(/\n\n+/);
-
+                    const paragraphs = content.split('\n\n');
                     paragraphs.forEach(para => {
-                        para = para.trim();
-                        if (!para) return;
+                        if (!para.trim()) return;
                         
-                        const lines = doc.splitTextToSize(para, maxWidth);
+                        const lines = doc.splitTextToSize(para.trim(), pageWidth);
                         lines.forEach(line => {
-                            checkSpace(7);
+                            if (y > 270) {
+                                doc.addPage();
+                                y = margin;
+                            }
                             doc.text(line, margin, y);
-                            y += 7;
+                            y += lineHeight;
                         });
                         y += 4;
                     });
 
+                    // Footer
                     const pageCount = doc.internal.getNumberOfPages();
                     for (let i = 1; i <= pageCount; i++) {
                         doc.setPage(i);
                         doc.setFontSize(9);
                         doc.setTextColor(120);
-                        doc.text(`Page ${i} of ${pageCount}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
-                        doc.text('Created with SignalWrite', margin, pageHeight - 10);
+                        doc.text(`Page ${i} of ${pageCount}`, 105, 287, { align: 'center' });
+                        doc.text('SignalWrite', margin, 287);
                         doc.setTextColor(0);
                     }
 
-                    const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').substring(0, 50).toLowerCase();
-                    doc.save(`${filename}.pdf`);
+                    const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').substring(0, 30).toLowerCase() + '.pdf';
+                    doc.save(filename);
                     
-                    document.getElementById('statusMsg').classList.remove('active');
-                    showSuccessMessage('PDF Exported ✓');
+                    showStatus('✓ PDF exported successfully!');
                 } catch (error) {
-                    document.getElementById('statusMsg').classList.remove('active');
-                    console.error('PDF Error:', error);
-                    alert('PDF export failed. Try again.');
+                    console.error('PDF error:', error);
+                    showStatus('❌ PDF export failed');
                 }
             }, 100);
         }
 
+        // ========== EXPORT DOCX ==========
         async function exportDOCX() {
             closeModal();
-            const subject = document.getElementById('subject').value.trim();
-            const editor = document.getElementById('editor');
-            if (!subject && !editor.innerText.trim()) {
-                alert('Nothing to export!');
+            const subject = $.subject.value.trim();
+            const content = $.editor.innerText.trim();
+            
+            if (!subject && !content) {
+                showStatus('Nothing to export!');
                 return;
             }
-            document.getElementById('statusMsg').textContent = 'Creating Word doc...';
-            document.getElementById('statusMsg').classList.add('active');
+
+            showStatus('Creating Word document...', 5000);
 
             try {
-                if (typeof docx === 'undefined') {
-                    throw new Error('DOCX library not loaded');
-                }
-
                 const { Document, Paragraph, TextRun, HeadingLevel } = docx;
                 const children = [];
 
@@ -1227,145 +1168,98 @@
                     }));
                 }
 
-                const text = editor.innerText;
-                const paragraphs = text.split(/\n+/);
-                
+                const paragraphs = content.split('\n\n');
                 paragraphs.forEach(para => {
-                    para = para.trim();
-                    if (para) {
+                    if (para.trim()) {
                         children.push(new Paragraph({
-                            children: [new TextRun(para)],
+                            children: [new TextRun(para.trim())],
                             spacing: { after: 200 }
                         }));
                     }
                 });
 
                 const doc = new Document({
-                    sections: [{ properties: {}, children: children }]
+                    sections: [{ properties: {}, children }]
                 });
 
                 const blob = await docx.Packer.toBlob(doc);
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').substring(0, 50).toLowerCase();
-                a.download = `${filename}.docx`;
+                const filename = (subject || 'document').replace(/[^a-z0-9]/gi, '_').substring(0, 30).toLowerCase() + '.docx';
+                a.download = filename;
                 a.click();
                 URL.revokeObjectURL(url);
                 
-                document.getElementById('statusMsg').classList.remove('active');
-                showSuccessMessage('Word Doc Exported ✓');
+                showStatus('✓ Word document exported!');
             } catch (error) {
-                document.getElementById('statusMsg').classList.remove('active');
-                console.error('DOCX Error:', error);
-                alert('Word export failed. Try PDF instead.');
+                console.error('DOCX error:', error);
+                showStatus('❌ Word export failed');
             }
         }
 
+        // ========== PRINT ==========
         function printDocument() {
             closeModal();
-            const hasContent = document.getElementById('editor').innerText.trim() || 
-                               document.getElementById('subject').value.trim();
-            if (!hasContent) {
-                alert('Nothing to print!');
+            if (!$.editor.innerText.trim() && !$.subject.value.trim()) {
+                showStatus('Nothing to print!');
                 return;
             }
             window.print();
         }
 
-        async function shareDocument() {
-            closeModal();
-            const subject = document.getElementById('subject').value.trim();
-            const content = document.getElementById('editor').innerText.trim();
-            
-            if (!subject && !content) {
-                alert('Nothing to share!');
-                return;
-            }
-
-            const shareText = (subject ? subject + '\n\n' : '') + content;
-            const shareData = {
-                title: subject || 'SignalWrite Document',
-                text: shareText
-            };
-
-            if (navigator.share) {
-                try {
-                    await navigator.share(shareData);
-                } catch (error) {
-                    if (error.name !== 'AbortError') {
-                        console.error('Share error:', error);
-                    }
-                }
-            } else {
-                try {
-                    await navigator.clipboard.writeText(shareText);
-                    showSuccessMessage('Copied to clipboard ✓');
-                } catch (error) {
-                    alert('Share not supported. Try exporting instead.');
-                }
-            }
+        // ========== SHARING ==========
+        function getShareText() {
+            const subject = $.subject.value.trim();
+            const content = $.editor.innerText.trim();
+            return subject ? `${subject}\n\n${content}` : content;
         }
 
-        function downloadDraft() {
-            const subject = document.getElementById('subject').value;
-            const content = document.getElementById('editor').innerText;
-            if (!subject && !content) {
-                alert('Nothing to download!');
-                return;
-            }
-            const fullText = (subject ? subject + '\n\n' : '') + content;
-            const blob = new Blob([fullText], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `signalwrite-${Date.now()}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-            closeModal();
-            showSuccessMessage('Downloaded ✓');
-        }
-
-        function loadDraft(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const text = e.target.result;
-                const lines = text.split('\n');
-                if (lines.length > 0) {
-                    document.getElementById('subject').value = lines[0];
-                    document.getElementById('editor').innerText = lines.slice(2).join('\n');
-                    updateWordCount();
-                    showSuccessMessage('Loaded ✓');
-                }
-            };
-            reader.readAsText(file);
+        function shareToWhatsApp() {
+            const text = encodeURIComponent(getShareText());
+            window.open(`https://wa.me/?text=${text}`, '_blank');
             closeModal();
         }
 
-        document.addEventListener('keydown', (e) => {
+        function shareToTwitter() {
+            const text = encodeURIComponent(getShareText().substring(0, 280));
+            window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+            closeModal();
+        }
+
+        function shareToFacebook() {
+            const text = encodeURIComponent(getShareText());
+            window.open(`https://www.facebook.com/sharer/sharer.php?quote=${text}`, '_blank');
+            closeModal();
+        }
+
+        function shareToInstagram() {
+            closeModal();
+            copyToClipboard();
+            showStatus('Text copied! Paste it in Instagram.');
+        }
+
+        async function copyToClipboard() {
+            try {
+                await navigator.clipboard.writeText(getShareText());
+                showStatus('✓ Copied to clipboard!');
+                closeModal();
+            } catch (error) {
+                showStatus('❌ Failed to copy');
+            }
+        }
+
+        // ========== KEYBOARD SHORTCUTS ==========
+        document.addEventListener('keydown', e => {
             if (e.ctrlKey || e.metaKey) {
                 switch(e.key.toLowerCase()) {
                     case 'b':
                         e.preventDefault();
-                        formatText('bold');
+                        document.execCommand('bold');
                         break;
                     case 'i':
                         e.preventDefault();
-                        formatText('italic');
-                        break;
-                    case 'u':
-                        if (!e.ctrlKey) {
-                            e.preventDefault();
-                            formatText('underline');
-                        }
-                        break;
-                    case 'z':
-                        if (!e.shiftKey) {
-                            e.preventDefault();
-                            undo();
-                        }
+                        document.execCommand('italic');
                         break;
                     case 'p':
                         e.preventDefault();
@@ -1375,21 +1269,10 @@
             }
         });
 
-        window.addEventListener('beforeunload', (e) => {
-            const hasContent = document.getElementById('editor').innerText.trim() || 
-                               document.getElementById('subject').value.trim();
-            if (hasContent) {
-                e.preventDefault();
-                e.returnValue = '';
-            }
-        });
-
-        document.addEventListener('selectionchange', () => {
-            const selection = window.getSelection();
-            if (!selection.toString().trim()) {
-                hideSelectionToolbar();
-            }
-        });
+        // ========== INITIALIZATION ==========
+        updateWordCount();
+        loadHistory();
+        console.log('SignalWrite Professional Editor initialized');
     </script>
 </body>
-</html>
+    </html>
